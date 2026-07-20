@@ -1,16 +1,16 @@
 import { forwardRef } from 'react';
-import { StyleSheet, Text, TextInput, View, type TextInputProps } from 'react-native';
+import { StyleSheet, Text, TextInput, View, type TextInputProps, type ViewStyle } from 'react-native';
 
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/spacing';
 import { typography } from '@/constants/typography';
 
-interface Props extends TextInputProps { label?: string; error?: string; }
+interface Props extends TextInputProps { label?: string; error?: string; containerStyle?: ViewStyle; }
 
 export const AppInput = forwardRef<TextInput, Props>(function AppInput(
-  { label, error, style, ...props }, ref,
+  { label, error, style, containerStyle, ...props }, ref,
 ) {
-  return <View style={styles.wrapper}>
+  return <View style={[styles.wrapper, containerStyle]}>
     {label ? <Text style={styles.label}>{label}</Text> : null}
     <TextInput ref={ref} placeholderTextColor={colors.textMuted}
       style={[styles.input, props.multiline && styles.multiline, error && styles.inputError, style]} {...props} />

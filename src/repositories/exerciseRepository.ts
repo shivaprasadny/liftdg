@@ -52,10 +52,31 @@ export async function getExerciseById(db: SQLiteDatabase, id: string): Promise<E
 
 function mapNullable(row: ExerciseRow | null): Exercise | null { return row ? mapExercise(row) : null; }
 
-export async function findExerciseByName(db: SQLiteDatabase, name: string): Promise<Exercise | null> {
-  return mapNullable(await db.getFirstAsync<ExerciseRow>(
-    'SELECT * FROM exercises WHERE lower(name) = lower(?) AND is_archived = 0 LIMIT 1', [name.trim()],
-  ));
+export async function findExerciseByName(
+  db: SQLiteDatabase, name: string, excludingId?: string,
+): Promise<Exercise | null> {
+  const query = excludingId
+    ? 'SELECT * FROM exercises WHERE lower(name) = lower(?) AND id != ? AND is_archived = 0 LIMIT 1'
+    : 'SELECT * FROM exercises WHERE lower(name) = lower(?) AND is_archived = 0 LIMIT 1';
+  const params = excludingId ? [name.trim(), excludingId] : [name.trim()];
+  return mapNullable(await db.getFirstAsync<ExerciseRow>(query, params));
+}
+
+export async function updateExercise(
+  db: SQLiteDatabase, id: string, input: CreateExerciseInput,
+): Promise<Exercise> {
+  const result = await db.runAsync(
+    `UPDATE exercises SET name = ?, category = ?, primary_muscles = ?, secondary_muscles = ?,
+      equipment = ?, exercise_type = ?, instructions = ?, updated_at = ?
+     WHERE id = ? AND is_builtin = 0 AND is_archived = 0`,
+    [input.name.trim(), input.category, JSON.stringify(input.primaryMuscles),
+      JSON.stringify(input.secondaryMuscles), input.equipment, input.exerciseType,
+      JSON.stringify(input.instructions), new Date().toISOString(), id],
+  );
+  if (result.changes !== 1) throw new Error('Only active custom exercises can be edited');
+  const updated = await getExerciseById(db, id);
+  if (!updated) throw new Error('Exercise was not found after update');
+  return updated;
 }
 
 export async function createExercise(db: SQLiteDatabase, input: CreateExerciseInput): Promise<Exercise> {
@@ -76,10 +97,11 @@ export async function createExercise(db: SQLiteDatabase, input: CreateExerciseIn
 }
 
 export async function archiveExercise(db: SQLiteDatabase, id: string): Promise<void> {
-  await db.runAsync(
+  const result = await db.runAsync(
     'UPDATE exercises SET is_archived = 1, updated_at = ? WHERE id = ? AND is_builtin = 0',
     [new Date().toISOString(), id],
   );
+  if (result.changes !== 1) throw new Error('Built-in exercises cannot be archived');
 }
 
 export async function getExercisePerformance(

@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppButton } from '@/components/AppButton';
 import { AppScreen } from '@/components/AppScreen';
@@ -16,7 +16,7 @@ export default function HomeScreen() {
   return <AppScreen scroll>
     <View style={styles.top}><View><Text style={styles.eyebrow}>{format(new Date(), 'EEEE, MMMM d')}</Text>
       <Text style={styles.title}>{greeting()}</Text><Text style={styles.tagline}>Track Every Rep</Text></View>
-      <Pressable accessibilityLabel="Settings" style={styles.settings}><Ionicons name="settings-outline" size={23} color={colors.text} /></Pressable></View>
+      <Pressable accessibilityLabel="Settings" onPress={() => Alert.alert('Settings', 'Settings will be added in a later phase.')} style={styles.settings}><Ionicons name="settings-outline" size={23} color={colors.text} /></Pressable></View>
     <View style={styles.hero}><Text style={styles.heroTitle}>Ready to train?</Text>
       <Text style={styles.heroCopy}>Your workout data stays private and on this device.</Text>
       <AppButton label="Start Workout" onPress={() => router.push('/start')} /></View>

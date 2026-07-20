@@ -1,0 +1,51 @@
+[
+  {"id":"starter_beginner_full_body","name":"Beginner Full Body","description":"A balanced introduction to strength training.","color":"#35E07A","exercises":[
+    {"exerciseId":"quads_goblet_squat","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"chest_dumbbell_bench_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"back_lat_pulldown","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"hamstrings_romanian_deadlift","targetSets":3,"targetRepsMin":8,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
+    {"exerciseId":"core_plank","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":60,"notes":"Hold each set for 30 seconds"}]},
+  {"id":"starter_push_day","name":"Push Day","description":"Chest, shoulders, and triceps.","color":"#4DA3FF","exercises":[
+    {"exerciseId":"chest_barbell_bench_press","targetSets":4,"targetRepsMin":6,"targetRepsMax":8,"targetWeight":null,"restSeconds":150,"notes":null},
+    {"exerciseId":"chest_incline_dumbbell_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"shoulders_dumbbell_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":10,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"shoulders_lateral_raise","targetSets":3,"targetRepsMin":12,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
+    {"exerciseId":"triceps_rope_pushdown","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null}]},
+  {"id":"starter_pull_day","name":"Pull Day","description":"Back, rear delts, and biceps.","color":"#A879FF","exercises":[
+    {"exerciseId":"back_pull_up","targetSets":3,"targetRepsMin":5,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
+    {"exerciseId":"back_barbell_row","targetSets":4,"targetRepsMin":6,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
+    {"exerciseId":"back_seated_cable_row","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"back_face_pull","targetSets":3,"targetRepsMin":12,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
+    {"exerciseId":"biceps_hammer_curl","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":60,"notes":null}]},
+  {"id":"starter_leg_day","name":"Leg Day","description":"Complete lower-body strength session.","color":"#FF9F43","exercises":[
+    {"exerciseId":"quads_back_squat","targetSets":4,"targetRepsMin":5,"targetRepsMax":8,"targetWeight":null,"restSeconds":180,"notes":null},
+    {"exerciseId":"hamstrings_romanian_deadlift","targetSets":3,"targetRepsMin":8,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
+    {"exerciseId":"quads_leg_press","targetSets":3,"targetRepsMin":10,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"hamstrings_leg_curl","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
+    {"exerciseId":"calves_standing_raise","targetSets":4,"targetRepsMin":12,"targetRepsMax":20,"targetWeight":null,"restSeconds":60,"notes":null}]},
+  {"id":"starter_upper_body","name":"Upper Body","description":"A balanced upper-body workout.","color":"#00C2D7","exercises":[
+    {"exerciseId":"chest_barbell_bench_press","targetSets":3,"targetRepsMin":6,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
+    {"exerciseId":"back_seated_cable_row","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"shoulders_dumbbell_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"back_lat_pulldown","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"biceps_dumbbell_curl","targetSets":2,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
+    {"exerciseId":"triceps_pushdown","targetSets":2,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null}]},
+  {"id":"starter_lower_body","name":"Lower Body","description":"Squat, hinge, and unilateral lower-body work.","color":"#FF6B6B","exercises":[
+    {"exerciseId":"quads_front_squat","targetSets":4,"targetRepsMin":5,"targetRepsMax":8,"targetWeight":null,"restSeconds":150,"notes":null},
+    {"exerciseId":"glutes_hip_thrust","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":120,"notes":null},
+    {"exerciseId":"quads_bulgarian_split_squat","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":"Reps per leg"},
+    {"exerciseId":"hamstrings_seated_leg_curl","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
+    {"exerciseId":"calves_seated_raise","targetSets":4,"targetRepsMin":12,"targetRepsMax":20,"targetWeight":null,"restSeconds":60,"notes":null}]},
+  {"id":"starter_dumbbell_only","name":"Dumbbell Only","description":"A complete workout using only dumbbells.","color":"#FFD166","exercises":[
+    {"exerciseId":"quads_goblet_squat","targetSets":4,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"chest_dumbbell_bench_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
+    {"exerciseId":"back_dumbbell_row","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":"Reps per side"},
+    {"exerciseId":"hamstrings_single_leg_rdl","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":"Reps per leg"},
+    {"exerciseId":"shoulders_lateral_raise","targetSets":3,"targetRepsMin":12,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null}]},
+  {"id":"starter_home_bodyweight","name":"Home Bodyweight","description":"No-equipment strength and conditioning.","color":"#6EE7B7","exercises":[
+    {"exerciseId":"chest_push_up","targetSets":4,"targetRepsMin":8,"targetRepsMax":20,"targetWeight":null,"restSeconds":60,"notes":null},
+    {"exerciseId":"quads_reverse_lunge","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":"Reps per leg"},
+    {"exerciseId":"glutes_glute_bridge","targetSets":3,"targetRepsMin":12,"targetRepsMax":20,"targetWeight":null,"restSeconds":60,"notes":null},
+    {"exerciseId":"core_plank","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":45,"notes":"Hold each set for 30–60 seconds"},
+    {"exerciseId":"full_burpee","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":60,"notes":null}]}
+]

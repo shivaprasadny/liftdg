@@ -1,6 +1,7 @@
 export const DATABASE_NAME = 'liftdg.db';
-export const DATABASE_VERSION = 1;
-export const EXERCISE_SEED_VERSION = 1;
+export const DATABASE_VERSION = 3;
+export const EXERCISE_SEED_VERSION = 2;
+export const STARTER_PLAN_SEED_VERSION = 1;
 
 export const migrationV1 = `
 CREATE TABLE IF NOT EXISTS exercises (
@@ -82,4 +83,27 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_personal_records_unique_value
 CREATE TABLE IF NOT EXISTS app_settings (
   key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL, updated_at TEXT NOT NULL
 );
+`;
+
+export const migrationV2 = `
+ALTER TABLE workout_plans ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0;
+CREATE INDEX IF NOT EXISTS idx_plan_exercises_exercise_id ON plan_exercises(exercise_id);
+CREATE INDEX IF NOT EXISTS idx_workout_plans_updated_at ON workout_plans(updated_at);
+`;
+
+// Active workouts copy plan targets so later plan edits cannot rewrite workout history.
+export const migrationV3 = `
+ALTER TABLE workout_exercises ADD COLUMN target_sets INTEGER;
+ALTER TABLE workout_exercises ADD COLUMN target_reps_min INTEGER;
+ALTER TABLE workout_exercises ADD COLUMN target_reps_max INTEGER;
+ALTER TABLE workout_exercises ADD COLUMN target_weight REAL;
+ALTER TABLE workout_exercises ADD COLUMN rest_seconds INTEGER;
+ALTER TABLE workout_sets ADD COLUMN created_at TEXT NOT NULL DEFAULT '';
+ALTER TABLE workout_sets ADD COLUMN updated_at TEXT NOT NULL DEFAULT '';
+UPDATE workout_sets SET created_at = COALESCE(completed_at, CURRENT_TIMESTAMP),
+  updated_at = COALESCE(completed_at, CURRENT_TIMESTAMP)
+WHERE created_at = '' OR updated_at = '';
+CREATE INDEX IF NOT EXISTS idx_workout_exercises_exercise_id ON workout_exercises(exercise_id);
+CREATE INDEX IF NOT EXISTS idx_workout_sets_completed ON workout_sets(completed);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_workouts_single_active ON workouts(status) WHERE status = 'active';
 `;
