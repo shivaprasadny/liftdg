@@ -41,6 +41,8 @@ Never modify an already-released migration. Increase `DATABASE_VERSION`, add the
 
 Built-in seed records require stable IDs. Increment the applicable seed version when shipping additions or deliberate template updates. Seeds must be idempotent, must not duplicate records, and must preserve user-owned content. Built-in exercises and plans remain protected so future seeds can refresh them safely.
 
+Backup format changes are independent of database migrations. Increment `BACKUP_FORMAT_VERSION`, add explicit validation or migration behavior, and retain compatibility tests. CSV is reporting-only. Verify biometric, document-picker, and share-sheet changes in a native development/release build because Expo Go does not provide every platform authentication behavior.
+
 ## UI rules
 
 Use shared colors, spacing, typography, buttons, inputs, cards, loading states, and empty states. Keep touch targets large, add accessibility roles/labels where meaning is not obvious, and never communicate completion only through color.

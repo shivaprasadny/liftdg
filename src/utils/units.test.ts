@@ -1,0 +1,3 @@
+import { describe,expect,it } from 'vitest'; import { displayToKilograms,displayToKilometers,kilogramsToDisplay,kilometersToDisplay } from './units';
+describe('canonical units',()=>{it('converts kg and lb',()=>expect(kilogramsToDisplay(100,'lb')).toBeCloseTo(220.462,3));it('converts km and mi',()=>expect(kilometersToDisplay(5,'mi')).toBeCloseTo(3.10686,4));it('round trips without storage drift',()=>{const kg=83.125;expect(displayToKilograms(kilogramsToDisplay(kg,'lb'),'lb')).toBeCloseTo(kg,10);const km=42.195;expect(displayToKilometers(kilometersToDisplay(km,'mi'),'mi')).toBeCloseTo(km,10);});});
+

@@ -4,13 +4,13 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/spacing';
 
-interface Props { value: string; onChangeText: (value: string) => void; }
+interface Props { value: string; onChangeText: (value: string) => void; placeholder?: string; }
 
-export function SearchBar({ value, onChangeText }: Props) {
+export function SearchBar({ value, onChangeText, placeholder = 'Search exercises' }: Props) {
   return <View style={styles.wrapper}>
     <Ionicons name="search" size={20} color={colors.textMuted} />
-    <TextInput accessibilityLabel="Search exercises" value={value} onChangeText={onChangeText}
-      placeholder="Search exercises" placeholderTextColor={colors.textMuted} style={styles.input} />
+    <TextInput accessibilityLabel={placeholder} value={value} onChangeText={onChangeText}
+      placeholder={placeholder} placeholderTextColor={colors.textMuted} style={styles.input} />
   </View>;
 }
 

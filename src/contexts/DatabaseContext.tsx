@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/spacing';
 import { typography } from '@/constants/typography';
+import { logger } from '@/utils/logger';
 
 const DatabaseContext = createContext<SQLiteDatabase | null>(null);
 
@@ -27,7 +28,7 @@ export class DatabaseErrorBoundary extends Component<{ children: ReactNode }, Bo
   static getDerivedStateFromError(error: Error): Partial<BoundaryState> { return { error }; }
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
-    if (__DEV__) console.error('Database initialization failed', error, info.componentStack);
+    logger.error('root-render-or-database-failure', error, { componentStackAvailable: Boolean(info.componentStack) });
   }
 
   private retry = (): void => this.setState((state) => ({ error: null, retryKey: state.retryKey + 1 }));
@@ -35,9 +36,9 @@ export class DatabaseErrorBoundary extends Component<{ children: ReactNode }, Bo
   render() {
     if (this.state.error) {
       return <View style={styles.errorScreen}>
-        <Text style={styles.errorTitle}>LiftDG could not open its local database</Text>
-        <Text style={styles.errorMessage}>Your data has not been deleted. Close and reopen the app, or try again.</Text>
-        <Pressable accessibilityRole="button" onPress={this.retry} style={styles.retryButton}>
+        <Text accessibilityRole="header" style={styles.errorTitle}>Something went wrong</Text>
+        <Text accessibilityLiveRegion="assertive" style={styles.errorMessage}>Your local data has not been deleted. Restart this screen or close and reopen LiftDG.</Text>
+        <Pressable accessibilityRole="button" accessibilityLabel="Restart LiftDG screen" onPress={this.retry} style={styles.retryButton}>
           <Text style={styles.retryText}>Try Again</Text>
         </Pressable>
       </View>;

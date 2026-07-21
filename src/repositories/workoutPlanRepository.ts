@@ -6,6 +6,7 @@ import { createId } from '@/utils/ids';
 import { workoutPlanSchema } from '@/utils/planValidation';
 
 import { getPlanExercises, replacePlanExercises } from './planExerciseRepository';
+import { duplicatePlanGroups } from './planGroupRepository';
 
 interface PlanRow {
   id: string; name: string; description: string | null; color: string | null;
@@ -87,5 +88,5 @@ export async function deletePlan(db: SQLiteDatabase, id: string): Promise<void> 
 
 export async function duplicatePlan(db: SQLiteDatabase, id: string): Promise<WorkoutPlanWithExercises> {
   const source = await getPlanById(db, id); if (!source) throw new Error('Plan not found');
-  return createPlan(db, createDuplicateInput(source));
+  const copy=await createPlan(db,createDuplicateInput(source));const idMap=new Map(source.exercises.map((item,index)=>[item.id,copy.exercises[index].id]));await db.withExclusiveTransactionAsync(async transaction=>duplicatePlanGroups(transaction,source.id,copy.id,idMap));return copy;
 }

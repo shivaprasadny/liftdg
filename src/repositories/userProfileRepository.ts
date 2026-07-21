@@ -1,0 +1,12 @@
+import type { SQLiteDatabase } from 'expo-sqlite';
+import { validateProfile } from '@/services/bodyMeasurementService';
+import type { UserProfile, UserProfileInput } from '@/types/body';
+import { toAppError } from '@/utils/errors';
+
+export const LOCAL_PROFILE_ID = 'local-user-profile';
+interface Row { id:string;name:string;date_of_birth:string|null;height_cm:number|null;current_weight_kg:number|null;notes:string|null;created_at:string;updated_at:string }
+const map=(row:Row):UserProfile=>({id:row.id,name:row.name,dateOfBirth:row.date_of_birth,heightCm:row.height_cm,currentWeightKg:row.current_weight_kg,notes:row.notes,createdAt:row.created_at,updatedAt:row.updated_at});
+export async function getProfile(db:SQLiteDatabase):Promise<UserProfile|null>{const row=await db.getFirstAsync<Row>('SELECT * FROM user_profile WHERE id=?',[LOCAL_PROFILE_ID]);return row?map(row):null;}
+export async function upsertProfile(db:SQLiteDatabase,input:UserProfileInput,{createWeightEntry=true}:{createWeightEntry?:boolean}={}):Promise<UserProfile>{const value=validateProfile(input);const now=new Date().toISOString();try{await db.withExclusiveTransactionAsync(async tx=>{const existing=await tx.getFirstAsync<{current_weight_kg:number|null}>('SELECT current_weight_kg FROM user_profile WHERE id=?',[LOCAL_PROFILE_ID]);await tx.runAsync(`INSERT INTO user_profile (id,name,date_of_birth,height_cm,current_weight_kg,notes,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,date_of_birth=excluded.date_of_birth,height_cm=excluded.height_cm,current_weight_kg=excluded.current_weight_kg,notes=excluded.notes,updated_at=excluded.updated_at`,[LOCAL_PROFILE_ID,value.name.trim(),value.dateOfBirth,value.heightCm,value.currentWeightKg,value.notes,now,now]);if(createWeightEntry&&value.currentWeightKg!=null&&value.currentWeightKg!==existing?.current_weight_kg)await tx.runAsync('INSERT INTO body_weight_entries (id,profile_id,weight_kg,measured_at,notes,created_at,updated_at) VALUES (?,?,?,?,?,?,?)',[`weight-${Date.now()}`,LOCAL_PROFILE_ID,value.currentWeightKg,now,null,now,now]);});const profile=await getProfile(db);if(!profile)throw new Error('Profile not saved');return profile;}catch(error){throw toAppError(error,'Could not save your profile.');}}
+export const createProfile=upsertProfile;export const updateProfile=upsertProfile;
+export async function clearProfile(db:SQLiteDatabase):Promise<void>{await db.runAsync('DELETE FROM user_profile WHERE id=?',[LOCAL_PROFILE_ID]);}

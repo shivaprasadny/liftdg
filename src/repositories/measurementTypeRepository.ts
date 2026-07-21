@@ -1,0 +1,5 @@
+import type{SQLiteDatabase}from'expo-sqlite';import type{MeasurementType}from'@/types/body';
+interface Row{id:string;key:string;display_name:string;category:string;default_unit:'cm';is_builtin:number;is_active:number;sort_order:number;created_at:string;updated_at:string}const map=(r:Row):MeasurementType=>({id:r.id,key:r.key,displayName:r.display_name,category:r.category,defaultUnit:r.default_unit,isBuiltin:Boolean(r.is_builtin),isActive:Boolean(r.is_active),sortOrder:r.sort_order,createdAt:r.created_at,updatedAt:r.updated_at});
+export async function getMeasurementTypes(db:SQLiteDatabase,activeOnly=false):Promise<MeasurementType[]>{const rows=await db.getAllAsync<Row>(`SELECT * FROM measurement_types ${activeOnly?'WHERE is_active=1':''} ORDER BY sort_order`);return rows.map(map);}
+/** Visibility changes never delete types or their historical values. */
+export async function setMeasurementTypeActive(db:SQLiteDatabase,id:string,isActive:boolean):Promise<void>{await db.runAsync('UPDATE measurement_types SET is_active=?,updated_at=? WHERE id=?',[isActive?1:0,new Date().toISOString(),id]);}

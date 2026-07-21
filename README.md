@@ -16,9 +16,20 @@ Primary data is stored in an on-device SQLite database. LiftDG has no backend, l
 - Eight immutable starter plans plus custom plan creation, editing, ordering, duplication, archiving, and deletion
 - Active strength workouts started from plans or empty
 - Immediate SQLite persistence for sets and exercise changes
+- Unified active-workout exercise list with focused logging, jump picker, previous/next controls, grouped circuit order, and optional guarded auto-advance
 - Rest timer, workout completion, discard, and basic summary
+- Paginated workout history with local-date grouping, debounced search, filters, and sorting
+- Completed-workout details, editing, repeat, duplicate-as-plan, deletion, and previous performance
+- Progress statistics and local personal-record detection
+- Standalone cardio logging with live timer recovery, pace/speed calculations, and cardio progress summaries
+- Mixed-workout cardio finishers and persisted superset, giant-set, and circuit groups
+- Advanced set storage and entry for timed, AMRAP, assisted, bodyweight, drop, and rest-pause work
+- Typed local settings, unit preferences, appearance controls, and biometric app lock
+- Versioned JSON backup with merge/replace restore and pre-restore safety snapshots
+- Five CSV reports plus data summary, selective deletion, and protected reset
+- Local profile, body-weight history, configurable body measurements, comparisons, and weight/measurement charts
 
-History browsing, progress statistics, personal records, cardio, settings, backup/restore, and CSV export are planned. See [FEATURES.md](docs/FEATURES.md) and [ROADMAP.md](docs/ROADMAP.md).
+Advanced multi-stage editing still needs polish. Active-workout navigation keeps every strength, cardio, timed, bodyweight, assisted, and grouped exercise in saved workout order; drop/rest-pause stages remain inside their exercise. Phase 7 data portability is implemented; physical-device biometric and share-sheet verification remains release work. See [FEATURES.md](docs/FEATURES.md) and [ROADMAP.md](docs/ROADMAP.md).
 
 ## Technology stack
 
@@ -27,6 +38,7 @@ History browsing, progress statistics, personal records, cardio, settings, backu
 - `expo-sqlite`
 - React Hook Form and Zod
 - date-fns
+- `react-native-svg` (Progress charts)
 - AsyncStorage for lightweight preferences only
 - Vitest, Expo ESLint, and Expo Doctor
 
@@ -69,8 +81,10 @@ npm run ios
 npm run android
 npm test
 npm run lint
-npx tsc --noEmit
-npx expo-doctor
+npm run typecheck
+npm run test:watch
+npm run test:coverage
+npm run doctor
 ```
 
 ## Project structure
@@ -92,7 +106,7 @@ docs/              Architecture and contributor documentation
 
 ## Database
 
-The database is named `liftdg.db` and is created inside the application sandbox by `SQLiteProvider`. Initialization enables foreign keys and WAL mode, applies ordered migrations, and then runs versioned exercise and starter-plan seeds. SQLite persists across app restarts. See [DATABASE.md](docs/DATABASE.md).
+The database is named `liftdg.db` and is created inside the application sandbox by `SQLiteProvider`. Initialization enables foreign keys and WAL mode, applies ordered migrations, and then runs versioned exercise and starter-plan seeds. Profile, weight, and measurement values use the same local database and remain protected by the existing app lock. SQLite persists across app restarts. See [DATABASE.md](docs/DATABASE.md).
 
 ## Contribution workflow
 
@@ -100,7 +114,9 @@ Create a focused branch from the shared development branch, for example `feature
 
 ## Roadmap
 
-The project is complete through Active Workout Logging. The next phase is Workout History, followed by progress/personal records, cardio, settings/data portability, and release preparation. Full definitions of done are in [ROADMAP.md](docs/ROADMAP.md).
+Phase 8 release foundations are in progress: onboarding, CI/EAS configuration, coverage, integrity diagnostics, and release drafts are present. Device testing, final branded assets, and performance profiling remain. Full definitions of done are in [ROADMAP.md](docs/ROADMAP.md).
+
+EAS profiles live in `eas.json`. After project ownership and signing are configured, run `eas build --profile preview --platform android|ios` for internal testing and the `production` profile for store artifacts. CI never submits builds.
 
 ## Additional documentation
 

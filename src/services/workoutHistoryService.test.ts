@@ -1,0 +1,25 @@
+import { describe, expect, it } from 'vitest';
+import type { ActiveWorkout, WorkoutHistoryItem, WorkoutSet } from '@/types/workout';
+import { assertCanStartWorkout } from './workoutService';
+import { buildRepeatedWorkoutSnapshot, calculateCompletedWorkoutTiming, derivePlanExerciseTarget, deriveTargetReps, getWorkoutHistoryGroup, groupWorkoutHistory, matchesWorkoutSearch, paginateHistory, sortWorkoutHistory } from './workoutHistoryService';
+
+const item = (id: string, completedAt: string, overrides: Partial<WorkoutHistoryItem> = {}): WorkoutHistoryItem => ({ id, planId: null, planName: null, name: `Workout ${id}`, workoutType: 'strength', startedAt: completedAt, completedAt, durationSeconds: 600, notes: null, exerciseCount: 1, completedSetCount: 1, totalRepetitions: 5, totalVolume: 500, cardioDurationSeconds:0,cardioDistanceKm:0, ...overrides });
+const set = (overrides: Partial<WorkoutSet> = {}): WorkoutSet => ({ id: 'set', workoutExerciseId: 'link', setNumber: 1, weight: 50, reps: 8, setType: 'working', rpe: 8, completed: true, completedAt: '2026-01-10', notes: null, createdAt: '2026-01-10', updatedAt: '2026-01-10', ...overrides });
+const workout: ActiveWorkout = { id: 'workout', planId: null, name: 'Push', workoutType: 'strength', startedAt: '2026-01-10', completedAt: '2026-01-10', durationSeconds: 600, notes: null, status: 'completed', createdAt: '2026-01-10', updatedAt: '2026-01-10', exercises: [{ id: 'link', workoutId: 'workout', exerciseId: 'bench', exerciseOrder: 0, targetSets: 2, targetRepsMin: 8, targetRepsMax: 10, targetWeight: 50, restSeconds: 90, notes: 'Pause', startedAt: null, completedAt: null, exercise: { id: 'bench', name: 'Bench Press', category: 'Chest', primaryMuscles: ['Chest'], secondaryMuscles: [], equipment: 'Barbell', exerciseType: 'strength', instructions: [], isBuiltin: true, isArchived: false, createdAt: '', updatedAt: '' }, sets: [set(), set({ id: 'set-2', reps: 10 })] }] };
+
+describe('workout history grouping', () => { const now = new Date('2026-07-20T12:00:00');
+  it('groups using local calendar boundaries', () => { expect(getWorkoutHistoryGroup('2026-07-20T08:00:00', now)).toBe('Today'); expect(getWorkoutHistoryGroup('2026-07-19T08:00:00', now)).toBe('Yesterday'); });
+  it('returns non-empty sections in display order', () => expect(groupWorkoutHistory([item('today', '2026-07-20T08:00:00'), item('old', '2025-01-01T08:00:00')], now).map((section) => section.title)).toEqual(['Today', 'Older']));
+});
+describe('history search, pagination, and sorting', () => {
+  it('searches workout, plan, notes, and exercise text case-insensitively', () => { const value = item('1', '2026-01-01', { planName: 'Push Day', notes: 'Great session' }); expect(matchesWorkoutSearch(value, 'push')).toBe(true); expect(matchesWorkoutSearch(value, 'SQUAT', ['Back Squat'])).toBe(true); expect(matchesWorkoutSearch(value, 'missing')).toBe(false); });
+  it('paginates without overlap', () => { const values = [1, 2, 3, 4].map((id) => item(String(id), `2026-01-0${id}`)); expect(paginateHistory(values, 0, 2).map((value) => value.id)).toEqual(['1', '2']); expect(paginateHistory(values, 2, 2).map((value) => value.id)).toEqual(['3', '4']); });
+  it('supports volume, sets, duration, oldest, and newest sorts', () => { const values = [item('a', '2026-01-01', { totalVolume: 10, completedSetCount: 4, durationSeconds: 30 }), item('b', '2026-02-01', { totalVolume: 20, completedSetCount: 2, durationSeconds: 60 })]; expect(sortWorkoutHistory(values, 'volume')[0].id).toBe('b'); expect(sortWorkoutHistory(values, 'sets')[0].id).toBe('a'); expect(sortWorkoutHistory(values, 'longest')[0].id).toBe('b'); expect(sortWorkoutHistory(values, 'oldest')[0].id).toBe('a'); expect(sortWorkoutHistory(values, 'newest')[0].id).toBe('b'); });
+});
+describe('repeat and duplicate rules', () => {
+  it('copies set suggestions while a repeated workout starts incomplete', () => { const result = buildRepeatedWorkoutSnapshot(workout); expect(result.exercises[0].sets).toEqual([{ weight: 50, reps: 8, setType: 'working', rpe: null, notes: null }, { weight: 50, reps: 10, setType: 'working', rpe: null, notes: null }]); });
+  it('still protects the only-active-workout constraint', () => expect(() => assertCanStartWorkout('existing')).toThrow('Finish or discard'));
+  it('derives duplicate-plan set count, rep range, and suggested weight', () => expect(derivePlanExerciseTarget(workout.exercises[0].sets, null)).toEqual({ targetSets: 2, targetRepsMin: 8, targetRepsMax: 10, targetWeight: 50 }));
+  it('uses the documented fallback rep range', () => expect(deriveTargetReps([set({ completed: false })])).toEqual({ min: 8, max: 10 }));
+});
+describe('completed workout editing', () => { it('recalculates completion from start plus duration', () => expect(calculateCompletedWorkoutTiming('2026-01-01T10:00:00.000Z', 3600)).toEqual({ startedAt: '2026-01-01T10:00:00.000Z', completedAt: '2026-01-01T11:00:00.000Z', durationSeconds: 3600 })); });

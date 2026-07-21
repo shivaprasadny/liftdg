@@ -12,15 +12,31 @@
 - ✅ Complete — Plan duplication
 - ✅ Complete — User-plan editing and ordering
 - ✅ Complete — Active workout logging and immediate persistence
+- ✅ Complete — Unified active-workout list, focused exercise mode, jump picker, previous/next navigation, and persisted focus recovery
+- ✅ Complete — Superset/giant-set ordering and round-aware circuit navigation
+- ✅ Complete — Optional cancellable auto-advance and persistent rest-timer indicator
 - ✅ Complete — Recoverable rest timer
-- 🚧 In progress — Basic workout summary exists; full history browsing is Phase 4
-- ⬜ Planned — Workout history list and completed-workout editing
-- ⬜ Planned — Statistics and progress
-- ⬜ Planned — Personal records
-- ⬜ Planned — Cardio and mixed workouts
-- ⬜ Planned — JSON backup and restore
-- ⬜ Planned — CSV export
-- ⚠️ Needs improvement — Settings icon is present; full settings are planned
+- ✅ Complete — Workout summary and full completed-workout details
+- ✅ Complete — Paginated workout history, search, filters, sorting, and date grouping
+- ✅ Complete — Repeat, duplicate-as-plan, completed-workout editing, and deletion
+- ✅ Complete — Statistics and progress
+- ✅ Complete — Personal records
+- ✅ Complete — Standalone cardio form, recoverable timer, pace/speed, summaries, and records
+- ✅ Complete — Mixed-workout cardio finishers and automatic workout-type derivation
+- ✅ Complete — Persisted superset, giant-set, circuit, and plan-group structures
+- ⚠️ Needs improvement — Guided circuits and polished multi-stage drop/rest-pause editors
+- ✅ Complete — Timed, AMRAP, bodyweight, and assisted set persistence/display
+- ✅ Complete — JSON backup validation and transactional merge/replace restore
+- ✅ Complete — Workouts, sets, exercises, cardio, and personal-record CSV export
+- ✅ Complete — Settings, units, data summary, selective deletion, and protected reset
+- ⚠️ Needs improvement — Navigation responds to theme; older visual components retain their dark palette
+- ⚠️ Needs improvement — App lock requires native-device Face ID/Touch ID verification
 - ✅ Complete — Consistent dark fitness theme
+- ✅ Complete — Versioned onboarding with explicit optional sample data
+- ✅ Complete — EAS profiles, CI checks, local privacy-filtered logging, and release drafts
+- ✅ Complete — Optional local profile with date of birth, canonical centimeter height, and current weight
+- ✅ Complete — Body-weight history, measurement sessions, configurable measurement types, comparisons, and charts
+- ✅ Complete — Profile/body backup format 2, backward-compatible format-1 restore, CSV reports, and reset integration
+- ⚠️ Needs improvement — Physical-device accessibility, backup, biometric, and large-data testing
 
-History/cardio/personal-record tables exist as schema scaffolding, but their product features are not implemented.
+Phase 6 uses real persisted rows and repository transactions. It is not marked fully complete because the advanced stage editors and guided circuit experience do not yet cover every requested interaction.

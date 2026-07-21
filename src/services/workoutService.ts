@@ -21,17 +21,20 @@ export function buildWorkoutSnapshot(
 }
 
 /** Volume includes only completed sets with positive load and repetitions. */
-export function calculateSetVolume(set: Pick<WorkoutSet, 'completed' | 'weight' | 'reps'>): number {
-  return set.completed && (set.weight ?? 0) > 0 && (set.reps ?? 0) > 0 ? (set.weight ?? 0) * (set.reps ?? 0) : 0;
+export function calculateSetVolume(set: Pick<WorkoutSet, 'completed' | 'weight' | 'reps'> & Partial<Pick<WorkoutSet,'setType'|'addedWeight'>>): number {
+  const load=set.setType==='bodyweight'?set.addedWeight??0:set.weight??0;
+  return set.completed && load > 0 && (set.reps ?? 0) > 0 ? load * (set.reps ?? 0) : 0;
 }
 export function calculateWorkoutVolume(workout: ActiveWorkout): number {
   return workout.exercises.flatMap((item) => item.sets).reduce((total, set) => total + calculateSetVolume(set), 0);
 }
 export function summarizeWorkout(workout: ActiveWorkout): WorkoutSummary {
   const sets = workout.exercises.flatMap((item) => item.sets); const completed = sets.filter((set) => set.completed);
+  const rated = completed.filter((set) => set.rpe !== null);
   return { workout, completedExercises: workout.exercises.filter((item) => item.sets.some((set) => set.completed)).length,
     completedSets: completed.length, totalRepetitions: completed.reduce((sum, set) => sum + (set.reps ?? 0), 0),
-    totalVolume: calculateWorkoutVolume(workout) };
+    totalVolume: calculateWorkoutVolume(workout), exerciseCount: workout.exercises.length,
+    averageRpe: rated.length ? rated.reduce((sum, set) => sum + (set.rpe ?? 0), 0) / rated.length : null };
 }
 export function elapsedSeconds(startedAt: string, now = Date.now()): number {
   return Math.max(0, Math.floor((now - new Date(startedAt).getTime()) / 1000));

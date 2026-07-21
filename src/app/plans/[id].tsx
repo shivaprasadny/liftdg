@@ -13,6 +13,7 @@ export default function PlanDetailsScreen() {
     {plan.exercises.map((item, index) => <View key={item.id} style={styles.exercise}><Text style={styles.order}>{index + 1}</Text><View style={styles.exerciseBody}><Text style={styles.exerciseName}>{item.exercise.name}</Text><Text style={styles.target}>{formatPlanTarget(item)}</Text>{item.restSeconds != null ? <Text style={styles.muted}>Rest {item.restSeconds}s</Text> : null}{item.notes ? <Text style={styles.notes}>{item.notes}</Text> : null}</View></View>)}
     <AppButton label="Start Plan" loading={busy} onPress={start} />
     {!plan.isBuiltin && <AppButton label="Edit Plan" variant="secondary" onPress={() => router.push({ pathname: '/plans/edit/[id]', params: { id: plan.id } })} />}
+    {!plan.isBuiltin && <AppButton label="Create Superset / Circuit" variant="secondary" onPress={()=>router.push({pathname:'/plans/groups/[id]',params:{id:plan.id}})}/>}
     <AppButton label="Duplicate Plan" variant="secondary" loading={busy} onPress={duplicate} /><AppButton label="Archive Plan" variant="secondary" onPress={archive} />
     {!plan.isBuiltin && <AppButton label="Delete Plan" variant="danger" onPress={remove} />}
   </ScrollView>;

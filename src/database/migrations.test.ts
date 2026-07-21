@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { DATABASE_VERSION, migrationV3 } from './schema';
+import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7 } from './schema';
 
 describe('database migration compatibility', () => {
-  it('advances the schema to version 3', () => expect(DATABASE_VERSION).toBe(3));
+  it('advances the schema to version 7', () => expect(DATABASE_VERSION).toBe(7));
   it('adds copied plan targets and set audit fields', () => {
     expect(migrationV3).toContain('target_sets');
     expect(migrationV3).toContain('rest_seconds');
@@ -13,4 +13,23 @@ describe('database migration compatibility', () => {
     expect(migrationV3).toContain("UNIQUE INDEX IF NOT EXISTS idx_workouts_single_active");
     expect(migrationV3).toContain("WHERE status = 'active'");
   });
+  it('indexes completed workout history', () => expect(migrationV4).toContain('idx_workouts_completed_at'));
+  it('adds personal-record audit columns and a per-workout unique index', () => {
+    expect(migrationV5).toContain('secondary_value REAL');
+    expect(migrationV5).toContain('created_at TEXT NOT NULL');
+    expect(migrationV5).toContain('idx_personal_records_unique_value');
+    expect(migrationV5).toContain('exercise_id, record_type, value, workout_id');
+  });
+  it('indexes personal records by type, achieved date, and workout', () => {
+    expect(migrationV5).toContain('idx_personal_records_record_type');
+    expect(migrationV5).toContain('idx_personal_records_achieved_at');
+    expect(migrationV5).toContain('idx_personal_records_workout_id');
+  });
+  it('adds advanced sets, workout/plan groups, and extended cardio', () => {
+    expect(migrationV6).toContain('CREATE TABLE IF NOT EXISTS workout_groups');
+    expect(migrationV6).toContain('CREATE TABLE IF NOT EXISTS plan_groups');
+    expect(migrationV6).toContain('assistance_weight');
+    expect(migrationV6).toContain('workout_exercise_id TEXT REFERENCES');
+  });
+  it('adds profile, weight, and normalized body measurements',()=>{expect(migrationV7).toContain('CREATE TABLE IF NOT EXISTS user_profile');expect(migrationV7).toContain('CREATE TABLE IF NOT EXISTS body_weight_entries');expect(migrationV7).toContain('UNIQUE(entry_id, measurement_type_id)');expect(migrationV7).toContain('Left calf');});
 });

@@ -1,7 +1,7 @@
 import type { EquipmentType } from '@/constants/equipmentTypes';
 import type { ExerciseCategory } from '@/constants/exerciseCategories';
 
-export const exerciseTypes = ['strength', 'cardio', 'mobility', 'bodyweight', 'other'] as const;
+export const exerciseTypes = ['strength', 'cardio', 'mobility', 'bodyweight', 'timed', 'other'] as const;
 export type ExerciseType = (typeof exerciseTypes)[number];
 
 export interface Exercise {

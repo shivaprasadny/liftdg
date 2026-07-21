@@ -1,6 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { DATABASE_VERSION, migrationV1, migrationV2, migrationV3 } from './schema';
+import { DATABASE_VERSION, migrationV1, migrationV2, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7 } from './schema';
 
 export async function runMigrations(db: SQLiteDatabase): Promise<void> {
   await db.execAsync('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
@@ -26,6 +26,32 @@ export async function runMigrations(db: SQLiteDatabase): Promise<void> {
       await transaction.execAsync(migrationV3);
     });
     version = 3;
+  }
+
+  if (version < 4) {
+    await db.withExclusiveTransactionAsync(async (transaction) => {
+      await transaction.execAsync(migrationV4);
+    });
+    version = 4;
+  }
+
+  if (version < 5) {
+    await db.withExclusiveTransactionAsync(async (transaction) => {
+      await transaction.execAsync(migrationV5);
+    });
+    version = 5;
+  }
+
+  if (version < 6) {
+    await db.withExclusiveTransactionAsync(async (transaction) => {
+      await transaction.execAsync(migrationV6);
+    });
+    version = 6;
+  }
+
+  if (version < 7) {
+    await db.withExclusiveTransactionAsync(async (transaction) => { await transaction.execAsync(migrationV7); });
+    version = 7;
   }
 
   if (version !== DATABASE_VERSION) {

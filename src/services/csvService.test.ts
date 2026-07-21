@@ -1,0 +1,2 @@
+import { describe,expect,it } from 'vitest'; import { createCsv,escapeCsv } from '@/utils/csv';
+describe('CSV encoding',()=>{it('escapes commas, quotes, and newlines',()=>expect(escapeCsv('a,"b"\nc')).toBe('"a,""b""\nc"'));it('preserves Unicode and adds spreadsheet BOM',()=>expect(createCsv(['Name'],[['Développé 🏋️']])).toBe('\uFEFFName\r\nDéveloppé 🏋️'));it('emits empty fields for nullish values',()=>expect(createCsv(['A','B'],[[null,undefined]])).toBe('\uFEFFA,B\r\n,'));});
