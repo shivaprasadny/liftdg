@@ -29,6 +29,10 @@
 - Schema migration 7 with a local profile, weight history, seeded measurement types, normalized body-measurement sessions, comparisons, charts, and preferences.
 - Backup format 2 and profile, weight-history, and body-measurement CSV exports.
 - Profile step in onboarding plus Body Progress links on Home, Progress, and Settings.
+- Home hydration card: today's total/goal/percent, animated progress bar, quick add/undo, a long-press quick-add sheet (presets and custom amount), percent-based milestone messages, and a once-per-day goal celebration (checkmark, optional confetti, haptic).
+- Progressive Home-card expansion revealing week, month, "last 3 months," and year hydration statistics one tap at a time, with an optional remembered expansion level.
+- A full Water screen with today's deletable entry list, an encouraging-message tagline, and always-visible period statistics.
+- Hydration settings: daily goal, default serving size, metric/US units, celebration style (full/simple/off), remembered expansion, and a confirmed hydration-stats reset.
 
 ### Changed
 
@@ -44,3 +48,6 @@
 - Added schema migration 5 for personal-record audit columns and a per-workout unique index.
 - Added schema migration 6 for cardio, grouping, and advanced set structures.
 - Added `react-native-svg` for the lightweight custom Progress charts.
+- Added schema migration 8 for the `water_entries` table.
+- Added `expo-haptics` for the hydration goal-celebration haptic.
+- Added a light color palette (`lightColors`) and `useAppColors()` hook so new hydration UI honors the existing theme setting.

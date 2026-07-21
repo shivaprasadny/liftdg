@@ -28,6 +28,7 @@ Primary data is stored in an on-device SQLite database. LiftDG has no backend, l
 - Versioned JSON backup with merge/replace restore and pre-restore safety snapshots
 - Five CSV reports plus data summary, selective deletion, and protected reset
 - Local profile, body-weight history, configurable body measurements, comparisons, and weight/measurement charts
+- Home hydration card with quick add/undo, a quick-add sheet, milestone messages, once-daily goal celebration, progressive week/month/quarter/year statistics, a full Water screen, and hydration settings
 
 Advanced multi-stage editing still needs polish. Active-workout navigation keeps every strength, cardio, timed, bodyweight, assisted, and grouped exercise in saved workout order; drop/rest-pause stages remain inside their exercise. Phase 7 data portability is implemented; physical-device biometric and share-sheet verification remains release work. See [FEATURES.md](docs/FEATURES.md) and [ROADMAP.md](docs/ROADMAP.md).
 
@@ -39,6 +40,7 @@ Advanced multi-stage editing still needs polish. Active-workout navigation keeps
 - React Hook Form and Zod
 - date-fns
 - `react-native-svg` (Progress charts)
+- `expo-haptics` (hydration goal celebration)
 - AsyncStorage for lightweight preferences only
 - Vitest, Expo ESLint, and Expo Doctor
 

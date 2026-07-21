@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppButton } from '@/components/AppButton';
 import { AppScreen } from '@/components/AppScreen';
+import { HydrationCard } from '@/components/HydrationCard';
 import { PersonalRecordCard } from '@/components/PersonalRecordCard';
 import { SectionHeader } from '@/components/SectionHeader';
 import { colors } from '@/constants/colors';
@@ -33,6 +34,7 @@ export default function HomeScreen() {
     <View style={styles.top}><View><Text style={styles.eyebrow}>{format(new Date(), 'EEEE, MMMM d')}</Text>
       <Text style={styles.title}>{greeting()}{profile?.name?`, ${profile.name}`:''}</Text><Text style={styles.tagline}>Track Every Rep</Text></View>
       <Pressable accessibilityLabel="Settings" onPress={() => router.push('/settings')} style={styles.settings}><Ionicons name="settings-outline" size={23} color={colors.text} /></Pressable></View>
+    <HydrationCard />
     <View style={styles.hero}><Text style={styles.heroTitle}>Ready to train?</Text>
       <Text style={styles.heroCopy}>Your workout data stays private and on this device.</Text>
       <AppButton label="Start Workout" onPress={() => router.push('/start')} /></View>

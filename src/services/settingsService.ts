@@ -15,6 +15,9 @@ export const DEFAULT_SETTINGS: AppSettings = {
   openWorkoutInListView: true, openFirstIncompleteExercise: false, autoAdvanceExercise: false,
   enableExerciseSwipeNavigation: false, showExercisePosition: true,
   heightUnit: 'cm', bodyMeasurementUnit: 'cm', showBodyProgressHome: true,
+  dailyWaterGoalMl: 3000, defaultServingSizeMl: 300, waterUnit: 'metric',
+  hydrationCelebration: 'full', rememberHydrationExpansion: true,
+  hydrationHomeExpanded: false, hydrationHomeStatsPage: 0,
 };
 
 const settingsSchema = z.object({
@@ -28,6 +31,9 @@ const settingsSchema = z.object({
   openWorkoutInListView: z.boolean(), openFirstIncompleteExercise: z.boolean(), autoAdvanceExercise: z.boolean(),
   enableExerciseSwipeNavigation: z.boolean(), showExercisePosition: z.boolean(),
   heightUnit: z.enum(['cm', 'ft_in']), bodyMeasurementUnit: z.enum(['cm', 'in']), showBodyProgressHome: z.boolean(),
+  dailyWaterGoalMl: z.number().int().min(250).max(15000), defaultServingSizeMl: z.number().int().min(25).max(5000),
+  waterUnit: z.enum(['metric', 'us']), hydrationCelebration: z.enum(['full', 'simple', 'off']),
+  rememberHydrationExpansion: z.boolean(), hydrationHomeExpanded: z.boolean(), hydrationHomeStatsPage: z.number().int().min(0).max(3),
 });
 
 const keyPrefix = 'preference.';

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7 } from './schema';
+import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7, migrationV8 } from './schema';
 
 describe('database migration compatibility', () => {
-  it('advances the schema to version 7', () => expect(DATABASE_VERSION).toBe(7));
+  it('advances the schema to version 8', () => expect(DATABASE_VERSION).toBe(8));
   it('adds copied plan targets and set audit fields', () => {
     expect(migrationV3).toContain('target_sets');
     expect(migrationV3).toContain('rest_seconds');
@@ -32,4 +32,9 @@ describe('database migration compatibility', () => {
     expect(migrationV6).toContain('workout_exercise_id TEXT REFERENCES');
   });
   it('adds profile, weight, and normalized body measurements',()=>{expect(migrationV7).toContain('CREATE TABLE IF NOT EXISTS user_profile');expect(migrationV7).toContain('CREATE TABLE IF NOT EXISTS body_weight_entries');expect(migrationV7).toContain('UNIQUE(entry_id, measurement_type_id)');expect(migrationV7).toContain('Left calf');});
+  it('adds a water_entries table indexed by logged time', () => {
+    expect(migrationV8).toContain('CREATE TABLE IF NOT EXISTS water_entries');
+    expect(migrationV8).toContain('amount_ml REAL NOT NULL');
+    expect(migrationV8).toContain('idx_water_entries_logged_at');
+  });
 });

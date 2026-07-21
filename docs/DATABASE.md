@@ -1,6 +1,6 @@
 # Database
 
-LiftDG stores primary data in the on-device SQLite database `liftdg.db`. `DatabaseProvider` opens it, enables `PRAGMA foreign_keys = ON`, applies migrations in order, and then runs idempotent seeds. The current schema version is **7**. Exercise seed version is **2** and starter-plan seed version is **1**.
+LiftDG stores primary data in the on-device SQLite database `liftdg.db`. `DatabaseProvider` opens it, enables `PRAGMA foreign_keys = ON`, applies migrations in order, and then runs idempotent seeds. The current schema version is **8**. Exercise seed version is **2** and starter-plan seed version is **1**.
 
 ## Relationships
 
@@ -67,6 +67,10 @@ Cardio bests tied to a session. Fastest pace is lower-is-better and requires at 
 
 Strength personal-record history. `id` is the primary key. `exercise_id` references exercises with `ON DELETE RESTRICT`, `workout_id` references workouts with `ON DELETE CASCADE`, and nullable `workout_set_id` references sets with `ON DELETE SET NULL`. Columns are `record_type` (`max_weight`, `max_reps`, `best_set_volume`, `estimated_one_rep_max`, `best_workout_volume`), `value`, nullable `secondary_value` (e.g. the weight used alongside a `max_reps` record), `achieved_at`, `created_at`, and `updated_at`. `exercise_id`, `record_type`, `achieved_at`, and `workout_id` are indexed; a unique index on `(exercise_id, record_type, value, workout_id)` prevents the same record from being stored twice for one workout. Every past best is kept as history rather than only the latest value — see DECISIONS.md #18.
 
+### `water_entries`
+
+One row per logged water intake. `id` is the primary key; `amount_ml` is stored in canonical milliliters (converted to L or US fl oz only at display boundaries, matching the kg/km/cm convention in DECISIONS.md #9); `logged_at` is indexed for the day/week/month/quarter/year rollups computed in `hydrationService`. There is no goal/streak column here — daily goal, serving size, and unit preference live in `app_settings` (Hydration settings), and streaks/goal-days are derived, not stored.
+
 ### `app_settings`
 
 Key/value settings table with text primary key `key`, `value`, and `updated_at`. Primary workout data never belongs in AsyncStorage; AsyncStorage is reserved for lightweight UI preferences and recoverable rest-timer state.
@@ -86,6 +90,7 @@ Backup format version **2** is independent of database version **7**. It contain
 - Migration 5 adds `personal_records.secondary_value`/`created_at`/`updated_at`, replaces the unique index with `(exercise_id, record_type, value, workout_id)` so the same record can't be stored twice for one workout, and indexes `record_type`, `achieved_at`, and `workout_id`.
 - Migration 6 adds cardio metrics and records, workout/plan groups, advanced set fields, duration/distance plan targets, and their indexes.
 - Migration 7 adds the profile, historical weight, measurement definition/session/value tables, indexes, and stable built-in measurement definitions.
+- Migration 8 adds `water_entries` (canonical milliliters, indexed by `logged_at`) for Phase 10 hydration tracking.
 - Seeds use stable IDs and version keys in `app_settings`. Upserts add or refresh built-in templates without duplicating user data.
 
 Released migrations must never be edited. Every schema change gets a new numbered migration. History loads 20 completed workouts at a time. Search uses parameterized `LIKE` predicates plus an `EXISTS` exercise lookup. Repeat, duplicate-as-plan, completed-workout replacement, and deletion use transactions; child deletion relies on documented cascades.

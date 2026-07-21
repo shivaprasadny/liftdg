@@ -17,5 +17,17 @@ export interface WorkoutBehaviorSettings {
   autoAdvanceExercise: boolean; enableExerciseSwipeNavigation: boolean; showExercisePosition: boolean;
 }
 export interface SecuritySettings { appLockEnabled: boolean; lockAfterBackground: boolean; lockDelaySeconds: number }
-export interface AppSettings extends UnitSettings, AppearanceSettings, WorkoutBehaviorSettings, SecuritySettings { firstDayOfWeek: FirstDayOfWeek; heightUnit: HeightUnit; bodyMeasurementUnit: BodyMeasurementUnit; showBodyProgressHome: boolean }
+
+export type WaterUnit = 'metric' | 'us';
+export type HydrationCelebrationStyle = 'full' | 'simple' | 'off';
+export interface HydrationSettings {
+  dailyWaterGoalMl: number; defaultServingSizeMl: number; waterUnit: WaterUnit;
+  hydrationCelebration: HydrationCelebrationStyle;
+  /** Whether the Home analytics carousel's open/closed state and page survive a restart. */
+  rememberHydrationExpansion: boolean;
+  hydrationHomeExpanded: boolean;
+  hydrationHomeStatsPage: number;
+}
+
+export interface AppSettings extends UnitSettings, AppearanceSettings, WorkoutBehaviorSettings, SecuritySettings, HydrationSettings { firstDayOfWeek: FirstDayOfWeek; heightUnit: HeightUnit; bodyMeasurementUnit: BodyMeasurementUnit; showBodyProgressHome: boolean }
 export type AppSettingKey = keyof AppSettings;

@@ -1,5 +1,5 @@
 export const DATABASE_NAME = 'liftdg.db';
-export const DATABASE_VERSION = 7;
+export const DATABASE_VERSION = 9;
 export const EXERCISE_SEED_VERSION = 2;
 export const STARTER_PLAN_SEED_VERSION = 1;
 export const PERSONAL_RECORD_BACKFILL_VERSION = 1;
@@ -252,4 +252,29 @@ INSERT OR IGNORE INTO measurement_types (id,key,display_name,category,default_un
 ('measurement-glutes','glutes','Glutes','Core','cm',1,0,150,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 ('measurement-wrist','wrist','Wrist','Upper body','cm',1,0,160,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 ('measurement-ankle','ankle','Ankle','Lower body','cm',1,0,170,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+`;
+
+// Phase 10: water intake is logged as discrete entries in canonical milliliters, timestamped so
+// day/week/month/quarter/year rollups can all be derived from one table without redesign.
+export const migrationV8 = `
+CREATE TABLE IF NOT EXISTS water_entries (
+  id TEXT PRIMARY KEY NOT NULL, amount_ml REAL NOT NULL, logged_at TEXT NOT NULL,
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_water_entries_logged_at ON water_entries(logged_at);
+`;
+
+// Adds entry provenance/notes and a goal-history table so a later goal change never rewrites how
+// past days are graded. `effective_from` is a local date key (yyyy-MM-dd), not an instant, since
+// goal changes are always "starting from this calendar day," never a specific moment.
+export const migrationV9 = `
+ALTER TABLE water_entries ADD COLUMN source TEXT NOT NULL DEFAULT 'quick_add';
+ALTER TABLE water_entries ADD COLUMN notes TEXT;
+
+CREATE TABLE IF NOT EXISTS hydration_goal_history (
+  id TEXT PRIMARY KEY NOT NULL, goal_ml REAL NOT NULL, effective_from TEXT NOT NULL,
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_hydration_goal_history_unique_date ON hydration_goal_history(effective_from);
+CREATE INDEX IF NOT EXISTS idx_hydration_goal_history_effective_from ON hydration_goal_history(effective_from);
 `;
