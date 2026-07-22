@@ -1,8 +1,9 @@
 export const DATABASE_NAME = 'liftdg.db';
-export const DATABASE_VERSION = 9;
+export const DATABASE_VERSION = 10;
 export const EXERCISE_SEED_VERSION = 2;
 export const STARTER_PLAN_SEED_VERSION = 1;
 export const PERSONAL_RECORD_BACKFILL_VERSION = 1;
+export const EXERCISE_VIDEO_SEED_VERSION = 1;
 
 export const migrationV1 = `
 CREATE TABLE IF NOT EXISTS exercises (
@@ -277,4 +278,27 @@ CREATE TABLE IF NOT EXISTS hydration_goal_history (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_hydration_goal_history_unique_date ON hydration_goal_history(effective_from);
 CREATE INDEX IF NOT EXISTS idx_hydration_goal_history_effective_from ON hydration_goal_history(effective_from);
+`;
+
+// Exercise video library: curated/default videos are seeded content (never user-editable), while
+// saved videos are a fully separate per-exercise, user-owned, reorderable/favoritable collection.
+// Both cascade with their exercise so archiving history never leaves orphaned video rows.
+export const migrationV10 = `
+CREATE TABLE IF NOT EXISTS exercise_default_videos (
+  id TEXT PRIMARY KEY NOT NULL, exercise_id TEXT NOT NULL, title TEXT NOT NULL, video_id TEXT NOT NULL,
+  channel_name TEXT, thumbnail_url TEXT, sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+  FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_exercise_default_videos_exercise_id ON exercise_default_videos(exercise_id);
+
+CREATE TABLE IF NOT EXISTS exercise_saved_videos (
+  id TEXT PRIMARY KEY NOT NULL, exercise_id TEXT NOT NULL, video_id TEXT NOT NULL, title TEXT NOT NULL,
+  channel_name TEXT, thumbnail_url TEXT, youtube_url TEXT NOT NULL,
+  is_favorite INTEGER NOT NULL DEFAULT 0, sort_order INTEGER NOT NULL DEFAULT 0, saved_at TEXT NOT NULL,
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+  FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_exercise_saved_videos_exercise_id ON exercise_saved_videos(exercise_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_saved_videos_unique ON exercise_saved_videos(exercise_id, video_id);
 `;

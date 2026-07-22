@@ -1,6 +1,6 @@
 # Database
 
-LiftDG stores primary data in the on-device SQLite database `liftdg.db`. `DatabaseProvider` opens it, enables `PRAGMA foreign_keys = ON`, applies migrations in order, and then runs idempotent seeds. The current schema version is **8**. Exercise seed version is **2** and starter-plan seed version is **1**.
+LiftDG stores primary data in the on-device SQLite database `liftdg.db`. `DatabaseProvider` opens it, enables `PRAGMA foreign_keys = ON`, applies migrations in order, and then runs idempotent seeds. The current schema version is **9**. Exercise seed version is **2** and starter-plan seed version is **1**.
 
 ## Relationships
 
@@ -69,7 +69,11 @@ Strength personal-record history. `id` is the primary key. `exercise_id` referen
 
 ### `water_entries`
 
-One row per logged water intake. `id` is the primary key; `amount_ml` is stored in canonical milliliters (converted to L or US fl oz only at display boundaries, matching the kg/km/cm convention in DECISIONS.md #9); `logged_at` is indexed for the day/week/month/quarter/year rollups computed in `hydrationService`. There is no goal/streak column here — daily goal, serving size, and unit preference live in `app_settings` (Hydration settings), and streaks/goal-days are derived, not stored.
+One row per logged water intake. `id` is the primary key; `amount_ml` is stored in canonical milliliters (converted to L or US fl oz only at display boundaries, matching the kg/km/cm convention in DECISIONS.md #9); `logged_at` is indexed for the day/week/month/quarter/year rollups computed in `hydrationService`. `source` records how the entry was created (`quick_add`, `custom_add`, `edited`, `imported`) and nullable `notes` holds a short optional note. There is no goal/streak column here — daily goal, serving size, and unit preference live in `app_settings` (Hydration settings), and streaks/goal-days are derived, not stored.
+
+### `hydration_goal_history`
+
+Records when the daily water goal changed. `id` is the primary key; `goal_ml` is the goal that applies from `effective_from` onward until superseded by a later row. `effective_from` is a **local date key** (`yyyy-MM-dd`), not an instant — goal changes are always "starting from this calendar day." A unique index on `effective_from` means one goal change per day; `hydrationService.resolveGoalForDate` walks this history to find the goal that applied to any given historical date, so changing today's goal never silently rewrites how past days are graded. See DECISIONS.md #35.
 
 ### `app_settings`
 
@@ -91,6 +95,7 @@ Backup format version **2** is independent of database version **7**. It contain
 - Migration 6 adds cardio metrics and records, workout/plan groups, advanced set fields, duration/distance plan targets, and their indexes.
 - Migration 7 adds the profile, historical weight, measurement definition/session/value tables, indexes, and stable built-in measurement definitions.
 - Migration 8 adds `water_entries` (canonical milliliters, indexed by `logged_at`) for Phase 10 hydration tracking.
+- Migration 9 adds `water_entries.source`/`notes` and the `hydration_goal_history` table (unique/indexed on `effective_from`) for historical hydration exploration and goal-aware grading.
 - Seeds use stable IDs and version keys in `app_settings`. Upserts add or refresh built-in templates without duplicating user data.
 
 Released migrations must never be edited. Every schema change gets a new numbered migration. History loads 20 completed workouts at a time. Search uses parameterized `LIKE` predicates plus an `EXISTS` exercise lookup. Repeat, duplicate-as-plan, completed-workout replacement, and deletion use transactions; child deletion relies on documented cascades.

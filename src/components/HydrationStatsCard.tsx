@@ -10,19 +10,21 @@ export interface HydrationStatRow { label: string; value: string; }
 
 interface Props {
   title: string;
+  dateRangeLabel?: string;
   headline: string;
   rows: HydrationStatRow[];
   progressPercent?: number;
 }
 
-/** One period rollup (week/month/quarter/year); fades in as the expandable section reveals it. */
-export function HydrationStatsCard({ title, headline, rows, progressPercent }: Props) {
+/** One period rollup (week/month/quarter/year); fades in as the carousel page becomes visible. */
+export function HydrationStatsCard({ title, dateRangeLabel, headline, rows, progressPercent }: Props) {
   const colors = useAppColors();
   const reduceMotion = useReducedMotion();
   return (
     <Animated.View entering={reduceMotion ? undefined : FadeIn.duration(300)}
       style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <Text style={[styles.title, { color: colors.textMuted }]}>{title}</Text>
+      {dateRangeLabel && <Text style={[styles.dateRange, { color: colors.textMuted }]}>{dateRangeLabel}</Text>}
       <Text style={[styles.headline, { color: colors.text }]}>{headline}</Text>
       {progressPercent !== undefined && <HydrationProgressBar percent={progressPercent} atGoal={progressPercent >= 100} />}
       <View style={styles.rows}>
@@ -40,6 +42,7 @@ export function HydrationStatsCard({ title, headline, rows, progressPercent }: P
 const styles = StyleSheet.create({
   card: { padding: spacing.md, borderRadius: radius.lg, borderWidth: 1, gap: spacing.sm },
   title: { ...typography.label, textTransform: 'uppercase', letterSpacing: 0.5 },
+  dateRange: { ...typography.caption },
   headline: { ...typography.heading },
   rows: { gap: 4 },
   row: { flexDirection: 'row', justifyContent: 'space-between' },

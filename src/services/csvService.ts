@@ -1,11 +1,14 @@
 import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import type { SQLiteDatabase } from 'expo-sqlite';
-import type { DistanceUnit, WeightUnit } from '@/types/settings';
+import type { DistanceUnit, WaterUnit, WeightUnit } from '@/types/settings';
 import { kilometersToDisplay, kilogramsToDisplay } from '@/utils/units';
 import { AppError, toAppError } from '@/utils/errors';
 import { createCsv } from '@/utils/csv';
 import { centimetersToFeetInches, centimetersToInches } from './bodyMeasurementService';
+import { dailyTotalsByKey, formatServingAmount, formatWaterVolume, goalResolverFromHistory } from './hydrationService';
+import { getAllWaterEntries } from '@/repositories/waterEntryRepository';
+import { getGoalHistory } from '@/repositories/hydrationGoalHistoryRepository';
 
 export type CsvExportType='workouts'|'workout-sets'|'exercises'|'cardio'|'personal-records'|'profile'|'weight-history'|'body-measurements';
 const dateName=()=>new Date().toISOString().slice(0,10);
@@ -21,3 +24,37 @@ async function exportRows(db:SQLiteDatabase,type:CsvExportType,weightUnit:Weight
   const rows=await db.getAllAsync<Record<string,unknown>>(`SELECT pr.*,e.name exercise_name,w.name workout_name FROM personal_records pr JOIN exercises e ON e.id=pr.exercise_id JOIN workouts w ON w.id=pr.workout_id ORDER BY pr.achieved_at`);return{headers:['Record ID','Exercise Name','Record Type','Value','Secondary Value','Unit','Achieved At','Workout ID','Workout Name'],rows:rows.map(r=>[r.id,r.exercise_name,r.record_type,r.value,r.secondary_value,weightUnit,r.achieved_at,r.workout_id,r.workout_name])};
 }
 export async function exportCsv(db:SQLiteDatabase,type:CsvExportType,weightUnit:WeightUnit,distanceUnit:DistanceUnit):Promise<void>{try{const data=await exportRows(db,type,weightUnit,distanceUnit);const file=new File(Paths.cache,`LiftDG-${type}-${dateName()}.csv`);file.create({overwrite:true});file.write(createCsv(data.headers,data.rows));if(!await Sharing.isAvailableAsync())throw new AppError('File sharing is unavailable on this device.');await Sharing.shareAsync(file.uri,{mimeType:'text/csv',dialogTitle:`Export LiftDG ${type}`});}catch(error){throw toAppError(error,'Could not export the CSV file.');}}
+
+export type HydrationCsvExportType = 'water-entries' | 'water-daily-summary';
+
+async function exportHydrationRows(db: SQLiteDatabase, type: HydrationCsvExportType, waterUnit: WaterUnit, currentGoalMl: number): Promise<{ headers: string[]; rows: unknown[][] }> {
+  const entries = await getAllWaterEntries(db);
+  if (type === 'water-entries') {
+    return {
+      headers: ['Entry ID', 'Logged At', 'Amount', 'Unit', 'Source', 'Notes'],
+      rows: entries.map((entry) => [entry.id, entry.loggedAt, formatServingAmount(entry.amountMl, waterUnit), waterUnit, entry.source, entry.notes]),
+    };
+  }
+  const history = await getGoalHistory(db);
+  const resolveGoal = goalResolverFromHistory(history, currentGoalMl);
+  const totals = dailyTotalsByKey(entries);
+  const dateKeys = Array.from(totals.keys()).sort();
+  return {
+    headers: ['Date', 'Total', 'Goal', 'Percent', 'Goal Met'],
+    rows: dateKeys.map((dateKey) => {
+      const total = totals.get(dateKey) ?? 0; const goal = resolveGoal(dateKey);
+      return [dateKey, formatWaterVolume(total, waterUnit), formatWaterVolume(goal, waterUnit), goal > 0 ? `${Math.round((total / goal) * 100)}%` : '', total >= goal ? 'Yes' : 'No'];
+    }),
+  };
+}
+
+/** Hydration exports use their own unit (metric/US) rather than the workout weight/distance units. */
+export async function exportHydrationCsv(db: SQLiteDatabase, type: HydrationCsvExportType, waterUnit: WaterUnit, currentGoalMl: number): Promise<void> {
+  try {
+    const data = await exportHydrationRows(db, type, waterUnit, currentGoalMl);
+    const file = new File(Paths.cache, `LiftDG-${type}-${dateName()}.csv`);
+    file.create({ overwrite: true }); file.write(createCsv(data.headers, data.rows));
+    if (!await Sharing.isAvailableAsync()) throw new AppError('File sharing is unavailable on this device.');
+    await Sharing.shareAsync(file.uri, { mimeType: 'text/csv', dialogTitle: `Export LiftDG ${type}` });
+  } catch (error) { throw toAppError(error, 'Could not export the CSV file.'); }
+}

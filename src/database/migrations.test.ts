@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7, migrationV8 } from './schema';
+import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7, migrationV8, migrationV9 } from './schema';
 
 describe('database migration compatibility', () => {
-  it('advances the schema to version 8', () => expect(DATABASE_VERSION).toBe(8));
+  it('advances the schema to version 9', () => expect(DATABASE_VERSION).toBe(9));
   it('adds copied plan targets and set audit fields', () => {
     expect(migrationV3).toContain('target_sets');
     expect(migrationV3).toContain('rest_seconds');
@@ -36,5 +36,10 @@ describe('database migration compatibility', () => {
     expect(migrationV8).toContain('CREATE TABLE IF NOT EXISTS water_entries');
     expect(migrationV8).toContain('amount_ml REAL NOT NULL');
     expect(migrationV8).toContain('idx_water_entries_logged_at');
+  });
+  it('adds water-entry provenance and a goal-history table keyed by effective date', () => {
+    expect(migrationV9).toContain("ADD COLUMN source TEXT NOT NULL DEFAULT 'quick_add'");
+    expect(migrationV9).toContain('CREATE TABLE IF NOT EXISTS hydration_goal_history');
+    expect(migrationV9).toContain('idx_hydration_goal_history_unique_date');
   });
 });

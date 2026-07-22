@@ -38,8 +38,10 @@
 - ✅ Complete — Body-weight history, measurement sessions, configurable measurement types, comparisons, and charts
 - ✅ Complete — Profile/body backup format 2, backward-compatible format-1 restore, CSV reports, and reset integration
 - ⚠️ Needs improvement — Physical-device accessibility, backup, biometric, and large-data testing
-- ✅ Complete — Home hydration card with quick add/undo, quick-add sheet, milestone messages, and once-daily goal celebration
-- ✅ Complete — Progressive week/month/quarter/year hydration statistics and a full Water screen with per-entry deletion
-- ✅ Complete — Hydration settings (daily goal, default serving, units, celebration style, remembered expansion) and reset
+- ✅ Complete — Home hydration card with quick add/undo, a serving-size hint, a quick-add sheet, milestone messages, and once-daily goal celebration
+- ✅ Complete — Swipeable Home hydration analytics carousel (week/month/3-months/year) with animated pagination dots
+- ✅ Complete — Custom hydration goal/serving entry with validation, unusual-value confirmation, and goal-history-aware historical grading
+- ✅ Complete — Full Water page: Day/Week/Month/3-Months/Year/Custom navigation, grouping/sorting, summary cards, history chart, monthly calendar, and per-date entry add/edit/delete
+- ✅ Complete — Hydration settings (daily goal, default serving, units, celebration style, remembered expansion) and a typed-confirmation, double-confirmed reset with optional export
 
 Phase 6 uses real persisted rows and repository transactions. It is not marked fully complete because the advanced stage editors and guided circuit experience do not yet cover every requested interaction.

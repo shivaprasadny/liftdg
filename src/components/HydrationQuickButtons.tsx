@@ -24,7 +24,10 @@ export function HydrationQuickButtons({ glassCount, servingLabel, onAdd, onAddLo
         style={({ pressed }) => [styles.button, { backgroundColor: colors.surfaceElevated, borderColor: colors.border }, pressed && styles.pressed, removeDisabled && styles.disabled]}>
         <Ionicons name="remove" size={26} color={colors.text} />
       </Pressable>
-      <Text style={[styles.count, { color: colors.text }]}>{glassCount} {glassCount === 1 ? 'Glass' : 'Glasses'}</Text>
+      <View style={styles.countBlock}>
+        <Text style={[styles.count, { color: colors.text }]}>{glassCount} {glassCount === 1 ? 'Glass' : 'Glasses'}</Text>
+        <Text style={[styles.servingHint, { color: colors.textMuted }]}>{servingLabel} each</Text>
+      </View>
       <Pressable accessibilityRole="button" accessibilityLabel={`Add ${servingLabel}`} onPress={onAdd} onLongPress={onAddLongPress}
         style={({ pressed }) => [styles.button, { backgroundColor: colors.accent, borderColor: colors.accent }, pressed && styles.pressed]}>
         <Ionicons name="add" size={26} color={colors.accentText} />
@@ -38,5 +41,7 @@ const styles = StyleSheet.create({
   button: { width: 56, height: 56, borderRadius: radius.lg, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
   pressed: { opacity: 0.75 },
   disabled: { opacity: 0.4 },
-  count: { ...typography.label, flex: 1, textAlign: 'center' },
+  countBlock: { flex: 1, alignItems: 'center', gap: 1 },
+  count: { ...typography.label },
+  servingHint: { ...typography.caption, fontSize: 11 },
 });

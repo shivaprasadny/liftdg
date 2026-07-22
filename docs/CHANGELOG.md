@@ -29,10 +29,13 @@
 - Schema migration 7 with a local profile, weight history, seeded measurement types, normalized body-measurement sessions, comparisons, charts, and preferences.
 - Backup format 2 and profile, weight-history, and body-measurement CSV exports.
 - Profile step in onboarding plus Body Progress links on Home, Progress, and Settings.
-- Home hydration card: today's total/goal/percent, animated progress bar, quick add/undo, a long-press quick-add sheet (presets and custom amount), percent-based milestone messages, and a once-per-day goal celebration (checkmark, optional confetti, haptic).
-- Progressive Home-card expansion revealing week, month, "last 3 months," and year hydration statistics one tap at a time, with an optional remembered expansion level.
-- A full Water screen with today's deletable entry list, an encouraging-message tagline, and always-visible period statistics.
-- Hydration settings: daily goal, default serving size, metric/US units, celebration style (full/simple/off), remembered expansion, and a confirmed hydration-stats reset.
+- Home hydration card: today's total/goal/percent, animated progress bar, quick add/undo, a serving-size hint next to the glass count, a long-press quick-add sheet (presets and custom amount), percent-based milestone messages, and a once-per-day goal celebration (checkmark, optional confetti, haptic).
+- A one-tap swipeable Home analytics carousel (This Week / This Month / Last 3 Months / This Year) with animated, tappable pagination dots and an optional remembered open/closed state and page.
+- Custom daily-goal and serving-size entry (ml/L/US fl oz) with range validation and a confirmation step for unusually low/high values or a serving at/above the daily goal; changing the goal offers "Starting Today," "Starting Tomorrow," or "Apply to All History."
+- Hydration goal history, so a later goal change never rewrites how past days are graded.
+- A full Water page with Day/Week/Month/3-Months/Year/Custom navigation (Previous/Next, a "Today" shortcut, and a lightweight date-picker sheet), grouping and sorting of historical entries, summary cards (total, average, goal days, best/lowest day), a history chart with automatic (and, for custom ranges, manual) daily/weekly/monthly aggregation, a monthly calendar view, and add/edit/delete for any entry on any date.
+- Hydration settings: daily goal, default serving size, metric/US units, celebration style (full/simple/off), remembered expansion.
+- A typed-confirmation ("HYDRATION"), double-confirmed hydration data reset with optional CSV/JSON export first, scoped so it never touches other app data.
 
 ### Changed
 
@@ -51,3 +54,4 @@
 - Added schema migration 8 for the `water_entries` table.
 - Added `expo-haptics` for the hydration goal-celebration haptic.
 - Added a light color palette (`lightColors`) and `useAppColors()` hook so new hydration UI honors the existing theme setting.
+- Added schema migration 9 for water-entry provenance/notes and the `hydration_goal_history` table.
