@@ -36,8 +36,9 @@ export function summarizeWorkout(workout: ActiveWorkout): WorkoutSummary {
     totalVolume: calculateWorkoutVolume(workout), exerciseCount: workout.exercises.length,
     averageRpe: rated.length ? rated.reduce((sum, set) => sum + (set.rpe ?? 0), 0) / rated.length : null };
 }
-export function elapsedSeconds(startedAt: string, now = Date.now()): number {
-  return Math.max(0, Math.floor((now - new Date(startedAt).getTime()) / 1000));
+export function elapsedSeconds(startedAt: string, now = Date.now(), totalPausedSeconds=0, pausedAt?:string|null): number {
+  const endpoint=pausedAt?new Date(pausedAt).getTime():now;
+  return Math.max(0, Math.floor((endpoint - new Date(startedAt).getTime()) / 1000)-totalPausedSeconds);
 }
 export function assertCanFinish(workout: ActiveWorkout): void {
   if (!workout.exercises.some((item) => item.sets.some((set) => set.completed))) throw new AppError('Complete at least one set before finishing.');

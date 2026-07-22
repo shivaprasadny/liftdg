@@ -19,9 +19,9 @@ import { useDatabase } from '@/hooks/useDatabase';
 import { useExerciseNavigation } from '@/hooks/useExerciseNavigation';
 import { useRestTimer } from '@/hooks/useRestTimer';
 import { getGroupsForWorkout, updateCompletedRounds } from '@/repositories/workoutGroupRepository';
-import { addWorkoutSet, deleteWorkoutSet, discardWorkout, finishWorkout, getPreviousExercisePerformance, getWorkoutById, removeWorkoutExercise, reorderWorkoutExercise, updateWorkoutNotes, updateWorkoutSet, workoutExerciseHasCompletedSets } from '@/repositories/workoutRepository';
+import { addWorkoutSet, deleteWorkoutSet, discardWorkout, getPreviousExercisePerformance, getWorkoutById, pauseWorkout, persistCurrentExercise, removeWorkoutExercise, reorderWorkoutExercise, resumeWorkout, skipWorkoutExercise, updateWorkoutNotes, updateWorkoutSet, workoutExerciseHasCompletedSets } from '@/repositories/workoutRepository';
 import { buildExerciseNavigationItems } from '@/services/exerciseNavigationService';
-import { assertCanFinish, elapsedSeconds, summarizeWorkout } from '@/services/workoutService';
+import { elapsedSeconds, summarizeWorkout } from '@/services/workoutService';
 import type { ActiveWorkout, PreviousExercisePerformance, WorkoutExercise } from '@/types/workout';
 import type { WorkoutGroup } from '@/types/workoutGroup';
 import { getUserMessage } from '@/utils/errors';
@@ -57,6 +57,7 @@ export default function ActiveWorkoutScreen() {
 
   const items = useMemo(() => buildExerciseNavigationItems(workout?.exercises ?? [], groups), [groups, workout?.exercises]);
   const navigation = useExerciseNavigation({ workoutId: id ?? 'none', items, openInListView: settings.openWorkoutInListView, openFirstIncomplete: settings.openFirstIncompleteExercise });
+  useEffect(()=>{if(workout&&navigation.currentExerciseId&&navigation.currentExerciseId!==workout.currentExerciseId)void persistCurrentExercise(db,workout.id,navigation.currentExerciseId)},[db,navigation.currentExerciseId,workout]);
 
   const registerFlush = useCallback((setId: string, flush: () => Promise<void>) => {
     flushers.current.set(setId, flush);
@@ -89,17 +90,7 @@ export default function ActiveWorkoutScreen() {
   }, [db, workout]);
   const requestDiscard = useCallback(() => confirmDiscard('Cancel this workout?', 'This permanently discards the active workout and any sets you’ve logged. This cannot be undone.'), [confirmDiscard]);
 
-  const requestFinish = useCallback(() => {
-    if (!workout) return;
-    try {
-      assertCanFinish(workout); const summary = summarizeWorkout(workout);
-      Alert.alert('Finish workout?', `${summary.completedExercises} exercises · ${summary.completedSets} sets · ${summary.totalRepetitions} reps · ${summary.totalVolume.toFixed(1)} kg volume`, [
-        { text: 'Continue', style: 'cancel' },
-        { text: 'Discard', style: 'destructive', onPress: () => void discardWorkout(db, workout.id).then(() => router.replace('/start')) },
-        { text: 'Save and Finish', onPress: () => void finishWorkout(db, workout).then(() => router.replace({ pathname: '/workout/summary', params: { id: workout.id } })) },
-      ]);
-    } catch (caught) { confirmDiscard('Cannot finish yet', getUserMessage(caught, caught instanceof Error ? caught.message : 'Complete a set first.')); }
-  }, [confirmDiscard, db, workout]);
+  const requestFinish = useCallback(() => { if(!workout)return;void flushPendingInputs().then(()=>updateWorkoutNotes(db,workout.id,workoutNotes.trim()||null)).then(()=>router.push({pathname:'/workout/finish',params:{id:workout.id}})).catch(error=>Alert.alert('Some workout changes could not be saved',getUserMessage(error,'Retry before finishing.'))); }, [db,flushPendingInputs,workout,workoutNotes]);
   useEffect(() => { if (finish === '1' && workout) requestFinish(); }, [finish, requestFinish, workout]);
 
   const move = useCallback(async (index: number, direction: -1 | 1) => {
@@ -128,7 +119,8 @@ export default function ActiveWorkoutScreen() {
     <View style={styles.hero}>
       <View style={styles.heroText}>
         <Text accessibilityRole="header" style={styles.title}>{workout.name}</Text>
-        <Text style={styles.muted}>{clock(elapsedSeconds(workout.startedAt, now))} · {completedExercises} of {items.length} exercises complete</Text>
+        <Text style={styles.muted}>{workout.pausedAt?'Paused · ':''}{clock(elapsedSeconds(workout.startedAt, now, workout.totalPausedSeconds??0, workout.pausedAt))} · {completedExercises} of {items.length} exercises complete</Text>
+        <Pressable accessibilityRole="button" onPress={()=>void (workout.pausedAt?resumeWorkout(db,workout.id):pauseWorkout(db,workout.id)).then(load).catch(error=>Alert.alert('Workout update failed',getUserMessage(error)))} style={styles.cancelLink}><Text style={styles.link}>{workout.pausedAt?'Resume Workout':'Pause Workout'}</Text></Pressable>
         <Pressable accessibilityRole="button" accessibilityLabel="Cancel workout" onPress={requestDiscard} style={styles.cancelLink}><Text style={styles.remove}>Cancel Workout</Text></Pressable>
       </View>
       <AppButton label="Finish Workout" onPress={requestFinish} />
@@ -171,7 +163,7 @@ export default function ActiveWorkoutScreen() {
         {exercise.notes ? <Text style={styles.notes}>{exercise.notes}</Text> : null}
         {previous[exercise.exerciseId] ? <Text style={styles.placeholder}>Previous {previous[exercise.exerciseId]?.weight ?? 0} kg × {previous[exercise.exerciseId]?.reps ?? 0} · {previous[exercise.exerciseId]?.setCount} sets · {format(new Date(previous[exercise.exerciseId]!.workoutDate), 'MMM d')}</Text> : <Text style={styles.placeholder}>No previous completed performance</Text>}
         {exercise.sets.map((set, setIndex) => <WorkoutSetRow key={set.id} set={set} previous={exercise.sets[setIndex - 1]} registerFlush={registerFlush} onSave={async (value) => { await updateWorkoutSet(db, set.id, value); await load(); }} onDelete={() => void deleteWorkoutSet(db, set.id).then(load)} onComplete={(completed) => { if (completed && exercise.restSeconds && settings.autoStartRestTimer) timer.start(exercise.restSeconds); }} />)}
-        <View style={styles.row}><Pressable accessibilityRole="button" onPress={() => void addWorkoutSet(db, exercise.id).then(load)}><Text style={styles.link}>+ Add Set</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`Remove ${exercise.exercise.name}`} onPress={() => void remove(exercise)}><Text style={styles.remove}>Remove Exercise</Text></Pressable></View>
+        <View style={styles.row}><Pressable accessibilityRole="button" accessibilityLabel={`Replace ${exercise.exercise.name}`} onPress={() => router.push({pathname:'/workout/replace-exercise',params:{id:workout.id,workoutExerciseId:exercise.id}})}><Text style={styles.link}>Replace</Text></Pressable><Pressable accessibilityRole="button" onPress={() => Alert.alert('Add set','Choose a set type',[{text:'Working',onPress:()=>void addWorkoutSet(db,exercise.id,undefined,'working').then(load)},{text:'Warm-up',onPress:()=>void addWorkoutSet(db,exercise.id,undefined,'warmup').then(load)},{text:'Drop',onPress:()=>void addWorkoutSet(db,exercise.id,exercise.sets.at(-1),'drop').then(load)},{text:'AMRAP',onPress:()=>void addWorkoutSet(db,exercise.id,exercise.sets.at(-1),'amrap').then(load)},{text:'Cancel',style:'cancel'}])}><Text style={styles.link}>+ Add Set</Text></Pressable><Pressable accessibilityRole="button" onPress={()=>Alert.alert('Skip exercise?',exercise.exercise.name,[{text:'Cancel',style:'cancel'},{text:'Skip',onPress:()=>void skipWorkoutExercise(db,exercise.id,null).then(load)}])}><Text style={styles.remove}>Skip</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`Remove ${exercise.exercise.name}`} onPress={() => void remove(exercise)}><Text style={styles.remove}>Remove</Text></Pressable></View>
       </View>
     </ScrollView>
     <View style={styles.footer}>

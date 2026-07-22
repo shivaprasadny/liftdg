@@ -15,6 +15,7 @@ interface Row {
   snapshot_name: string; snapshot_workout_type: string; estimated_duration_minutes: number | null;
   status: string; notes: string | null; program_id: string | null; program_week_number: number | null;
   program_day_id: string | null; created_at: string; updated_at: string;
+  active_session_id: string | null; actual_started_at: string | null; snapshot_json: string | null;
 }
 
 function mapRow(row: Row): ScheduledWorkout {
@@ -23,6 +24,7 @@ function mapRow(row: Row): ScheduledWorkout {
     startTime: row.start_time, snapshotName: row.snapshot_name, snapshotWorkoutType: row.snapshot_workout_type as WorkoutPlanType,
     estimatedDurationMinutes: row.estimated_duration_minutes, status: row.status as ScheduledWorkoutStatus,
     notes: row.notes, programId: row.program_id, programWeekNumber: row.program_week_number, programDayId: row.program_day_id,
+    activeSessionId: row.active_session_id, actualStartedAt: row.actual_started_at, snapshotJson: row.snapshot_json,
     createdAt: row.created_at, updatedAt: row.updated_at,
   };
 }
@@ -35,10 +37,10 @@ export async function scheduleWorkout(db: SQLiteDatabase, input: ScheduleWorkout
   try {
     await db.runAsync(`INSERT INTO scheduled_workouts
       (id, plan_id, scheduled_date, daypart, start_time, snapshot_name, snapshot_workout_type,
-       estimated_duration_minutes, status, notes, program_id, program_week_number, program_day_id, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, NULL, 'scheduled', ?, ?, ?, ?, ?, ?)`,
+       estimated_duration_minutes, status, notes, program_id, program_week_number, program_day_id, snapshot_json, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, NULL, 'scheduled', ?, ?, ?, ?, ?, ?, ?)`,
     [id, plan.id, input.scheduledDate, input.daypart, input.startTime, plan.name, plan.workoutType, input.notes,
-      input.programId ?? null, input.programWeekNumber ?? null, input.programDayId ?? null, now, now]);
+      input.programId ?? null, input.programWeekNumber ?? null, input.programDayId ?? null, JSON.stringify(plan), now, now]);
   } catch (error) { throw toAppError(error, 'Could not schedule this workout.'); }
   const row = await db.getFirstAsync<Row>('SELECT * FROM scheduled_workouts WHERE id = ?', [id]);
   if (!row) throw new AppError('Scheduled workout was not created.');
@@ -64,10 +66,10 @@ export async function startProgram(db: SQLiteDatabase, programId: string, startD
           const scheduledDate = calculateProgramOccurrenceDate(startDateIso, week.weekNumber, day.dayNumber);
           await transaction.runAsync(`INSERT INTO scheduled_workouts
             (id, plan_id, scheduled_date, daypart, start_time, snapshot_name, snapshot_workout_type,
-             estimated_duration_minutes, status, notes, program_id, program_week_number, program_day_id, created_at, updated_at)
-            VALUES (?, ?, ?, NULL, NULL, ?, ?, ?, 'scheduled', ?, ?, ?, ?, ?, ?)`,
+             estimated_duration_minutes, status, notes, program_id, program_week_number, program_day_id, snapshot_json, created_at, updated_at)
+            VALUES (?, ?, ?, NULL, NULL, ?, ?, ?, 'scheduled', ?, ?, ?, ?, ?, ?, ?)`,
           [createId('scheduled_workout'), day.plan.id, scheduledDate, day.plan.name, day.plan.workoutType,
-            day.estimatedDurationMinutes, day.notes, program.id, week.weekNumber, day.id, now, now]);
+            day.estimatedDurationMinutes, day.notes, program.id, week.weekNumber, day.id, JSON.stringify(day.plan), now, now]);
           created += 1;
         }
       }
@@ -87,6 +89,17 @@ export async function getScheduledWorkoutsInRange(db: SQLiteDatabase, fromDate: 
 
 export async function getScheduledWorkoutById(db: SQLiteDatabase, id: string): Promise<ScheduledWorkout | null> {
   const row = await db.getFirstAsync<Row>('SELECT * FROM scheduled_workouts WHERE id = ?', [id]);
+  return row ? mapRow(row) : null;
+}
+
+export async function getScheduledWorkoutsForDate(db: SQLiteDatabase, localDate: string): Promise<ScheduledWorkout[]> {
+  const rows = await db.getAllAsync<Row>('SELECT * FROM scheduled_workouts WHERE scheduled_date = ? ORDER BY created_at', [localDate]);
+  return rows.map(mapRow);
+}
+
+export async function getNextProgramWorkout(db: SQLiteDatabase, afterLocalDate: string): Promise<ScheduledWorkout | null> {
+  const row = await db.getFirstAsync<Row>(`SELECT * FROM scheduled_workouts WHERE program_id IS NOT NULL
+    AND scheduled_date > ? AND status = 'scheduled' ORDER BY scheduled_date, COALESCE(start_time, '99:99'), created_at LIMIT 1`, [afterLocalDate]);
   return row ? mapRow(row) : null;
 }
 

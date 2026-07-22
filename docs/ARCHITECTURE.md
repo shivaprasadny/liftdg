@@ -63,3 +63,5 @@ Phase 8 adds a versioned AsyncStorage onboarding gate (UI state only), explicitl
 - Built-in exercises and plans are protected so app updates can refresh templates safely. Users customize copies.
 - Migrations are versioned because deployed device databases cannot be recreated on every schema change.
 - Seed data uses stable IDs so newer seed versions update records without duplication.
+- Exercise replacement keeps scoring in `exerciseRecommendationService`, local profile/restriction reads and atomic writes in `exerciseReplacementRepository`, and user choices/rendering in the route. The screen never owns SQL or reassigns performed sets.
+- History list/calendar/timeline views share the existing paginated completed-workout query. `plannedPerformedComparisonService` derives neutral comparison states from saved launch snapshots plus performed rows. `historyRepository` owns display-only correction transactions and audits.

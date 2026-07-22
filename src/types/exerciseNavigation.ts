@@ -2,7 +2,7 @@ import type { ExerciseType } from './exercise';
 import type { WorkoutExercise } from './workout';
 import type { WorkoutGroupType } from './workoutGroup';
 
-export type ExerciseCompletionStatus = 'not_started' | 'in_progress' | 'complete';
+export type ExerciseCompletionStatus = 'not_started' | 'in_progress' | 'complete' | 'skipped';
 export type ActiveWorkoutDisplayMode = 'list' | 'focused';
 export type AutoAdvancePreference = boolean;
 

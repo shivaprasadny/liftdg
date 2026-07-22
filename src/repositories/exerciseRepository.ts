@@ -10,6 +10,8 @@ interface ExerciseRow {
   secondary_muscles: string | null; equipment: Exercise['equipment'];
   exercise_type: Exercise['exerciseType']; instructions: string | null;
   is_builtin: number; is_archived: number; created_at: string; updated_at: string;
+  movement_pattern?: string | null; difficulty?: Exercise['difficulty']; exercise_role?: string | null;
+  laterality?: Exercise['laterality']; loading_style?: string | null;
 }
 
 function parseArray(value: string | null): string[] {
@@ -27,6 +29,9 @@ function mapExercise(row: ExerciseRow): Exercise {
     equipment: row.equipment, exerciseType: row.exercise_type,
     instructions: parseArray(row.instructions), isBuiltin: row.is_builtin === 1,
     isArchived: row.is_archived === 1, createdAt: row.created_at, updatedAt: row.updated_at,
+    movementPattern: row.movement_pattern ?? null, difficulty: row.difficulty ?? null,
+    exerciseRole: row.exercise_role ?? null, laterality: row.laterality ?? null,
+    loadingStyle: row.loading_style ?? null,
   };
 }
 

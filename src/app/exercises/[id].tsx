@@ -15,6 +15,7 @@ import { useDatabase } from '@/hooks/useDatabase';
 import { archiveExercise, getExerciseById, getExercisePerformance } from '@/repositories/exerciseRepository';
 import type { Exercise, ExercisePerformance } from '@/types/exercise';
 import { getUserMessage } from '@/utils/errors';
+import { launchSingleExercise } from '@/services/workoutLaunchService';
 
 export default function ExerciseDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>(); const db = useDatabase();
@@ -44,6 +45,7 @@ export default function ExerciseDetailsScreen() {
     <SectionHeader>Recent workouts</SectionHeader>
     <View style={styles.card}>{performance?.recentWorkoutDates.length ? performance.recentWorkoutDates.map((date) => <Text style={styles.date} key={date}>{format(new Date(date), 'MMM d, yyyy')}</Text>) : <Text style={styles.muted}>Complete a workout with this exercise to see performance here.</Text>}</View>
     <ExerciseVideoSection exerciseId={exercise.id} exerciseName={exercise.name} />
+    <AppButton label={`Start Workout with ${exercise.name}`} onPress={() => void launchSingleExercise(db, exercise.id).then((workoutId) => router.push({ pathname: '/workout/active', params: { id: workoutId } })).catch((caught) => Alert.alert('Could not start workout', getUserMessage(caught)))} />
     {!exercise.isBuiltin && <View style={styles.actions}>
       <AppButton label="Edit Exercise" onPress={() => router.push({ pathname: '/exercises/edit/[id]', params: { id: exercise.id } })} />
       <AppButton label="Archive Exercise" variant="danger" onPress={confirmArchive} />

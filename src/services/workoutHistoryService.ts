@@ -1,6 +1,11 @@
-import { endOfDay, isSameDay, isSameMonth, isThisWeek, startOfDay, startOfYear, subDays, subMonths } from 'date-fns';
+import { endOfDay, format, isSameDay, isSameMonth, isThisWeek, startOfDay, startOfYear, subDays, subMonths } from 'date-fns';
 
 import type { ActiveWorkout, WorkoutDatePreset, WorkoutHistoryGroup, WorkoutHistoryItem, WorkoutHistorySection, WorkoutHistorySort, WorkoutSet } from '@/types/workout';
+import type{HistoryCalendarDay,HistoryTimelineGroup}from'@/types/history';
+
+const historyDate=(item:WorkoutHistoryItem)=>item.localWorkoutDate??format(new Date(item.completedAt),'yyyy-MM-dd');
+export function buildHistoryCalendarDays(items:WorkoutHistoryItem[]):HistoryCalendarDay[]{const map=new Map<string,HistoryCalendarDay>();for(const item of items){const dateKey=historyDate(item);const current=map.get(dateKey)??{dateKey,workoutCount:0,workoutTypes:[],partialCount:0,emptyCount:0,personalRecordCount:0};current.workoutCount++;if(!current.workoutTypes.includes(item.workoutType))current.workoutTypes.push(item.workoutType);if(item.completionQuality==='partial')current.partialCount++;if(item.completionQuality==='empty')current.emptyCount++;current.personalRecordCount+=item.personalRecordCount??0;map.set(dateKey,current);}return[...map.values()].sort((a,b)=>a.dateKey.localeCompare(b.dateKey));}
+export function buildHistoryTimeline(items:WorkoutHistoryItem[],now=new Date()):HistoryTimelineGroup[]{const map=new Map<string,HistoryTimelineGroup>();for(const item of items){const date=new Date(item.completedAt);const title=isSameDay(date,now)?'Today':isThisWeek(date,{weekStartsOn:1})?'This Week':format(date,'MMMM yyyy');const group=map.get(title)??{title,workoutCount:0,durationSeconds:0,personalRecordCount:0,workoutIds:[]};group.workoutCount++;group.durationSeconds+=item.durationSeconds;group.personalRecordCount+=item.personalRecordCount??0;group.workoutIds.push(item.id);map.set(title,group);}return[...map.values()];}
 
 /** Groups parsed timestamps in the device timezone; SQL never makes locale assumptions. */
 export function getWorkoutHistoryGroup(value: string, now = new Date()): WorkoutHistoryGroup {

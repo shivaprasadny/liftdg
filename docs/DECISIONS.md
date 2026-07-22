@@ -1,5 +1,25 @@
 # Architecture Decisions
 
+## 52. History corrections are audited overlays
+
+**Decision:** Completed set values, exercise identity, completion state, plate loads, and timestamps are not edited by the normal history UI. Corrections update separate display-name/note/date overlays and create per-field audit rows. Deletion remains explicit hard deletion but writes an independent snapshot audit before cascading. **Context:** The earlier broad completed-workout editor conflicted with immutable-history requirements. **Reason:** Overlays correct presentation errors without falsifying performed training or PR provenance. **Consequences:** Advanced performance corrections and Recently Deleted restore require a separate future workflow.
+
+## 51. Replacement preserves exercise-slot and set ownership
+
+**Decision:** Active replacement creates a new workout-exercise row and audit record. Completed sets remain attached to the original; only unfinished sets transfer. The original records `REPLACED` or `PARTIALLY_REPLACED`, and incompatible loading modes clear weight and plate snapshots. **Context:** Reassigning performed work would falsify history and record provenance. **Reason:** Separate rows preserve planned-versus-performed identity and operation IDs make retries safe. **Consequences:** Scheduled/program/template scopes and revert controls require real revision workflows and are not silently simulated by the active-session action.
+
+## 50. Completion finalizes the existing workout aggregate in place
+
+**Decision:** LiftDG does not copy an active workout into a second completed-workout hierarchy. The normalized `workouts` aggregate becomes immutable completed history in one guarded transaction, with a unique operation ID and audit row. **Reason:** Exercise, set, group, cardio, and plate metadata already live under that aggregate; copying them would introduce duplicate IDs and partial-copy failure modes. **Consequences:** A pre-commit crash leaves the active row recoverable. A post-commit crash is detected from `status=completed` and routes to summary. Calendar completion metadata is committed atomically; personal-record recalculation remains an idempotent post-commit operation because the existing PR service owns separate transactions.
+
+## 49. Plate inventories count individual plates; calculations consume complete pairs
+
+**Decision:** Plate quantities represent individual physical plates. Standard calculations use `floor(quantity / 2)` pairs and integer hundredths for all search comparisons. **Reason:** This makes inventory limits unambiguous and avoids floating-point equality errors. **Consequences:** Results are symmetrical by default, deterministic, and prefer fewer plates followed by larger plates. Applying a result stores canonical kilograms for workout calculations and preserves the selected-unit equipment snapshot separately.
+
+## 48. Workout starts create immutable local snapshots
+
+**Decision:** Every Phase 6 launch copies plan content into the active workout and stores a versioned JSON snapshot with typed source metadata. **Context:** Plans and calendar links may change after a session starts. **Reason:** In-progress sessions must remain recoverable without reading mutable source rows. **Consequences:** SQLite enforces one active workout and unique launch operation IDs; a scheduled launch updates its occurrence in the same transaction. The current program layer has no ActiveProgram lifecycle or recurring override table, so those richer behaviors remain deferred rather than simulated in UI memory.
+
 ## 1. SQLite for primary local data
 
 **Decision:** Store exercises, plans, and workouts in SQLite. **Context:** Relational workout data needs joins, transactions, constraints, and offline persistence. **Reason:** SQLite provides these on device without a server. **Consequences:** Migrations and row mapping are required, but data remains fast and private.

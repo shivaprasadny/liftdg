@@ -21,6 +21,9 @@ export interface ScheduledWorkout {
   programId: string | null;
   programWeekNumber: number | null;
   programDayId: string | null;
+  activeSessionId?: string | null;
+  actualStartedAt?: string | null;
+  snapshotJson?: string | null;
   createdAt: string;
   updatedAt: string;
 }

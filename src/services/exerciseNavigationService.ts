@@ -9,6 +9,7 @@ const groupName = (group: WorkoutGroup): string => {
 };
 
 export function getExerciseCompletion(exercise: WorkoutExercise): ExerciseNavigationItem['completionStatus'] {
+  if (exercise.sessionStatus === 'skipped') return 'skipped';
   const completed = exercise.sets.filter((set) => set.completed).length;
   const required = exercise.targetSets ?? exercise.sets.length;
   if (required > 0 && completed >= required) return 'complete';
@@ -22,7 +23,7 @@ export function buildExerciseNavigationItems(exercises: WorkoutExercise[], group
     const members = [...group.exercises].sort((a, b) => a.exerciseOrder - b.exerciseOrder);
     members.forEach((member, position) => membership.set(member.workoutExerciseId, { group, position }));
   }
-  return [...exercises].sort((a, b) => a.exerciseOrder - b.exerciseOrder).map((exercise, order) => {
+  return exercises.filter(exercise=>exercise.sessionStatus!=='removed').sort((a, b) => a.exerciseOrder - b.exerciseOrder).map((exercise, order) => {
     const member = membership.get(exercise.id);
     const completedSets = exercise.sets.filter((set) => set.completed).length;
     return {

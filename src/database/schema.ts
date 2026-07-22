@@ -1,5 +1,7 @@
 export const DATABASE_NAME = 'liftdg.db';
-export const DATABASE_VERSION = 14;
+export const DATABASE_VERSION = 20;
+export const EXERCISE_REPLACEMENT_SEED_VERSION = 1;
+export const PLATE_CALCULATOR_SEED_VERSION = 1;
 export const EXERCISE_SEED_VERSION = 3;
 export const STARTER_PLAN_SEED_VERSION = 2;
 export const PERSONAL_RECORD_BACKFILL_VERSION = 1;
@@ -381,4 +383,131 @@ ALTER TABLE scheduled_workouts ADD COLUMN program_id TEXT;
 ALTER TABLE scheduled_workouts ADD COLUMN program_week_number INTEGER;
 ALTER TABLE scheduled_workouts ADD COLUMN program_day_id TEXT;
 CREATE INDEX IF NOT EXISTS idx_scheduled_workouts_program_id ON scheduled_workouts(program_id);
+`;
+
+// Phase 6 centralizes every workout start around an immutable session snapshot. The existing
+// workouts table remains the active-session aggregate, while these nullable source columns preserve
+// provenance without coupling an in-progress workout to mutable plan or calendar rows.
+export const migrationV15 = `
+ALTER TABLE workouts ADD COLUMN session_source_type TEXT;
+ALTER TABLE workouts ADD COLUMN session_source_id TEXT;
+ALTER TABLE workouts ADD COLUMN scheduled_workout_id TEXT;
+ALTER TABLE workouts ADD COLUMN program_id TEXT;
+ALTER TABLE workouts ADD COLUMN program_week_number INTEGER;
+ALTER TABLE workouts ADD COLUMN program_day_id TEXT;
+ALTER TABLE workouts ADD COLUMN launch_operation_id TEXT;
+ALTER TABLE workouts ADD COLUMN original_snapshot_json TEXT;
+ALTER TABLE workouts ADD COLUMN current_snapshot_json TEXT;
+ALTER TABLE workouts ADD COLUMN session_schema_version INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE workouts ADD COLUMN actual_started_at TEXT;
+ALTER TABLE scheduled_workouts ADD COLUMN active_session_id TEXT;
+ALTER TABLE scheduled_workouts ADD COLUMN actual_started_at TEXT;
+ALTER TABLE scheduled_workouts ADD COLUMN snapshot_json TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_workouts_launch_operation ON workouts(launch_operation_id) WHERE launch_operation_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_workouts_scheduled_workout_id ON workouts(scheduled_workout_id);
+CREATE INDEX IF NOT EXISTS idx_workouts_program_id ON workouts(program_id);
+CREATE INDEX IF NOT EXISTS idx_scheduled_workouts_active_session_id ON scheduled_workouts(active_session_id);
+`;
+
+export const migrationV16 = `
+ALTER TABLE workouts ADD COLUMN paused_at TEXT;
+ALTER TABLE workouts ADD COLUMN total_paused_seconds INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE workouts ADD COLUMN current_exercise_id TEXT;
+ALTER TABLE workout_exercises ADD COLUMN session_status TEXT NOT NULL DEFAULT 'not_started';
+ALTER TABLE workout_exercises ADD COLUMN original_order INTEGER;
+ALTER TABLE workout_exercises ADD COLUMN added_during_session INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE workout_exercises ADD COLUMN skipped_reason TEXT;
+ALTER TABLE workout_sets ADD COLUMN original_order INTEGER;
+ALTER TABLE workout_sets ADD COLUMN added_during_session INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE workout_sets ADD COLUMN weight_mode TEXT NOT NULL DEFAULT 'external_weight';
+ALTER TABLE workout_sets ADD COLUMN tempo TEXT;
+ALTER TABLE workout_sets ADD COLUMN rest_target_seconds INTEGER;
+CREATE INDEX IF NOT EXISTS idx_workout_exercises_session_status ON workout_exercises(workout_id, session_status);
+`;
+
+export const migrationV17 = `
+CREATE TABLE IF NOT EXISTS bar_profiles (id TEXT PRIMARY KEY NOT NULL,name TEXT NOT NULL,bar_type TEXT NOT NULL,weight REAL NOT NULL,unit TEXT NOT NULL,default_collar_weight REAL NOT NULL DEFAULT 0,variable_weight INTEGER NOT NULL DEFAULT 0,fixed_weight INTEGER NOT NULL DEFAULT 0,is_favorite INTEGER NOT NULL DEFAULT 0,is_builtin INTEGER NOT NULL DEFAULT 0,is_archived INTEGER NOT NULL DEFAULT 0,notes TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS plate_inventory_profiles (id TEXT PRIMARY KEY NOT NULL,name TEXT NOT NULL,unit TEXT NOT NULL,default_bar_id TEXT,default_collar_weight REAL NOT NULL DEFAULT 0,is_favorite INTEGER NOT NULL DEFAULT 0,is_builtin INTEGER NOT NULL DEFAULT 0,is_archived INTEGER NOT NULL DEFAULT 0,last_used_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,FOREIGN KEY(default_bar_id) REFERENCES bar_profiles(id) ON DELETE SET NULL);
+CREATE TABLE IF NOT EXISTS plate_inventory_items (id TEXT PRIMARY KEY NOT NULL,inventory_profile_id TEXT NOT NULL,plate_weight REAL NOT NULL,unit TEXT NOT NULL,quantity INTEGER NOT NULL,enabled INTEGER NOT NULL DEFAULT 1,display_order INTEGER NOT NULL,custom INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,FOREIGN KEY(inventory_profile_id) REFERENCES plate_inventory_profiles(id) ON DELETE CASCADE);
+CREATE TABLE IF NOT EXISTS plate_load_presets (id TEXT PRIMARY KEY NOT NULL,name TEXT NOT NULL,total_weight REAL NOT NULL,unit TEXT NOT NULL,bar_id TEXT,inventory_profile_id TEXT,collar_weight REAL NOT NULL DEFAULT 0,plate_combination_json TEXT NOT NULL,exercise_id TEXT,is_favorite INTEGER NOT NULL DEFAULT 0,last_used_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS plate_calculation_history (id TEXT PRIMARY KEY NOT NULL,source_type TEXT NOT NULL,source_id TEXT,target_weight REAL NOT NULL,loaded_weight REAL NOT NULL,difference REAL NOT NULL,unit TEXT NOT NULL,bar_snapshot_json TEXT NOT NULL,inventory_profile_id TEXT,plate_combination_json TEXT NOT NULL,exact INTEGER NOT NULL,calculation_mode TEXT NOT NULL,created_at TEXT NOT NULL);
+ALTER TABLE workout_sets ADD COLUMN bar_profile_id TEXT;
+ALTER TABLE workout_sets ADD COLUMN bar_snapshot_json TEXT;
+ALTER TABLE workout_sets ADD COLUMN collar_weight REAL;
+ALTER TABLE workout_sets ADD COLUMN plate_inventory_profile_id TEXT;
+ALTER TABLE workout_sets ADD COLUMN plate_combination_json TEXT;
+ALTER TABLE workout_sets ADD COLUMN calculated_target_weight REAL;
+ALTER TABLE workout_sets ADD COLUMN loaded_total_weight REAL;
+ALTER TABLE workout_sets ADD COLUMN plate_calculation_mode TEXT;
+ALTER TABLE workout_sets ADD COLUMN plate_calculation_exact INTEGER;
+ALTER TABLE workout_sets ADD COLUMN plate_calculation_difference REAL;
+ALTER TABLE workout_sets ADD COLUMN warmup_percentage REAL;
+CREATE INDEX IF NOT EXISTS idx_plate_inventory_items_profile ON plate_inventory_items(inventory_profile_id);
+CREATE INDEX IF NOT EXISTS idx_plate_history_created ON plate_calculation_history(created_at);
+`;
+
+export const migrationV18 = `
+ALTER TABLE workouts ADD COLUMN completion_operation_id TEXT;
+ALTER TABLE workouts ADD COLUMN completion_quality TEXT;
+ALTER TABLE workouts ADD COLUMN local_workout_date TEXT;
+ALTER TABLE workouts ADD COLUMN elapsed_duration_seconds INTEGER;
+ALTER TABLE workouts ADD COLUMN completion_metrics_json TEXT;
+ALTER TABLE workouts ADD COLUMN validation_summary_json TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_workouts_completion_operation ON workouts(completion_operation_id) WHERE completion_operation_id IS NOT NULL;
+CREATE TABLE IF NOT EXISTS workout_completion_audit (id TEXT PRIMARY KEY NOT NULL,session_id TEXT NOT NULL,completed_workout_id TEXT NOT NULL,completion_operation_id TEXT NOT NULL UNIQUE,validation_summary_json TEXT NOT NULL,warning_acknowledgements_json TEXT NOT NULL,transaction_started_at TEXT NOT NULL,transaction_completed_at TEXT NOT NULL,reconciliation_status TEXT NOT NULL DEFAULT 'committed',created_at TEXT NOT NULL,FOREIGN KEY(completed_workout_id) REFERENCES workouts(id) ON DELETE CASCADE);
+ALTER TABLE scheduled_workouts ADD COLUMN actual_completed_at TEXT;
+ALTER TABLE scheduled_workouts ADD COLUMN completed_workout_id TEXT;
+ALTER TABLE scheduled_workouts ADD COLUMN completion_quality TEXT;
+ALTER TABLE scheduled_workouts ADD COLUMN completion_source TEXT;
+CREATE INDEX IF NOT EXISTS idx_completion_audit_session ON workout_completion_audit(session_id);
+CREATE INDEX IF NOT EXISTS idx_workouts_local_date ON workouts(local_workout_date);
+`;
+
+// Exercise replacement is additive: original slot identity and completed-set ownership remain
+// intact while audits describe every accepted substitution.
+export const migrationV19 = `
+ALTER TABLE exercises ADD COLUMN movement_pattern TEXT;
+ALTER TABLE exercises ADD COLUMN difficulty TEXT;
+ALTER TABLE exercises ADD COLUMN exercise_role TEXT;
+ALTER TABLE exercises ADD COLUMN laterality TEXT;
+ALTER TABLE exercises ADD COLUMN loading_style TEXT;
+ALTER TABLE workout_exercises ADD COLUMN original_exercise_id TEXT;
+ALTER TABLE workout_exercises ADD COLUMN replacement_status TEXT NOT NULL DEFAULT 'ORIGINAL';
+ALTER TABLE workout_exercises ADD COLUMN replacement_audit_id TEXT;
+ALTER TABLE workout_exercises ADD COLUMN replacement_reason TEXT;
+ALTER TABLE workout_exercises ADD COLUMN replacement_transfer_mode TEXT;
+ALTER TABLE workout_exercises ADD COLUMN original_exercise_snapshot_json TEXT;
+ALTER TABLE workout_exercises ADD COLUMN current_exercise_snapshot_json TEXT;
+
+CREATE TABLE IF NOT EXISTS equipment_profiles (id TEXT PRIMARY KEY NOT NULL,name TEXT NOT NULL,default_profile INTEGER NOT NULL DEFAULT 0,favorite INTEGER NOT NULL DEFAULT 0,temporary INTEGER NOT NULL DEFAULT 0,archived INTEGER NOT NULL DEFAULT 0,last_used_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS equipment_profile_items (id TEXT PRIMARY KEY NOT NULL,equipment_profile_id TEXT NOT NULL,equipment_type TEXT NOT NULL,available INTEGER NOT NULL DEFAULT 1,quantity INTEGER,notes TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,FOREIGN KEY(equipment_profile_id) REFERENCES equipment_profiles(id) ON DELETE CASCADE,UNIQUE(equipment_profile_id,equipment_type));
+CREATE TABLE IF NOT EXISTS exercise_replacement_relations (id TEXT PRIMARY KEY NOT NULL,source_exercise_id TEXT NOT NULL,replacement_exercise_id TEXT NOT NULL,relation_type TEXT NOT NULL,priority INTEGER NOT NULL DEFAULT 0,equipment_context TEXT,difficulty_delta INTEGER,built_in INTEGER NOT NULL DEFAULT 0,active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,FOREIGN KEY(source_exercise_id) REFERENCES exercises(id) ON DELETE CASCADE,FOREIGN KEY(replacement_exercise_id) REFERENCES exercises(id) ON DELETE CASCADE,UNIQUE(source_exercise_id,replacement_exercise_id,relation_type));
+CREATE TABLE IF NOT EXISTS exercise_replacement_preferences (id TEXT PRIMARY KEY NOT NULL,source_exercise_id TEXT NOT NULL,replacement_exercise_id TEXT NOT NULL,equipment_profile_id TEXT,behavior TEXT NOT NULL,priority INTEGER NOT NULL DEFAULT 0,active INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,FOREIGN KEY(source_exercise_id) REFERENCES exercises(id) ON DELETE CASCADE,FOREIGN KEY(replacement_exercise_id) REFERENCES exercises(id) ON DELETE CASCADE,FOREIGN KEY(equipment_profile_id) REFERENCES equipment_profiles(id) ON DELETE CASCADE);
+CREATE TABLE IF NOT EXISTS exercise_restrictions (id TEXT PRIMARY KEY NOT NULL,exercise_id TEXT NOT NULL,restriction_type TEXT NOT NULL,reason TEXT,active INTEGER NOT NULL DEFAULT 1,expires_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,FOREIGN KEY(exercise_id) REFERENCES exercises(id) ON DELETE CASCADE);
+CREATE TABLE IF NOT EXISTS exercise_replacement_audits (id TEXT PRIMARY KEY NOT NULL,original_exercise_id TEXT NOT NULL,replacement_exercise_id TEXT NOT NULL,source_context TEXT NOT NULL,source_id TEXT NOT NULL,scope TEXT NOT NULL,reason TEXT,transfer_mode TEXT NOT NULL,equipment_profile_id TEXT,active_program_id TEXT,scheduled_workout_id TEXT,session_id TEXT,affected_count INTEGER NOT NULL DEFAULT 0,excluded_count INTEGER NOT NULL DEFAULT 0,operation_id TEXT NOT NULL UNIQUE,created_at TEXT NOT NULL,reverted_at TEXT,FOREIGN KEY(original_exercise_id) REFERENCES exercises(id) ON DELETE RESTRICT,FOREIGN KEY(replacement_exercise_id) REFERENCES exercises(id) ON DELETE RESTRICT);
+CREATE INDEX IF NOT EXISTS idx_exercises_replacement_metadata ON exercises(movement_pattern,difficulty,exercise_role);
+CREATE INDEX IF NOT EXISTS idx_replacement_relations_source ON exercise_replacement_relations(source_exercise_id,active);
+CREATE INDEX IF NOT EXISTS idx_replacement_preferences_source ON exercise_replacement_preferences(source_exercise_id,active);
+CREATE INDEX IF NOT EXISTS idx_exercise_restrictions_exercise ON exercise_restrictions(exercise_id,active);
+CREATE INDEX IF NOT EXISTS idx_equipment_profile_items_profile ON equipment_profile_items(equipment_profile_id);
+CREATE INDEX IF NOT EXISTS idx_replacement_audits_source ON exercise_replacement_audits(source_context,source_id);
+CREATE INDEX IF NOT EXISTS idx_workout_exercises_replacement ON workout_exercises(workout_id,replacement_status);
+`;
+
+// History corrections are overlays: immutable performed values and timestamps remain untouched.
+export const migrationV20 = `
+ALTER TABLE workouts ADD COLUMN history_display_name TEXT;
+ALTER TABLE workouts ADD COLUMN history_notes TEXT;
+ALTER TABLE workouts ADD COLUMN corrected_local_date TEXT;
+CREATE TABLE IF NOT EXISTS completed_workout_correction_audits (
+  id TEXT PRIMARY KEY NOT NULL, completed_workout_id TEXT NOT NULL, field_name TEXT NOT NULL,
+  old_value_json TEXT, new_value_json TEXT, reason TEXT NOT NULL, operation_id TEXT NOT NULL UNIQUE,
+  created_at TEXT NOT NULL, FOREIGN KEY(completed_workout_id) REFERENCES workouts(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS completed_workout_deletion_audits (
+  id TEXT PRIMARY KEY NOT NULL, completed_workout_id TEXT NOT NULL, snapshot_json TEXT NOT NULL,
+  reason TEXT, deleted_at TEXT NOT NULL, operation_id TEXT NOT NULL UNIQUE
+);
+CREATE INDEX IF NOT EXISTS idx_history_corrections_workout ON completed_workout_correction_audits(completed_workout_id,created_at);
+CREATE INDEX IF NOT EXISTS idx_workouts_corrected_local_date ON workouts(corrected_local_date);
 `;

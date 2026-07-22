@@ -9,6 +9,7 @@ import {
   buildWorkoutSnapshot,
   calculateSetVolume,
   calculateWorkoutVolume,
+  elapsedSeconds,
   removeWorkoutExerciseId,
   summarizeWorkout,
 } from './workoutService';
@@ -35,6 +36,7 @@ const workout = (sets: WorkoutSet[]): ActiveWorkout => ({
 });
 
 describe('workout calculations', () => {
+  it('excludes persisted paused time from elapsed workout time',()=>expect(elapsedSeconds('2026-01-01T00:00:00.000Z',new Date('2026-01-01T00:10:00.000Z').getTime(),120)).toBe(480));
   it('uses the documented weight × reps example', () => expect(calculateSetVolume(set())).toBe(500));
   it('excludes incomplete, zero-weight, and zero-repetition sets', () => {
     expect(calculateSetVolume(set({ completed: false }))).toBe(0);

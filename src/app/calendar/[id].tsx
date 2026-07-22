@@ -72,6 +72,7 @@ export default function ScheduledWorkoutDetailsScreen() {
       </View>
       <AppInput label="Notes" multiline value={notes} onChangeText={setNotes} />
       {item.planId ? <AppButton label="View Workout" variant="secondary" onPress={() => router.push({ pathname: '/plans/[id]', params: { id: item.planId as string } })} /> : null}
+      <AppButton label="Preview and Start" onPress={() => router.push({ pathname: '/start/preview', params: { scheduledId: item.id } })} />
       <AppButton label="Save Changes" loading={busy} onPress={() => void save()} />
       <AppButton label="Remove from Calendar" variant="danger" onPress={remove} />
     </View>

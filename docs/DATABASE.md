@@ -144,3 +144,13 @@ user_profile
 ```
 
 Migration 7 seeds neck, shoulders, chest, waist, abdomen, hips, separate left/right biceps, forearms, thighs, calves, glutes, wrist, and ankle types. Weight and body measurements are canonical kg/cm values; unit preferences never rewrite stored history.
+
+## Exercise replacement (schema version 19)
+
+`exercise_replacement_relations` stores stable curated progression and substitution links. `exercise_replacement_preferences` and `exercise_restrictions` store local choices. `equipment_profiles` and `equipment_profile_items` describe availability. `exercise_replacement_audits` is the operation-ID-backed audit trail. Replacement metadata on `workout_exercises` preserves original identity, status, reason, transfer mode, and snapshots. Completed sets never change ownership.
+
+Migration 19 also adds nullable movement-pattern, difficulty, role, laterality, and loading-style metadata to exercises. Missing custom metadata lowers ranking specificity rather than preventing manual selection.
+
+## History corrections (schema version 20)
+
+Completed performance remains in `workouts`, `workout_exercises`, and `workout_sets`. `history_display_name`, `history_notes`, and `corrected_local_date` are display overlays; changing one writes `completed_workout_correction_audits` with old/new JSON, reason, operation ID, and timestamp. Weight, reps, exercise identity, completion state, plate metadata, and core timestamps are not editable through this flow. Confirmed hard deletion first writes a snapshot to `completed_workout_deletion_audits`; restore is not yet exposed.

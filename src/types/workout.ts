@@ -1,11 +1,12 @@
 import type { Exercise } from './exercise';
 import type { CardioSession } from './cardio';
 import type { WorkoutGroup } from './workoutGroup';
+import type { WorkoutPlanType } from '@/constants/workoutPlanTypes';
 
 export const workoutStatuses = ['active', 'completed', 'cancelled'] as const;
 export type WorkoutStatus = (typeof workoutStatuses)[number];
-export type WorkoutType = 'strength' | 'cardio' | 'mixed' | 'mobility' | 'other';
-export const setTypes = ['warmup', 'working', 'drop', 'rest_pause', 'failure', 'bodyweight', 'assisted', 'timed', 'distance', 'amrap'] as const;
+export type WorkoutType = WorkoutPlanType | 'cardio' | 'mixed';
+export const setTypes = ['warmup', 'working', 'drop', 'rest_pause', 'failure', 'backoff', 'bodyweight', 'assisted', 'timed', 'distance', 'amrap', 'custom'] as const;
 export type SetType = (typeof setTypes)[number];
 
 export interface WorkoutSet {
@@ -16,17 +17,23 @@ export interface WorkoutSet {
   assistanceWeight?: number | null; bodyweightValue?: number | null; addedWeight?: number | null;
   roundNumber?: number | null; targetDurationSeconds?: number | null; targetDistance?: number | null;
   isAmrap?: boolean; completedAt: string | null; notes: string | null; createdAt: string; updatedAt: string;
+  addedDuringSession?: boolean; weightMode?: 'external_weight'|'bodyweight'|'bodyweight_plus'|'assisted'|'machine'|'band'|'none';
 }
 export interface WorkoutExercise {
   id: string; workoutId: string; exerciseId: string; exerciseOrder: number;
   targetSets: number | null; targetRepsMin: number | null; targetRepsMax: number | null;
   targetWeight: number | null; restSeconds: number | null; notes: string | null;
   startedAt: string | null; completedAt: string | null; exercise: Exercise; sets: WorkoutSet[];
+  sessionStatus?: 'not_started'|'in_progress'|'completed'|'skipped'|'removed'; skippedReason?:string|null; addedDuringSession?:boolean;
+  originalExerciseId?:string|null;replacementStatus?:'ORIGINAL'|'REPLACED'|'PARTIALLY_REPLACED'|'ADDED'|'REMOVED'|'REVERTED';replacementAuditId?:string|null;replacementReason?:string|null;replacementTransferMode?:string|null;
 }
 export interface Workout {
   id: string; planId: string | null; name: string; workoutType: WorkoutType;
   startedAt: string; completedAt: string | null; durationSeconds: number | null;
   notes: string | null; status: WorkoutStatus; createdAt: string; updatedAt: string;
+  pausedAt?: string | null; totalPausedSeconds?: number; currentExerciseId?: string | null;
+  correctedLocalDate?:string|null;
+  completionQuality?:'complete'|'partial'|'empty'|null;sessionSourceType?:string|null;localWorkoutDate?:string|null;originalSnapshotJson?:string|null;currentSnapshotJson?:string|null;
 }
 export interface ActiveWorkout extends Workout { exercises: WorkoutExercise[]; }
 export interface WorkoutSummary {
@@ -54,6 +61,7 @@ export interface WorkoutHistoryItem {
   workoutType: WorkoutType; startedAt: string; completedAt: string; durationSeconds: number;
   notes: string | null; exerciseCount: number; completedSetCount: number;
   totalRepetitions: number; totalVolume: number; cardioDurationSeconds: number; cardioDistanceKm: number;
+  completionQuality?:'complete'|'partial'|'empty'|null;sourceType?:string|null;localWorkoutDate?:string|null;personalRecordCount?:number;
 }
 export interface WorkoutHistorySection { title: WorkoutHistoryGroup; data: WorkoutHistoryItem[]; }
 export type WorkoutSetDetails = WorkoutSet & { volume: number };

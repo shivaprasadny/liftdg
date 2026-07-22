@@ -4,6 +4,20 @@
 
 ### Added
 
+- Phase 11 History foundation: remembered list/calendar/timeline views, completion-quality and PR badges, planned-versus-performed review, correction overlays/audits, and deletion snapshots.
+
+- Phase 10 replacement foundation: deterministic equipment-aware recommendations, curated relations, restrictions/preferences schema, audit trail, and transactional active-workout replacement UI.
+
+- Finish Workout review, typed validation issues, completion metrics and quality, atomic completion auditing, duplicate-submit protection, and crash-after-commit summary recovery.
+
+- Bar and plate calculator with deterministic pair-aware loading, built-in profiles, active-set metadata, visual loading order, and percentage warm-up strategies.
+
+- Active strength pause/resume lifecycle, skipped-exercise state, session-added metadata, back-off/custom set types, richer rest-timer controls, and atomic scheduled-workout completion.
+
+- Focused Start Workout landing screen with today ordering, resume recovery, launch previews, quick starts, and recent-workout access.
+- Versioned immutable session snapshots and idempotent scheduled-workout launch metadata.
+- Start-early choices that move an occurrence to today or start an independent extra copy.
+
 - Five-tab Expo Router navigation and settings entry point.
 - Versioned SQLite initialization, foreign keys, indexes, and idempotent seeds.
 - Searchable/filterable built-in and custom exercise library.

@@ -60,10 +60,14 @@ export default function RootLayout() {
             <Stack.Screen name="workout/active" options={{ title: 'Active Workout', headerBackVisible: false }} />
             <Stack.Screen name="workout/add-exercises" options={{ title: 'Add Exercises', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="workout/summary" options={{ title: 'Workout Summary', headerBackVisible: false }} />
+            <Stack.Screen name="workout/finish" options={{ title: 'Finish Workout', gestureEnabled: false }} />
             <Stack.Screen name="workout/[id]" options={{ title: 'Workout Details' }} />
             <Stack.Screen name="workout/edit/[id]" options={{ title: 'Edit Workout' }} />
+            <Stack.Screen name="workout/correct/[id]" options={{ title: 'Correct History' }} />
             <Stack.Screen name="workout/create-group" options={{ title: 'Create Group', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
+            <Stack.Screen name="workout/replace-exercise" options={{ title: 'Replace Exercise', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="cardio/create" options={{ title: 'Cardio Session', headerLeft: () => <ModalCancelButton /> }} />
+            <Stack.Screen name="tools/plate-calculator" options={{ title: 'Plate Calculator' }} />
             <Stack.Screen name="settings/index" options={{ title: 'Settings' }} />
             <Stack.Screen name="settings/data" options={{ title: 'Data Management' }} />
             <Stack.Screen name="onboarding" options={{ headerShown: false, gestureEnabled: false }} />

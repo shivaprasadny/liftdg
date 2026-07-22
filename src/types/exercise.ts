@@ -17,6 +17,11 @@ export interface Exercise {
   isArchived: boolean;
   createdAt: string;
   updatedAt: string;
+  movementPattern?: string | null;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced' | null;
+  exerciseRole?: string | null;
+  laterality?: 'bilateral' | 'unilateral' | 'alternating' | null;
+  loadingStyle?: string | null;
 }
 
 export type ExerciseSeed = Omit<Exercise, 'createdAt' | 'updatedAt' | 'isArchived'>;

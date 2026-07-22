@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7, migrationV8, migrationV9, migrationV10, migrationV11, migrationV12, migrationV13, migrationV14 } from './schema';
+import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7, migrationV8, migrationV9, migrationV10, migrationV11, migrationV12, migrationV13, migrationV14, migrationV15, migrationV16, migrationV17, migrationV18, migrationV19, migrationV20 } from './schema';
 
 describe('database migration compatibility', () => {
-  it('advances the schema to version 14', () => expect(DATABASE_VERSION).toBe(14));
+  it('advances the schema to version 20', () => expect(DATABASE_VERSION).toBe(20));
   it('adds copied plan targets and set audit fields', () => {
     expect(migrationV3).toContain('target_sets');
     expect(migrationV3).toContain('rest_seconds');
@@ -73,4 +73,15 @@ describe('database migration compatibility', () => {
     expect(migrationV14).toContain('ADD COLUMN program_day_id TEXT');
     expect(migrationV14).toContain('idx_scheduled_workouts_program_id');
   });
+  it('adds idempotent session launch metadata', () => {
+    expect(migrationV15).toContain('launch_operation_id TEXT');
+    expect(migrationV15).toContain('original_snapshot_json TEXT');
+    expect(migrationV15).toContain('active_session_id TEXT');
+    expect(migrationV15).toContain('idx_workouts_launch_operation');
+  });
+  it('adds active strength session lifecycle metadata',()=>{expect(migrationV16).toContain('paused_at TEXT');expect(migrationV16).toContain('session_status TEXT');expect(migrationV16).toContain('weight_mode TEXT');});
+  it('adds plate calculator profiles and set snapshots',()=>{expect(migrationV17).toContain('CREATE TABLE IF NOT EXISTS bar_profiles');expect(migrationV17).toContain('plate_inventory_items');expect(migrationV17).toContain('bar_snapshot_json TEXT');});
+  it('adds idempotent completion audit and quality metadata',()=>{expect(migrationV18).toContain('workout_completion_audit');expect(migrationV18).toContain('completion_operation_id TEXT');expect(migrationV18).toContain('actual_completed_at TEXT');});
+  it('adds replacement relations, audits, equipment profiles, and slot metadata',()=>{expect(migrationV19).toContain('exercise_replacement_relations');expect(migrationV19).toContain('exercise_replacement_audits');expect(migrationV19).toContain('equipment_profiles');expect(migrationV19).toContain('original_exercise_id TEXT');});
+  it('adds immutable history correction overlays and deletion audits',()=>{expect(migrationV20).toContain('completed_workout_correction_audits');expect(migrationV20).toContain('history_display_name TEXT');expect(migrationV20).toContain('completed_workout_deletion_audits');});
 });

@@ -1,5 +1,22 @@
 # Feature status
 
+- 🚧 In progress — Training History has paginated list, calendar, and timeline views; expanded completed details; planned-versus-performed structure; repeat/duplicate actions; immutable performed values; audited metadata corrections; and audited deletion. Dedicated exercise/PR/program-history navigation and soft-delete restore remain planned.
+
+- 🚧 In progress — Exercise replacement supports deterministic active-session recommendations, equipment filtering, restrictions, reasons, safe set transfer, group preservation, and audit rows. Scheduled/program/template scope UI, preference editors, and revert UI remain planned.
+
+- ✅ Complete — Dedicated finish review with blocking validation, acknowledged warnings, complete/partial/empty quality, atomic Calendar reconciliation, and idempotent completion audit
+- ⚠️ Needs improvement — Active-program lifecycle progress, notification cleanup, and planned-versus-performed history UI remain constrained by their earlier foundation phases
+
+- ✅ Complete — Quantity-aware pound/kilogram plate calculator, built-in bars and inventories, closest modes, visualization, warm-up preview, and active-set snapshot application
+- ⚠️ Needs improvement — Custom profile editors, presets, manual/asymmetric loading, and inserting generated warm-ups into templates remain planned
+
+- ✅ Complete — Active strength logging with persisted pause/resume time, session exercise status, typed add-set actions, immediate autosave, previous performance, grouped navigation, and recoverable rest timers
+- ⚠️ Needs improvement — Planned/performed comparison, advanced replacement, wake-lock integration, and notification-backed rest alerts remain deferred
+
+- ✅ Complete — Focused Start Workout landing page with active-session recovery, all local-today occurrences, previews, quick starts, recent workout, and lazy workout-library loading
+- ✅ Complete — Immutable, versioned launch snapshots; typed launch sources; transaction-safe scheduled status links; duplicate-start protection
+- ⚠️ Needs improvement — Start Early supports moving one occurrence or starting an extra copy, but recurring edit scopes, an ActiveProgram lifecycle, and reminder notifications do not yet exist in the underlying phases
+
 - ✅ Complete — Navigation
 - ✅ Complete — SQLite initialization and versioned migrations
 - ✅ Complete — Exercise library
