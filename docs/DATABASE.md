@@ -1,6 +1,6 @@
 # Database
 
-LiftDG stores primary data in the on-device SQLite database `liftdg.db`. `DatabaseProvider` opens it, enables `PRAGMA foreign_keys = ON`, applies migrations in order, and then runs idempotent seeds. The current schema version is **9**. Exercise seed version is **2** and starter-plan seed version is **1**.
+LiftDG stores primary data in the on-device SQLite database `liftdg.db`. `DatabaseProvider` opens it, enables `PRAGMA foreign_keys = ON`, applies migrations in order, and then runs idempotent seeds. The current schema version is **10**. Exercise seed version is **2**, starter-plan seed version is **1**, and exercise-video seed version is **1** (currently seeding zero rows — see DECISIONS.md).
 
 ## Relationships
 
@@ -75,6 +75,14 @@ One row per logged water intake. `id` is the primary key; `amount_ml` is stored 
 
 Records when the daily water goal changed. `id` is the primary key; `goal_ml` is the goal that applies from `effective_from` onward until superseded by a later row. `effective_from` is a **local date key** (`yyyy-MM-dd`), not an instant — goal changes are always "starting from this calendar day." A unique index on `effective_from` means one goal change per day; `hydrationService.resolveGoalForDate` walks this history to find the goal that applied to any given historical date, so changing today's goal never silently rewrites how past days are graded. See DECISIONS.md #35.
 
+### `exercise_default_videos`
+
+Curated technique videos, seeded content only — never user-editable or deletable through the app. `id` is the primary key; `exercise_id` references `exercises(id)` with `ON DELETE CASCADE`. Columns are `title`, `video_id` (the YouTube video ID, not a full URL), nullable `channel_name`/`thumbnail_url`, and `sort_order`. A unique index on `(exercise_id, video_id)` makes re-seeding idempotent. Ships with **zero rows** until real, verified links are added — see DECISIONS.md.
+
+### `exercise_saved_videos`
+
+A user's own videos for one exercise: addable, renamable, favoritable, reorderable, and deletable — entirely separate from `exercise_default_videos`. `id` is the primary key; `exercise_id` references `exercises(id)` with `ON DELETE CASCADE`. Columns are `video_id`, `title` (user-editable, independent of the video's real YouTube title), nullable `channel_name`/`thumbnail_url`, `youtube_url`, `is_favorite`, `sort_order`, and `saved_at`. A unique index on `(exercise_id, video_id)` prevents saving the same video twice for one exercise. Only one row per exercise may have `is_favorite = 1`; `exerciseVideoRepository.toggleFavoriteVideo` enforces this by clearing every favorite for the exercise before (optionally) re-setting the target.
+
 ### `app_settings`
 
 Key/value settings table with text primary key `key`, `value`, and `updated_at`. Primary workout data never belongs in AsyncStorage; AsyncStorage is reserved for lightweight UI preferences and recoverable rest-timer state.
@@ -96,7 +104,10 @@ Backup format version **2** is independent of database version **7**. It contain
 - Migration 7 adds the profile, historical weight, measurement definition/session/value tables, indexes, and stable built-in measurement definitions.
 - Migration 8 adds `water_entries` (canonical milliliters, indexed by `logged_at`) for Phase 10 hydration tracking.
 - Migration 9 adds `water_entries.source`/`notes` and the `hydration_goal_history` table (unique/indexed on `effective_from`) for historical hydration exploration and goal-aware grading.
+- Migration 10 adds `exercise_default_videos` and `exercise_saved_videos`, both indexed and uniquely constrained on `(exercise_id, video_id)`, for the exercise video library.
 - Seeds use stable IDs and version keys in `app_settings`. Upserts add or refresh built-in templates without duplicating user data.
+
+"Search YouTube" hands off to youtube.com's own search (DECISIONS.md #39) rather than calling an API with a stored key, so there is no YouTube-related credential in `app_settings`, any table, or SecureStore.
 
 Released migrations must never be edited. Every schema change gets a new numbered migration. History loads 20 completed workouts at a time. Search uses parameterized `LIKE` predicates plus an `EXISTS` exercise lookup. Repeat, duplicate-as-plan, completed-workout replacement, and deletion use transactions; child deletion relies on documented cascades.
 ## Phase 9 profile and measurements (schema version 7)

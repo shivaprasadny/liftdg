@@ -29,5 +29,5 @@ export interface HydrationSettings {
   hydrationHomeStatsPage: number;
 }
 
-export interface AppSettings extends UnitSettings, AppearanceSettings, WorkoutBehaviorSettings, SecuritySettings, HydrationSettings { firstDayOfWeek: FirstDayOfWeek; heightUnit: HeightUnit; bodyMeasurementUnit: BodyMeasurementUnit; showBodyProgressHome: boolean }
+export interface AppSettings extends UnitSettings, AppearanceSettings, WorkoutBehaviorSettings, SecuritySettings, HydrationSettings { firstDayOfWeek: FirstDayOfWeek; heightUnit: HeightUnit; bodyMeasurementUnit: BodyMeasurementUnit; showBodyProgressHome: boolean; hideDefaultExerciseVideos: boolean }
 export type AppSettingKey = keyof AppSettings;

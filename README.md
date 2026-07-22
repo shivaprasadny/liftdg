@@ -11,7 +11,7 @@ Primary data is stored in an on-device SQLite database. LiftDG has no backend, l
 ## Current features
 
 - Five-tab Expo Router navigation
-- 116 versioned built-in exercises plus custom exercise creation/editing/archiving
+- 132 versioned built-in exercises (including a Yoga category) plus custom exercise creation/editing/archiving
 - Exercise search and category/equipment/type filters
 - Eight immutable starter plans plus custom plan creation, editing, ordering, duplication, archiving, and deletion
 - Active strength workouts started from plans or empty
@@ -29,6 +29,7 @@ Primary data is stored in an on-device SQLite database. LiftDG has no backend, l
 - Five CSV reports plus data summary, selective deletion, and protected reset
 - Local profile, body-weight history, configurable body measurements, comparisons, and weight/measurement charts
 - Home hydration card with quick add/undo, a swipeable week/month/3-months/year analytics carousel, milestone messages, once-daily goal celebration, custom goal/serving entry with goal history, and a full Water page for historical navigation, charts, calendar, and per-entry editing
+- Exercise video library: curated Default Videos plus personal Saved Videos (add, rename, favorite, reorder, delete), "Watch on YouTube" (installed app or browser), a "Search YouTube" hand-off to youtube.com (zero setup), and "Add YouTube Link" by URL
 
 Advanced multi-stage editing still needs polish. Active-workout navigation keeps every strength, cardio, timed, bodyweight, assisted, and grouped exercise in saved workout order; drop/rest-pause stages remain inside their exercise. Phase 7 data portability is implemented; physical-device biometric and share-sheet verification remains release work. See [FEATURES.md](docs/FEATURES.md) and [ROADMAP.md](docs/ROADMAP.md).
 

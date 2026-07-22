@@ -1,9 +1,9 @@
 export const DATABASE_NAME = 'liftdg.db';
 export const DATABASE_VERSION = 10;
-export const EXERCISE_SEED_VERSION = 2;
+export const EXERCISE_SEED_VERSION = 3;
 export const STARTER_PLAN_SEED_VERSION = 1;
 export const PERSONAL_RECORD_BACKFILL_VERSION = 1;
-export const EXERCISE_VIDEO_SEED_VERSION = 1;
+export const EXERCISE_VIDEO_SEED_VERSION = 13;
 
 export const migrationV1 = `
 CREATE TABLE IF NOT EXISTS exercises (
@@ -291,6 +291,7 @@ CREATE TABLE IF NOT EXISTS exercise_default_videos (
   FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE
 );
 CREATE INDEX IF NOT EXISTS idx_exercise_default_videos_exercise_id ON exercise_default_videos(exercise_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_default_videos_unique ON exercise_default_videos(exercise_id, video_id);
 
 CREATE TABLE IF NOT EXISTS exercise_saved_videos (
   id TEXT PRIMARY KEY NOT NULL, exercise_id TEXT NOT NULL, video_id TEXT NOT NULL, title TEXT NOT NULL,

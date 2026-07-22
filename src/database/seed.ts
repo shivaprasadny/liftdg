@@ -1,15 +1,18 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import exercises from '@/data/exercises.json';
+import exerciseVideos from '@/data/exerciseVideos.json';
 import starterPlans from '@/data/starterPlans.json';
 import type { ExerciseSeed } from '@/types/exercise';
+import type { ExerciseVideoSeed } from '@/types/exerciseVideo';
 import type { StarterPlanSeed } from '@/types/workoutPlan';
 import { createId } from '@/utils/ids';
 
-import { EXERCISE_SEED_VERSION, STARTER_PLAN_SEED_VERSION } from './schema';
+import { EXERCISE_SEED_VERSION, EXERCISE_VIDEO_SEED_VERSION, STARTER_PLAN_SEED_VERSION } from './schema';
 
 const seeds = exercises as ExerciseSeed[];
 const planSeeds = starterPlans as StarterPlanSeed[];
+const videoSeeds = exerciseVideos as ExerciseVideoSeed[];
 
 export async function seedBuiltInExercises(db: SQLiteDatabase): Promise<void> {
   const setting = await db.getFirstAsync<{ value: string }>(
@@ -77,5 +80,35 @@ export async function seedStarterPlans(db: SQLiteDatabase): Promise<void> {
     await transaction.runAsync(`INSERT INTO app_settings (key, value, updated_at) VALUES (?, ?, ?)
       ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
     ['starter_plan_seed_version', String(STARTER_PLAN_SEED_VERSION), now]);
+  });
+}
+
+/**
+ * Curated default exercise videos ship as an empty seed file until real, verified YouTube links
+ * are added (see DECISIONS.md). Re-running is safe: existing exercise IDs are refreshed by
+ * (exercise_id, video_id), and the version key prevents re-seeding once nothing has changed.
+ */
+export async function seedExerciseVideos(db: SQLiteDatabase): Promise<void> {
+  const setting = await db.getFirstAsync<{ value: string }>(
+    'SELECT value FROM app_settings WHERE key = ?', ['exercise_video_seed_version'],
+  );
+  if (Number(setting?.value ?? 0) >= EXERCISE_VIDEO_SEED_VERSION) return;
+  const now = new Date().toISOString();
+  await db.withExclusiveTransactionAsync(async (transaction) => {
+    const orderByExercise = new Map<string, number>();
+    for (const video of videoSeeds) {
+      const order = orderByExercise.get(video.exerciseId) ?? 0;
+      orderByExercise.set(video.exerciseId, order + 1);
+      await transaction.runAsync(`INSERT INTO exercise_default_videos
+        (id, exercise_id, title, video_id, channel_name, thumbnail_url, sort_order, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(exercise_id, video_id) DO UPDATE SET
+          title = excluded.title, channel_name = excluded.channel_name,
+          thumbnail_url = excluded.thumbnail_url, sort_order = excluded.sort_order, updated_at = excluded.updated_at`,
+      [createId('default_video'), video.exerciseId, video.title, video.videoId, video.channelName, video.thumbnailUrl, order, now, now]);
+    }
+    await transaction.runAsync(`INSERT INTO app_settings (key, value, updated_at) VALUES (?, ?, ?)
+      ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
+    ['exercise_video_seed_version', String(EXERCISE_VIDEO_SEED_VERSION), now]);
   });
 }

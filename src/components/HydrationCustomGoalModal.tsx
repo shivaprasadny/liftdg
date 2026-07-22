@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppButton } from '@/components/AppButton';
 import { AppInput } from '@/components/AppInput';
@@ -46,6 +46,7 @@ function CustomAmountModal({ visible, title, waterUnit, initialValueMl, rule, on
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Pressable accessibilityLabel="Close" style={[styles.overlay, { backgroundColor: colors.overlay }]} onPress={onClose}>
         <Pressable style={[styles.sheet, { backgroundColor: colors.surface }]} onPress={(event) => event.stopPropagation()}>
           <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
@@ -59,6 +60,7 @@ function CustomAmountModal({ visible, title, waterUnit, initialValueMl, rule, on
           </View>
         </Pressable>
       </Pressable>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
@@ -91,6 +93,7 @@ export function HydrationCustomServingModal({ visible, waterUnit, initialValueMl
 }
 
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   overlay: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.lg },
   sheet: { width: '100%', maxWidth: 360, padding: spacing.lg, borderRadius: radius.lg, gap: spacing.md },
   title: { ...typography.heading },

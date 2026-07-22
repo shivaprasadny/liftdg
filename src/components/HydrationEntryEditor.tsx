@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppButton } from '@/components/AppButton';
 import { AppInput } from '@/components/AppInput';
@@ -46,26 +46,29 @@ export function HydrationEntryEditor({ visible, unit, entry, defaultDate, onClos
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <Pressable accessibilityLabel="Close" style={[styles.overlay, { backgroundColor: colors.overlay }]} onPress={onClose}>
-        <Pressable style={[styles.sheet, { backgroundColor: colors.surface }]} onPress={(event) => event.stopPropagation()}>
-          <Text style={[styles.title, { color: colors.text }]}>{entry ? 'Edit Entry' : 'Add Entry'}</Text>
-          <AppInput label={`Amount (${unit === 'us' ? 'fl oz' : 'L'})`} keyboardType="decimal-pad" value={amountText} onChangeText={setAmountText} error={error} />
-          <View style={styles.row}>
-            <AppInput containerStyle={styles.half} label="Date" placeholder="YYYY-MM-DD" value={dateText} onChangeText={setDateText} />
-            <AppInput containerStyle={styles.half} label="Time" placeholder="HH:MM" value={timeText} onChangeText={setTimeText} />
-          </View>
-          <AppInput label="Notes (optional)" value={notes} onChangeText={setNotes} multiline />
-          <View style={styles.actions}>
-            <AppButton label="Cancel" variant="secondary" onPress={onClose} style={styles.actionButton} />
-            <AppButton label="Save" onPress={commit} style={styles.actionButton} />
-          </View>
+      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <Pressable accessibilityLabel="Close" style={[styles.overlay, { backgroundColor: colors.overlay }]} onPress={onClose}>
+          <Pressable style={[styles.sheet, { backgroundColor: colors.surface }]} onPress={(event) => event.stopPropagation()}>
+            <Text style={[styles.title, { color: colors.text }]}>{entry ? 'Edit Entry' : 'Add Entry'}</Text>
+            <AppInput label={`Amount (${unit === 'us' ? 'fl oz' : 'L'})`} keyboardType="decimal-pad" value={amountText} onChangeText={setAmountText} error={error} />
+            <View style={styles.row}>
+              <AppInput containerStyle={styles.half} label="Date" placeholder="YYYY-MM-DD" value={dateText} onChangeText={setDateText} />
+              <AppInput containerStyle={styles.half} label="Time" placeholder="HH:MM" value={timeText} onChangeText={setTimeText} />
+            </View>
+            <AppInput label="Notes (optional)" value={notes} onChangeText={setNotes} multiline />
+            <View style={styles.actions}>
+              <AppButton label="Cancel" variant="secondary" onPress={onClose} style={styles.actionButton} />
+              <AppButton label="Save" onPress={commit} style={styles.actionButton} />
+            </View>
+          </Pressable>
         </Pressable>
-      </Pressable>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   overlay: { flex: 1, justifyContent: 'flex-end' },
   sheet: { padding: spacing.lg, borderTopLeftRadius: radius.lg, borderTopRightRadius: radius.lg, gap: spacing.md, paddingBottom: spacing.xxl },
   title: { ...typography.heading },

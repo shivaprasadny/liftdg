@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7, migrationV8, migrationV9 } from './schema';
+import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7, migrationV8, migrationV9, migrationV10 } from './schema';
 
 describe('database migration compatibility', () => {
-  it('advances the schema to version 9', () => expect(DATABASE_VERSION).toBe(9));
+  it('advances the schema to version 10', () => expect(DATABASE_VERSION).toBe(10));
   it('adds copied plan targets and set audit fields', () => {
     expect(migrationV3).toContain('target_sets');
     expect(migrationV3).toContain('rest_seconds');
@@ -41,5 +41,11 @@ describe('database migration compatibility', () => {
     expect(migrationV9).toContain("ADD COLUMN source TEXT NOT NULL DEFAULT 'quick_add'");
     expect(migrationV9).toContain('CREATE TABLE IF NOT EXISTS hydration_goal_history');
     expect(migrationV9).toContain('idx_hydration_goal_history_unique_date');
+  });
+  it('adds a default/saved exercise video library, both cascading with their exercise', () => {
+    expect(migrationV10).toContain('CREATE TABLE IF NOT EXISTS exercise_default_videos');
+    expect(migrationV10).toContain('CREATE TABLE IF NOT EXISTS exercise_saved_videos');
+    expect(migrationV10).toContain('idx_exercise_saved_videos_unique');
+    expect(migrationV10).toContain('FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE');
   });
 });

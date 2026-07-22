@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppButton } from '@/components/AppButton';
 import { AppInput } from '@/components/AppInput';
@@ -27,35 +27,38 @@ export function HydrationQuickAddSheet({ visible, unit, onClose, onSelect }: Pro
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={close}>
-      <Pressable accessibilityLabel="Close" style={[styles.overlay, { backgroundColor: colors.overlay }]} onPress={close}>
-        <Pressable style={[styles.sheet, { backgroundColor: colors.surface }]} onPress={(event) => event.stopPropagation()}>
-          <Text style={[styles.title, { color: colors.text }]}>Add Water</Text>
-          {!customOpen ? (
-            <>
-              <View style={styles.grid}>
-                {PRESETS_ML.map((amount) => (
-                  <Pressable key={amount} accessibilityRole="button" accessibilityLabel={`Add ${formatServingAmount(amount, unit)}`}
-                    onPress={() => { onSelect(amount); close(); }}
-                    style={({ pressed }) => [styles.chip, { backgroundColor: colors.surfaceElevated, borderColor: colors.border }, pressed && styles.pressed]}>
-                    <Text style={[styles.chipText, { color: colors.text }]}>{formatServingAmount(amount, unit)}</Text>
-                  </Pressable>
-                ))}
-              </View>
-              <AppButton label="Custom Amount" variant="secondary" onPress={() => setCustomOpen(true)} />
-            </>
-          ) : (
-            <>
-              <AppInput label={`Amount (${unit === 'us' ? 'fl oz' : 'ml'})`} keyboardType="numeric" value={customValue} onChangeText={setCustomValue} autoFocus />
-              <AppButton label="Add" onPress={submitCustom} disabled={!customValue} />
-            </>
-          )}
+      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <Pressable accessibilityLabel="Close" style={[styles.overlay, { backgroundColor: colors.overlay }]} onPress={close}>
+          <Pressable style={[styles.sheet, { backgroundColor: colors.surface }]} onPress={(event) => event.stopPropagation()}>
+            <Text style={[styles.title, { color: colors.text }]}>Add Water</Text>
+            {!customOpen ? (
+              <>
+                <View style={styles.grid}>
+                  {PRESETS_ML.map((amount) => (
+                    <Pressable key={amount} accessibilityRole="button" accessibilityLabel={`Add ${formatServingAmount(amount, unit)}`}
+                      onPress={() => { onSelect(amount); close(); }}
+                      style={({ pressed }) => [styles.chip, { backgroundColor: colors.surfaceElevated, borderColor: colors.border }, pressed && styles.pressed]}>
+                      <Text style={[styles.chipText, { color: colors.text }]}>{formatServingAmount(amount, unit)}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+                <AppButton label="Custom Amount" variant="secondary" onPress={() => setCustomOpen(true)} />
+              </>
+            ) : (
+              <>
+                <AppInput label={`Amount (${unit === 'us' ? 'fl oz' : 'ml'})`} keyboardType="numeric" value={customValue} onChangeText={setCustomValue} autoFocus />
+                <AppButton label="Add" onPress={submitCustom} disabled={!customValue} />
+              </>
+            )}
+          </Pressable>
         </Pressable>
-      </Pressable>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   overlay: { flex: 1, justifyContent: 'flex-end' },
   sheet: { padding: spacing.lg, borderTopLeftRadius: radius.lg, borderTopRightRadius: radius.lg, gap: spacing.md, paddingBottom: spacing.xxl },
   title: { ...typography.heading },

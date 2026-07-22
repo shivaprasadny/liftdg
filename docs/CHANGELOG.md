@@ -36,15 +36,25 @@
 - A full Water page with Day/Week/Month/3-Months/Year/Custom navigation (Previous/Next, a "Today" shortcut, and a lightweight date-picker sheet), grouping and sorting of historical entries, summary cards (total, average, goal days, best/lowest day), a history chart with automatic (and, for custom ranges, manual) daily/weekly/monthly aggregation, a monthly calendar view, and add/edit/delete for any entry on any date.
 - Hydration settings: daily goal, default serving size, metric/US units, celebration style (full/simple/off), remembered expansion.
 - A typed-confirmation ("HYDRATION"), double-confirmed hydration data reset with optional CSV/JSON export first, scoped so it never touches other app data.
+- Exercise video library: a per-exercise "Exercise Videos" section with separate Default Videos (curated, non-editable) and My Saved Videos (add, rename, favorite, reorder, delete).
+- "Watch on YouTube" opens the installed YouTube app (falling back to the browser) for both Default and Saved videos — reliable playback outside the app, after two embedded in-app player designs each failed to play video on a real device (DECISIONS.md #42).
+- "Search YouTube" pre-filled with "{Exercise Name} Proper Form," opening youtube.com's own search (zero setup, no API key) — replacing an earlier in-app API-key search that proved confusing to configure.
+- "Add YouTube Link" to save a pasted URL with automatic (keyless) title/thumbnail lookup, no API key ever required.
+- The Default Videos section is hidden entirely on any exercise with none seeded (instead of showing an empty state), and a Settings → Video Library toggle ("Hide default exercise videos") lets a user suppress it everywhere even when videos exist.
+- A new "Yoga" exercise category (schema migration-free — it's seed content, not a schema change) with Surya Namaskar (Sun Salutation) and five other poses; a batch of additional popular strength/cardio exercises (Chin-Up, Push Press, Box Jump, Wall Sit, Pistol Squat, Jumping Jacks, High Knees, Battle Ropes, Renegade Row, Superman).
 
 ### Changed
 
 - Workout exercises now snapshot plan targets when a session starts.
 - Active workout details mount only for the focused exercise; the full list uses lightweight summary cards for large sessions.
 - Shared application errors prevent raw SQLite failures from reaching UI messages.
+- The focused exercise's name in an active workout is now tappable, opening that exercise's detail page; the back button/gesture returns to the same in-progress workout.
 
 ### Fixed
 
+- Fixed a stuck-workout bug: with zero completed sets, "Finish Workout" refused to save (correctly) but its "Discard" option only ever appeared alongside a successful finish, so there was no way to leave the workout at all. Added a standalone "Cancel Workout" action, always reachable, plus a "Discard Workout" option on the "Cannot finish yet" error itself.
+- Added an explicit "Cancel" button to every modal-presented screen's header (New/Edit Exercise, Add Exercises to a plan or workout, Create Group) — previously the only way to leave was an easy-to-miss swipe-down gesture on iOS, and nothing at all on Android.
+- The plan detail screen now shows a History section (reusing the existing plan→workout link and history query, no schema change): times used, last-performed date, and a card per past completed workout from that plan, tapping through to its full details.
 - Enforced a single active workout at the database level.
 - Added persisted audit timestamps to workout sets.
 - Added a completed-workout timestamp index for history queries.
@@ -55,3 +65,4 @@
 - Added `expo-haptics` for the hydration goal-celebration haptic.
 - Added a light color palette (`lightColors`) and `useAppColors()` hook so new hydration UI honors the existing theme setting.
 - Added schema migration 9 for water-entry provenance/notes and the `hydration_goal_history` table.
+- Added schema migration 10 for `exercise_default_videos` and `exercise_saved_videos`.

@@ -45,14 +45,6 @@ export interface SaveVideoInput {
   youtubeUrl: string;
 }
 
-export interface YouTubeSearchResult {
-  videoId: string;
-  title: string;
-  channelName: string;
-  thumbnailUrl: string;
-  durationSeconds: number | null;
-}
-
 export interface YouTubeOEmbedResult {
   title: string;
   authorName: string;

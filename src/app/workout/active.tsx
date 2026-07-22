@@ -79,6 +79,16 @@ export default function ActiveWorkoutScreen() {
     priorCompletion.current[current.id] = current.completionStatus;
   }, [navigation.canGoNext, navigation.currentExercise, settings.autoAdvanceExercise]);
 
+  /** The only way to leave an active workout without finishing it — must stay reachable even when assertCanFinish would block Finish Workout entirely (e.g. zero completed sets). */
+  const confirmDiscard = useCallback((title: string, message?: string) => {
+    if (!workout) return;
+    Alert.alert(title, message, [
+      { text: 'Keep Going', style: 'cancel' },
+      { text: 'Discard Workout', style: 'destructive', onPress: () => void discardWorkout(db, workout.id).then(() => router.replace('/start')) },
+    ]);
+  }, [db, workout]);
+  const requestDiscard = useCallback(() => confirmDiscard('Cancel this workout?', 'This permanently discards the active workout and any sets you’ve logged. This cannot be undone.'), [confirmDiscard]);
+
   const requestFinish = useCallback(() => {
     if (!workout) return;
     try {
@@ -88,8 +98,8 @@ export default function ActiveWorkoutScreen() {
         { text: 'Discard', style: 'destructive', onPress: () => void discardWorkout(db, workout.id).then(() => router.replace('/start')) },
         { text: 'Save and Finish', onPress: () => void finishWorkout(db, workout).then(() => router.replace({ pathname: '/workout/summary', params: { id: workout.id } })) },
       ]);
-    } catch (caught) { Alert.alert('Cannot finish yet', getUserMessage(caught, caught instanceof Error ? caught.message : 'Complete a set first.')); }
-  }, [db, workout]);
+    } catch (caught) { confirmDiscard('Cannot finish yet', getUserMessage(caught, caught instanceof Error ? caught.message : 'Complete a set first.')); }
+  }, [confirmDiscard, db, workout]);
   useEffect(() => { if (finish === '1' && workout) requestFinish(); }, [finish, requestFinish, workout]);
 
   const move = useCallback(async (index: number, direction: -1 | 1) => {
@@ -115,7 +125,14 @@ export default function ActiveWorkoutScreen() {
   const completedExercises = items.filter((item) => item.completionStatus === 'complete').length;
 
   const header = <>
-    <View style={styles.hero}><View style={styles.heroText}><Text accessibilityRole="header" style={styles.title}>{workout.name}</Text><Text style={styles.muted}>{clock(elapsedSeconds(workout.startedAt, now))} · {completedExercises} of {items.length} exercises complete</Text></View><AppButton label="Finish Workout" onPress={requestFinish} /></View>
+    <View style={styles.hero}>
+      <View style={styles.heroText}>
+        <Text accessibilityRole="header" style={styles.title}>{workout.name}</Text>
+        <Text style={styles.muted}>{clock(elapsedSeconds(workout.startedAt, now))} · {completedExercises} of {items.length} exercises complete</Text>
+        <Pressable accessibilityRole="button" accessibilityLabel="Cancel workout" onPress={requestDiscard} style={styles.cancelLink}><Text style={styles.remove}>Cancel Workout</Text></Pressable>
+      </View>
+      <AppButton label="Finish Workout" onPress={requestFinish} />
+    </View>
     <View style={styles.stats}><Stat value={String(items.length)} label="Exercises" /><Stat value={String(summary.completedSets)} label="Sets done" /><Stat value={summary.totalVolume.toFixed(0)} label="Volume kg" /></View>
     {timer.remaining > 0 ? <View><Text style={styles.timerIndicator}>Rest timer active · {clock(timer.remaining)}</Text><RestTimer timer={timer} /></View> : null}
   </>;
@@ -140,7 +157,9 @@ export default function ActiveWorkoutScreen() {
       <Pressable accessibilityRole="button" accessibilityLabel="Return to workout list" onPress={() => void changeExercise(navigation.returnToList)} style={styles.back}><Text style={styles.link}>← All Exercises</Text></Pressable>
       <View style={styles.focusHeader}>
         {current.group ? <Text style={styles.group}>{current.group.label}{current.group.type === 'circuit' && navigation.circuitRound ? ` · Round ${navigation.circuitRound} of ${current.group.targetRounds}` : ''}</Text> : null}
-        <Text accessibilityRole="header" style={styles.focusName}>{current.name}</Text>
+        <Pressable accessibilityRole="button" accessibilityLabel={`View exercise details for ${current.name}`} onPress={() => router.push({ pathname: '/exercises/[id]', params: { id: exercise.exerciseId } })}>
+          <Text accessibilityRole="header" style={styles.focusName}>{current.name}</Text>
+        </Pressable>
         {settings.showExercisePosition ? <Pressable accessibilityRole="button" accessibilityLabel={`Exercise ${navigation.currentExerciseIndex + 1} of ${navigation.totalExerciseCount}. Open exercise picker`} onPress={() => setPickerVisible(true)} style={styles.position}><Text style={styles.positionText}>Exercise {navigation.currentExerciseIndex + 1} of {navigation.totalExerciseCount} ▾</Text></Pressable> : null}
         {current.group ? <Text style={styles.muted}>{current.group.position + 1} of {current.group.size} in group</Text> : null}
         <Text style={styles.muted}>{current.category} · {current.exerciseType}</Text>
@@ -168,6 +187,7 @@ function Stat({ value, label }: { value: string; label: string }) { return <View
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background }, content: { padding: spacing.lg, paddingBottom: spacing.xxl, gap: spacing.md }, headerContent: { gap: spacing.md, marginBottom: spacing.md }, center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
   hero: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md }, heroText: { flex: 1 }, title: { ...typography.title, color: colors.text }, muted: { ...typography.caption, color: colors.textMuted },
+  cancelLink: { alignSelf: 'flex-start', minHeight: 44, justifyContent: 'center' },
   stats: { flexDirection: 'row', gap: spacing.sm }, stat: { flex: 1, padding: spacing.md, borderRadius: radius.md, backgroundColor: colors.surface, alignItems: 'center' }, statValue: { ...typography.heading, color: colors.text }, statLabel: { ...typography.caption, color: colors.textMuted },
   timerIndicator: { ...typography.label, color: colors.warning, marginBottom: spacing.sm }, row: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md }, link: { ...typography.label, color: colors.accent }, remove: { ...typography.label, color: colors.danger }, sectionTitle: { ...typography.heading, color: colors.text, marginTop: spacing.sm }, empty: { padding: spacing.xl, alignItems: 'center', gap: spacing.sm },
   back: { minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start' }, focusHeader: { alignItems: 'center', gap: spacing.xs }, focusName: { ...typography.title, color: colors.text, textAlign: 'center' }, group: { ...typography.label, color: colors.accent, textTransform: 'uppercase' }, position: { minHeight: 44, justifyContent: 'center', paddingHorizontal: spacing.md }, positionText: { ...typography.label, color: colors.text },

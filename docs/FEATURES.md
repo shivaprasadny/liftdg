@@ -11,6 +11,7 @@
 - ✅ Complete — Eight starter plans
 - ✅ Complete — Plan duplication
 - ✅ Complete — User-plan editing and ordering
+- ✅ Complete — Plan detail screen shows usage history (times used, last performed, and a card per past completed workout, tapping through to its full details)
 - ✅ Complete — Active workout logging and immediate persistence
 - ✅ Complete — Unified active-workout list, focused exercise mode, jump picker, previous/next navigation, and persisted focus recovery
 - ✅ Complete — Superset/giant-set ordering and round-aware circuit navigation
@@ -43,5 +44,8 @@
 - ✅ Complete — Custom hydration goal/serving entry with validation, unusual-value confirmation, and goal-history-aware historical grading
 - ✅ Complete — Full Water page: Day/Week/Month/3-Months/Year/Custom navigation, grouping/sorting, summary cards, history chart, monthly calendar, and per-date entry add/edit/delete
 - ✅ Complete — Hydration settings (daily goal, default serving, units, celebration style, remembered expansion) and a typed-confirmation, double-confirmed reset with optional export
+- ✅ Complete — Exercise video library: Default Videos (hidden automatically when empty, and hideable app-wide via Settings) + My Saved Videos (add, rename, favorite, reorder, delete), each with a "Watch on YouTube" action that opens the installed app or browser (no in-app embedded player — see DECISIONS.md #42)
+- ✅ Complete — "Search YouTube" (hands off to youtube.com, zero setup) and "Add YouTube Link" (keyless oEmbed lookup) for saving technique videos
+- ⚠️ Needs improvement — Default (curated) exercise videos: two verified links added so far (Goblet Squat, Ab Wheel Rollout); nearly every other exercise still has none
 
 Phase 6 uses real persisted rows and repository transactions. It is not marked fully complete because the advanced stage editors and guided circuit experience do not yet cover every requested interaction.

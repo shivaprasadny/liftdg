@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppButton } from '@/components/AppButton';
 import { AppInput } from '@/components/AppInput';
@@ -41,6 +41,7 @@ export function HydrationDatePickerSheet({ visible, kind, referenceDate, onClose
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Pressable accessibilityLabel="Close" style={[styles.overlay, { backgroundColor: colors.overlay }]} onPress={onClose}>
         <Pressable style={[styles.sheet, { backgroundColor: colors.surface }]} onPress={(event) => event.stopPropagation()}>
           {(kind === 'day' || kind === 'week') && (
@@ -87,6 +88,7 @@ export function HydrationDatePickerSheet({ visible, kind, referenceDate, onClose
           )}
         </Pressable>
       </Pressable>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
@@ -103,6 +105,7 @@ function YearStepper({ year, onChange, onConfirm, colors }: { year: number; onCh
 }
 
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   overlay: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.lg },
   sheet: { width: '100%', maxWidth: 380, padding: spacing.lg, borderRadius: radius.lg, gap: spacing.md },
   title: { ...typography.heading },
