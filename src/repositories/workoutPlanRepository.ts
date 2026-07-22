@@ -1,5 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
+import type { WorkoutPlanType } from '@/constants/workoutPlanTypes';
 import { assertUserOwnedPlan, createDuplicateInput } from '@/services/workoutPlanService';
 import type { CreateWorkoutPlanInput, UpdateWorkoutPlanInput, WorkoutPlan, WorkoutPlanWithExercises } from '@/types/workoutPlan';
 import { createId } from '@/utils/ids';
@@ -9,13 +10,14 @@ import { getPlanExercises, replacePlanExercises } from './planExerciseRepository
 import { duplicatePlanGroups } from './planGroupRepository';
 
 interface PlanRow {
-  id: string; name: string; description: string | null; color: string | null;
+  id: string; name: string; description: string | null; color: string | null; workout_type: string;
   is_builtin: number; is_archived: number; created_at: string; updated_at: string;
   exercise_count: number; estimated_set_count: number;
 }
 
 function mapPlan(row: PlanRow): WorkoutPlan {
   return { id: row.id, name: row.name, description: row.description, color: row.color,
+    workoutType: row.workout_type as WorkoutPlanType,
     isBuiltin: row.is_builtin === 1, isArchived: row.is_archived === 1,
     createdAt: row.created_at, updatedAt: row.updated_at,
     exerciseCount: row.exercise_count, estimatedSetCount: row.estimated_set_count };
@@ -54,8 +56,8 @@ export async function createPlan(db: SQLiteDatabase, input: CreateWorkoutPlanInp
   const validated = workoutPlanSchema.parse(input); const id = createId('plan'); const now = new Date().toISOString();
   await db.withExclusiveTransactionAsync(async (transaction) => {
     await transaction.runAsync(`INSERT INTO workout_plans
-      (id, name, description, color, is_builtin, is_archived, created_at, updated_at)
-      VALUES (?, ?, ?, ?, 0, 0, ?, ?)`, [id, validated.name.trim(), validated.description, validated.color, now, now]);
+      (id, name, description, color, workout_type, is_builtin, is_archived, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, 0, 0, ?, ?)`, [id, validated.name.trim(), validated.description, validated.color, validated.workoutType, now, now]);
     await replacePlanExercises(transaction, id, validated.exercises, true);
   });
   const plan = await getPlanById(db, id); if (!plan) throw new Error('Plan was not created'); return plan;
@@ -66,8 +68,8 @@ export async function updatePlan(db: SQLiteDatabase, input: UpdateWorkoutPlanInp
   await db.withExclusiveTransactionAsync(async (transaction) => {
     const existing = await transaction.getFirstAsync<{ is_builtin: number }>('SELECT is_builtin FROM workout_plans WHERE id = ?', [input.id]);
     if (!existing) throw new Error('Plan not found'); assertUserOwnedPlan(existing.is_builtin === 1, 'edited');
-    await transaction.runAsync(`UPDATE workout_plans SET name = ?, description = ?, color = ?, updated_at = ?
-      WHERE id = ? AND is_archived = 0`, [validated.name.trim(), validated.description, validated.color, new Date().toISOString(), input.id]);
+    await transaction.runAsync(`UPDATE workout_plans SET name = ?, description = ?, color = ?, workout_type = ?, updated_at = ?
+      WHERE id = ? AND is_archived = 0`, [validated.name.trim(), validated.description, validated.color, validated.workoutType, new Date().toISOString(), input.id]);
     await replacePlanExercises(transaction, input.id, validated.exercises, true);
   });
   const plan = await getPlanById(db, input.id); if (!plan) throw new Error('Plan was not updated'); return plan;

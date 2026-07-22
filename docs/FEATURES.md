@@ -12,6 +12,9 @@
 - ✅ Complete — Plan duplication
 - ✅ Complete — User-plan editing and ordering
 - ✅ Complete — Plan detail screen shows usage history (times used, last performed, and a card per past completed workout, tapping through to its full details)
+- ✅ Complete — Every plan can be tagged with a workout type (Strength/Running/Cycling/Swimming/Walking/Yoga/Mobility/HIIT/Hybrid/Other), shown as a badge; only Strength has a dedicated exercise editor today
+- ⚠️ Needs improvement — Programs: a read-only multi-week layer over existing plans, with one built-in program ("Shiva's Strength & Athletic"). No create/edit/duplicate/favorite/start/pause/resume yet
+- ⚠️ Needs improvement — Calendar: one-time Agenda scheduling of an existing plan onto a date/daypart, plus "Start Program" to bulk-populate a program's workouts. No Month/Week views, drag-and-drop, conflict detection, recurring-edit scopes, or notifications yet
 - ✅ Complete — Active workout logging and immediate persistence
 - ✅ Complete — Unified active-workout list, focused exercise mode, jump picker, previous/next navigation, and persisted focus recovery
 - ✅ Complete — Superset/giant-set ordering and round-aware circuit navigation

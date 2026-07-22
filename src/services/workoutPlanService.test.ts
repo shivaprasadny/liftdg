@@ -4,7 +4,7 @@ import type { WorkoutPlanWithExercises } from '@/types/workoutPlan';
 import { assertUserOwnedPlan, createDuplicateInput, movePlanExercise, normalizePlanExerciseOrder } from './workoutPlanService';
 
 const plan: WorkoutPlanWithExercises = {
-  id: 'starter', name: 'Push Day', description: 'Push', color: '#fff', isBuiltin: true,
+  id: 'starter', name: 'Push Day', description: 'Push', color: '#fff', workoutType: 'strength', isBuiltin: true,
   isArchived: false, createdAt: '2026-01-01', updatedAt: '2026-01-01', exerciseCount: 1,
   estimatedSetCount: 3, exercises: [{ id: 'old-link', planId: 'starter', exerciseId: 'push-up',
     exerciseOrder: 0, targetSets: 3, targetRepsMin: 8, targetRepsMax: 12,
@@ -22,6 +22,7 @@ describe('plan duplication', () => {
     expect(copy.exercises[0]).not.toHaveProperty('id');
     expect(copy.exercises[0]).not.toHaveProperty('planId');
     expect(copy.exercises[0].exerciseId).toBe('push-up');
+    expect(copy.workoutType).toBe('strength');
   });
 });
 

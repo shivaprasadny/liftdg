@@ -1,0 +1,32 @@
+[
+  {
+    "id": "program_shiva_strength_athletic",
+    "name": "Shiva's Strength & Athletic",
+    "description": "An 8-week, 4-day athletic strength program built around pull-ups, push-ups, dips, squats, deadlifts, clean and press, planks, and carries — with Surya Namaskar warm-ups and optional incline treadmill/stair finishers. Suitable for everyone; beginner substitutions (assisted pull-ups/dips) are noted on each day.",
+    "category": "Shiva's Favorites",
+    "goal": "Athletic full-body strength",
+    "difficulty": "intermediate",
+    "durationWeeks": 8,
+    "daysPerWeek": 4,
+    "estimatedSessionMinutes": 55,
+    "equipmentLevel": "Full gym",
+    "isFeatured": true,
+    "notes": "General 8-week structure: Week 1 technique and baseline, Week 2 add reps, Week 3 add a small amount of weight or reduce assistance, Week 4 deload, Week 5 increase volume, Week 6 increase weight or difficulty, Week 7 hardest training week, Week 8 progress assessment. Progress at your own pace using your own entered weights — this program provides targets and guidance, not automatic load changes.",
+    "weeks": [
+      {"weekNumber": 1, "title": "Week 1", "focus": "Technique and baseline", "notes": "Learn each movement with strict form before adding load or reps.", "isDeload": false, "isAssessment": false},
+      {"weekNumber": 2, "title": "Week 2", "focus": "Add reps", "notes": "Same weights as Week 1; add 1-2 reps per set where you can.", "isDeload": false, "isAssessment": false},
+      {"weekNumber": 3, "title": "Week 3", "focus": "Add weight or reduce assistance", "notes": "Small load increase on compounds, or one step down in pull-up/dip assistance.", "isDeload": false, "isAssessment": false},
+      {"weekNumber": 4, "title": "Week 4", "focus": "Deload", "notes": "Reduce sets and intensity to recover before the second half of the program.", "isDeload": true, "isAssessment": false},
+      {"weekNumber": 5, "title": "Week 5", "focus": "Increase volume", "notes": "Add a set to your main compound lifts.", "isDeload": false, "isAssessment": false},
+      {"weekNumber": 6, "title": "Week 6", "focus": "Increase weight or difficulty", "notes": "Push loads again; advanced trainees can add weighted pull-ups/dips.", "isDeload": false, "isAssessment": false},
+      {"weekNumber": 7, "title": "Week 7", "focus": "Hardest training week", "notes": "Highest planned effort of the program — keep form strict.", "isDeload": false, "isAssessment": false},
+      {"weekNumber": 8, "title": "Week 8", "focus": "Progress assessment", "notes": "Retest a few key lifts/reps and compare against Week 1.", "isDeload": false, "isAssessment": true}
+    ],
+    "days": [
+      {"dayNumber": 1, "dayLabel": "Push and Core", "planId": "program_shiva_athletic_push_core", "workoutType": "strength", "isRestDay": false, "isOptional": false, "notes": null, "estimatedDurationMinutes": 55},
+      {"dayNumber": 2, "dayLabel": "Pull and Conditioning", "planId": "program_shiva_athletic_pull_conditioning", "workoutType": "strength", "isRestDay": false, "isOptional": false, "notes": null, "estimatedDurationMinutes": 55},
+      {"dayNumber": 3, "dayLabel": "Legs and Athletic Strength", "planId": "program_shiva_athletic_legs", "workoutType": "strength", "isRestDay": false, "isOptional": false, "notes": null, "estimatedDurationMinutes": 55},
+      {"dayNumber": 4, "dayLabel": "Full Body", "planId": "program_shiva_athletic_full_body", "workoutType": "strength", "isRestDay": false, "isOptional": false, "notes": null, "estimatedDurationMinutes": 55}
+    ]
+  }
+]

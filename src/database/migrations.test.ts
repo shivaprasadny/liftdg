@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7, migrationV8, migrationV9, migrationV10 } from './schema';
+import { DATABASE_VERSION, migrationV3, migrationV4, migrationV5, migrationV6, migrationV7, migrationV8, migrationV9, migrationV10, migrationV11, migrationV12, migrationV13, migrationV14 } from './schema';
 
 describe('database migration compatibility', () => {
-  it('advances the schema to version 10', () => expect(DATABASE_VERSION).toBe(10));
+  it('advances the schema to version 14', () => expect(DATABASE_VERSION).toBe(14));
   it('adds copied plan targets and set audit fields', () => {
     expect(migrationV3).toContain('target_sets');
     expect(migrationV3).toContain('rest_seconds');
@@ -47,5 +47,30 @@ describe('database migration compatibility', () => {
     expect(migrationV10).toContain('CREATE TABLE IF NOT EXISTS exercise_saved_videos');
     expect(migrationV10).toContain('idx_exercise_saved_videos_unique');
     expect(migrationV10).toContain('FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE');
+  });
+  it('adds a workout_type column to workout_plans, defaulted to strength for existing rows', () => {
+    expect(migrationV11).toContain("ADD COLUMN workout_type TEXT NOT NULL DEFAULT 'strength'");
+    expect(migrationV11).toContain('idx_workout_plans_workout_type');
+  });
+  it('adds program_templates/program_weeks/program_days, days linking to workout_plans', () => {
+    expect(migrationV12).toContain('CREATE TABLE IF NOT EXISTS program_templates');
+    expect(migrationV12).toContain('CREATE TABLE IF NOT EXISTS program_weeks');
+    expect(migrationV12).toContain('CREATE TABLE IF NOT EXISTS program_days');
+    expect(migrationV12).toContain('idx_program_weeks_unique_number');
+    expect(migrationV12).toContain('FOREIGN KEY (plan_id) REFERENCES workout_plans(id) ON DELETE SET NULL');
+    expect(migrationV12).toContain('FOREIGN KEY (program_week_id) REFERENCES program_weeks(id) ON DELETE CASCADE');
+  });
+  it('adds scheduled_workouts, a one-time calendar item linking a local date to a plan', () => {
+    expect(migrationV13).toContain('CREATE TABLE IF NOT EXISTS scheduled_workouts');
+    expect(migrationV13).toContain('scheduled_date TEXT NOT NULL');
+    expect(migrationV13).toContain("status TEXT NOT NULL DEFAULT 'scheduled'");
+    expect(migrationV13).toContain('idx_scheduled_workouts_date');
+    expect(migrationV13).toContain('FOREIGN KEY (plan_id) REFERENCES workout_plans(id) ON DELETE SET NULL');
+  });
+  it('adds program-link columns to scheduled_workouts for "Start Program"', () => {
+    expect(migrationV14).toContain('ADD COLUMN program_id TEXT');
+    expect(migrationV14).toContain('ADD COLUMN program_week_number INTEGER');
+    expect(migrationV14).toContain('ADD COLUMN program_day_id TEXT');
+    expect(migrationV14).toContain('idx_scheduled_workouts_program_id');
   });
 });

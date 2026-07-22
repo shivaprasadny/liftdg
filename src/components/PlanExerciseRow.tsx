@@ -1,9 +1,10 @@
+import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '@/constants/colors'; import { radius, spacing } from '@/constants/spacing'; import { typography } from '@/constants/typography';
 import type { DraftPlanExercise } from '@/contexts/PlanDraftContext'; import { formatPlanTarget } from '@/services/workoutPlanService';
 import { PlanTargetEditor } from './PlanTargetEditor'; import { ReorderControls } from './ReorderControls';
 export function PlanExerciseRow({ item, index, total, onChange, onRemove, onMove }: { item: DraftPlanExercise; index: number; total: number; onChange: (patch: Partial<DraftPlanExercise>) => void; onRemove: () => void; onMove: (direction: -1 | 1) => void }) {
-  return <View style={styles.card}><View style={styles.header}><View style={styles.title}><Text style={styles.order}>{index + 1}</Text><View><Text style={styles.name}>{item.exercise.name}</Text><Text style={styles.target}>{formatPlanTarget(item)}</Text></View></View>
+  return <View style={styles.card}><View style={styles.header}><Pressable accessibilityRole="button" accessibilityLabel={`View exercise details for ${item.exercise.name}`} onPress={() => router.push({ pathname: '/exercises/[id]', params: { id: item.exerciseId } })} style={styles.title}><Text style={styles.order}>{index + 1}</Text><View><Text style={styles.name}>{item.exercise.name}</Text><Text style={styles.target}>{formatPlanTarget(item)}</Text></View></Pressable>
     <ReorderControls canUp={index > 0} canDown={index < total - 1} onUp={() => onMove(-1)} onDown={() => onMove(1)} /></View>
     <PlanTargetEditor value={item} onChange={onChange} /><Pressable accessibilityRole="button" onPress={onRemove}><Text style={styles.remove}>Remove exercise</Text></Pressable></View>;
 }

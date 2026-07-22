@@ -50,7 +50,7 @@ describe('workout calculations', () => {
 
 describe('starting and finishing workouts', () => {
   it('copies plan targets and creates independent IDs', () => {
-    const plan: WorkoutPlanWithExercises = { id: 'plan-1', name: 'Plan', description: null, color: null,
+    const plan: WorkoutPlanWithExercises = { id: 'plan-1', name: 'Plan', description: null, color: null, workoutType: 'strength',
       isBuiltin: false, isArchived: false, createdAt: '2026-01-01', updatedAt: '2026-01-01',
       exerciseCount: 1, estimatedSetCount: 3, exercises: [{ id: 'plan-link', planId: 'plan-1',
         exerciseId: exercise.id, exerciseOrder: 4, targetSets: 3, targetRepsMin: 5,

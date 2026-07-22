@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { workoutPlanTypes } from '@/constants/workoutPlanTypes';
+
 export const planExerciseSchema = z.object({
   exerciseId: z.string().min(1), exerciseOrder: z.number().int().nonnegative(),
   targetSets: z.number().int().min(1, 'Sets must be at least 1').max(20, 'Sets cannot exceed 20').nullable(),
@@ -14,6 +16,7 @@ export const planExerciseSchema = z.object({
 export const workoutPlanSchema = z.object({
   name: z.string().trim().min(2, 'Plan name must be at least 2 characters').max(80),
   description: z.string().trim().max(500).nullable(), color: z.string().nullable(),
+  workoutType: z.enum(workoutPlanTypes),
   exercises: z.array(planExerciseSchema).min(1, 'Add at least one exercise'),
 });
 

@@ -1,6 +1,6 @@
 # Database
 
-LiftDG stores primary data in the on-device SQLite database `liftdg.db`. `DatabaseProvider` opens it, enables `PRAGMA foreign_keys = ON`, applies migrations in order, and then runs idempotent seeds. The current schema version is **10**. Exercise seed version is **2**, starter-plan seed version is **1**, and exercise-video seed version is **1** (currently seeding zero rows — see DECISIONS.md).
+LiftDG stores primary data in the on-device SQLite database `liftdg.db`. `DatabaseProvider` opens it, enables `PRAGMA foreign_keys = ON`, applies migrations in order, and then runs idempotent seeds. The current schema version is **14**. Exercise seed version is **3**, starter-plan seed version is **2**, exercise-video seed version is **13**, and program seed version is **1**.
 
 ## Relationships
 
@@ -19,6 +19,10 @@ erDiagram
   workouts |o--o{ cardio_sessions : includes
   exercises ||--o{ personal_records : earns
   workouts ||--o{ personal_records : records
+  program_templates ||--o{ program_weeks : contains
+  program_weeks ||--o{ program_days : contains
+  workout_plans |o--o{ program_days : linked_from
+  workout_plans |o--o{ scheduled_workouts : linked_from
 ```
 
 ## Tables
@@ -29,11 +33,21 @@ Exercise library. `id` is the text primary key. Required columns are `name`, `ca
 
 ### `workout_plans`
 
-Reusable templates. `id` is the text primary key. Columns are `name`, `description`, `color`, `is_builtin`, `is_archived`, `created_at`, and `updated_at`. `updated_at` is indexed. Built-in plans are immutable templates: they may be duplicated or hidden, but not edited or deleted. User plans support normal lifecycle operations.
+Reusable templates (shown as "Training" in the UI — DECISIONS.md #43). `id` is the text primary key. Columns are `name`, `description`, `color`, `workout_type`, `is_builtin`, `is_archived`, `created_at`, and `updated_at`. `updated_at` and `workout_type` are indexed. `workout_type` (migration 11, DECISIONS.md #44) is one of `strength`/`running`/`cycling`/`swimming`/`walking`/`yoga`/`mobility`/`hiit`/`hybrid`/`other`, defaulting to `strength` — every plan created before this column existed was strength-only, so the default is accurate for all pre-existing data. Only `strength` has a dedicated exercise editor today; the other values are tags for a future type-specific editor. Built-in plans are immutable templates: they may be duplicated or hidden, but not edited or deleted. User plans support normal lifecycle operations.
 
 ### `plan_exercises`
 
 Ordered plan membership and targets. `id` is the primary key; `plan_id` references `workout_plans(id)` with `ON DELETE CASCADE`; `exercise_id` references `exercises(id)`. Other columns include order, set/rep/weight targets, duration/distance targets, rest time, and notes. Both foreign keys are indexed. Multi-row replacements and reorders run in transactions.
+
+### `program_templates`, `program_weeks`, `program_days`
+
+Multi-week programs (migration 12, DECISIONS.md #45). A program has many weeks (`program_weeks`, unique on `(program_id, week_number)`, each optionally flagged `is_deload`/`is_assessment`), and each week has many days (`program_days`, ordered by `display_order`). A day is either a rest day (`is_rest_day = 1`, no plan) or links to an existing `workout_plans` row via nullable `plan_id` (`ON DELETE SET NULL`, so deleting a plan un-links the day instead of breaking the program) — there is no separate "program workout" content table; a program day's content **is** a plan. `program_templates.version` exists for future use once programs become editable and active/in-progress programs need to remember which version they started from. This phase is read-only: no create/edit/duplicate/favorite/start/pause/resume yet, only seeded built-in programs and a preview screen.
+
+### `scheduled_workouts`
+
+One-time calendar entries (migration 13, DECISIONS.md #46). `id` is the primary key; nullable `plan_id` references `workout_plans(id)` with `ON DELETE SET NULL` — deleting the source plan un-links the item rather than deleting calendar history. `scheduled_date` is a plain `YYYY-MM-DD` string (never a UTC instant), so it can never shift a day from timezone conversion; `daypart` (`morning`/`afternoon`/`evening`/`anytime`) and `start_time` are independent, nullable, and never force each other. `snapshot_name`/`snapshot_workout_type` capture the plan's name/type at scheduling time so a later plan edit never rewrites what was already scheduled. `status` defaults to `scheduled`; only that value is produced today (no completion/missed-reconciliation logic yet). Indexed on `scheduled_date`, `plan_id`, and `status`. There is no Month/Week view, drag-and-drop, conflict detection, recurring schedules, or notification integration yet — this is Agenda-view, one-time scheduling only.
+
+Migration 14 (DECISIONS.md #47) adds three nullable columns — `program_id`, `program_week_number`, `program_day_id` — populated only by "Start Program." These are plain columns, not enforced foreign keys (SQLite's `ALTER TABLE ADD COLUMN` doesn't get the same FK enforcement as a `CREATE TABLE`-time constraint, and no other migration in this codebase relies on that either), and there is no `active_programs` table or pause/resume/end lifecycle — `program_id IS NOT NULL` is the entire definition of "this calendar item belongs to a program." Editing or removing a program-linked occurrence is a plain single-row update/delete, identical to an independent item, because only one edit scope ("this occurrence only") exists so far.
 
 ### `workouts`
 
@@ -91,7 +105,7 @@ Behavior preferences use `preference.*` keys containing validated JSON scalar va
 
 ## Backup format
 
-Backup format version **2** is independent of database version **7**. It contains every current domain table, including profile, weight, measurement definitions, sessions, and values. Replace deletes children before parents and imports parents before children. Merge matches stable IDs, accepts newer `updated_at` rows, and skips equal or older rows. Format-1 files are normalized with empty Phase 9 collections. Both modes use one exclusive transaction and an integrity check. The UI creates a local pre-restore snapshot before either mode.
+Backup format version **2** is independent of the database schema version and predates hydration, the exercise video library, programs, and the calendar — `water_entries`, `hydration_goal_history`, `exercise_default_videos`/`exercise_saved_videos`, `program_templates`/`program_weeks`/`program_days`, and `scheduled_workouts` are not yet in the backed-up table set (a future format version should add them). It contains every domain table current as of format 2: profile, weight, measurement definitions, sessions, and values, plus exercises/plans/workouts/cardio/records. Replace deletes children before parents and imports parents before children. Merge matches stable IDs, accepts newer `updated_at` rows, and skips equal or older rows. Format-1 files are normalized with empty Phase 9 collections. Both modes use one exclusive transaction and an integrity check. The UI creates a local pre-restore snapshot before either mode.
 
 ## Migrations and seeds
 
@@ -105,6 +119,10 @@ Backup format version **2** is independent of database version **7**. It contain
 - Migration 8 adds `water_entries` (canonical milliliters, indexed by `logged_at`) for Phase 10 hydration tracking.
 - Migration 9 adds `water_entries.source`/`notes` and the `hydration_goal_history` table (unique/indexed on `effective_from`) for historical hydration exploration and goal-aware grading.
 - Migration 10 adds `exercise_default_videos` and `exercise_saved_videos`, both indexed and uniquely constrained on `(exercise_id, video_id)`, for the exercise video library.
+- Migration 11 adds `workout_plans.workout_type` (indexed), defaulted to `strength` for all existing rows — the first foundation step of the "Training" evolution (DECISIONS.md #44).
+- Migration 12 adds `program_templates`, `program_weeks`, and `program_days` — a read-only multi-week program layer whose days link to existing `workout_plans` rows (DECISIONS.md #45).
+- Migration 13 adds `scheduled_workouts` — one-time calendar items linking a local `YYYY-MM-DD` date to an existing plan, with a name/type snapshot (DECISIONS.md #46).
+- Migration 14 adds `program_id`/`program_week_number`/`program_day_id` to `scheduled_workouts`, populated by "Start Program" (DECISIONS.md #47).
 - Seeds use stable IDs and version keys in `app_settings`. Upserts add or refresh built-in templates without duplicating user data.
 
 "Search YouTube" hands off to youtube.com's own search (DECISIONS.md #39) rather than calling an API with a stored key, so there is no YouTube-related credential in `app_settings`, any table, or SecureStore.

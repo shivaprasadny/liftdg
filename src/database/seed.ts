@@ -2,17 +2,20 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import exercises from '@/data/exercises.json';
 import exerciseVideos from '@/data/exerciseVideos.json';
+import programs from '@/data/programs.json';
 import starterPlans from '@/data/starterPlans.json';
+import type { ProgramTemplateSeed } from '@/types/program';
 import type { ExerciseSeed } from '@/types/exercise';
 import type { ExerciseVideoSeed } from '@/types/exerciseVideo';
 import type { StarterPlanSeed } from '@/types/workoutPlan';
 import { createId } from '@/utils/ids';
 
-import { EXERCISE_SEED_VERSION, EXERCISE_VIDEO_SEED_VERSION, STARTER_PLAN_SEED_VERSION } from './schema';
+import { EXERCISE_SEED_VERSION, EXERCISE_VIDEO_SEED_VERSION, PROGRAM_SEED_VERSION, STARTER_PLAN_SEED_VERSION } from './schema';
 
 const seeds = exercises as ExerciseSeed[];
 const planSeeds = starterPlans as StarterPlanSeed[];
 const videoSeeds = exerciseVideos as ExerciseVideoSeed[];
+const programSeeds = programs as ProgramTemplateSeed[];
 
 export async function seedBuiltInExercises(db: SQLiteDatabase): Promise<void> {
   const setting = await db.getFirstAsync<{ value: string }>(
@@ -110,5 +113,56 @@ export async function seedExerciseVideos(db: SQLiteDatabase): Promise<void> {
     await transaction.runAsync(`INSERT INTO app_settings (key, value, updated_at) VALUES (?, ?, ?)
       ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
     ['exercise_video_seed_version', String(EXERCISE_VIDEO_SEED_VERSION), now]);
+  });
+}
+
+/**
+ * Built-in programs (DECISIONS.md #45) link to workout_plans by ID, so this must run after
+ * seedStarterPlans. Weeks/days are fully deleted and re-inserted each time the version bumps —
+ * simpler than diffing, and safe because built-in programs are never user-edited. `is_favorite`
+ * and `is_builtin` are deliberately absent from the ON CONFLICT update so a user's favorite choice
+ * survives a reseed.
+ */
+export async function seedBuiltInPrograms(db: SQLiteDatabase): Promise<void> {
+  const setting = await db.getFirstAsync<{ value: string }>(
+    'SELECT value FROM app_settings WHERE key = ?', ['program_seed_version'],
+  );
+  if (Number(setting?.value ?? 0) >= PROGRAM_SEED_VERSION) return;
+  const now = new Date().toISOString();
+  await db.withExclusiveTransactionAsync(async (transaction) => {
+    for (const program of programSeeds) {
+      await transaction.runAsync(`INSERT INTO program_templates
+        (id, name, description, category, goal, difficulty, duration_weeks, days_per_week,
+         estimated_session_minutes, equipment_level, is_builtin, is_featured, is_archived, version, notes, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, 0, 1, ?, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET name = excluded.name, description = excluded.description,
+          category = excluded.category, goal = excluded.goal, difficulty = excluded.difficulty,
+          duration_weeks = excluded.duration_weeks, days_per_week = excluded.days_per_week,
+          estimated_session_minutes = excluded.estimated_session_minutes, equipment_level = excluded.equipment_level,
+          is_featured = excluded.is_featured, notes = excluded.notes, updated_at = excluded.updated_at`,
+      [program.id, program.name, program.description, program.category, program.goal, program.difficulty,
+        program.durationWeeks, program.daysPerWeek, program.estimatedSessionMinutes, program.equipmentLevel,
+        program.isFeatured ? 1 : 0, program.notes, now, now]);
+      await transaction.runAsync('DELETE FROM program_weeks WHERE program_id = ?', [program.id]);
+      for (const week of program.weeks) {
+        const weekId = createId('program_week');
+        await transaction.runAsync(`INSERT INTO program_weeks
+          (id, program_id, week_number, title, focus, notes, is_deload, is_assessment, created_at, updated_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [weekId, program.id, week.weekNumber, week.title, week.focus, week.notes,
+          week.isDeload ? 1 : 0, week.isAssessment ? 1 : 0, now, now]);
+        for (const [index, day] of program.days.entries()) {
+          await transaction.runAsync(`INSERT INTO program_days
+            (id, program_week_id, day_number, day_label, plan_id, workout_type, is_rest_day, is_optional,
+             notes, display_order, estimated_duration_minutes, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [createId('program_day'), weekId, day.dayNumber, day.dayLabel, day.planId, day.workoutType,
+            day.isRestDay ? 1 : 0, day.isOptional ? 1 : 0, day.notes, index, day.estimatedDurationMinutes, now, now]);
+        }
+      }
+    }
+    await transaction.runAsync(`INSERT INTO app_settings (key, value, updated_at) VALUES (?, ?, ?)
+      ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
+    ['program_seed_version', String(PROGRAM_SEED_VERSION), now]);
   });
 }

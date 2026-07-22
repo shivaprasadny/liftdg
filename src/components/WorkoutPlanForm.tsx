@@ -8,7 +8,7 @@ import { colors } from '@/constants/colors'; import { spacing } from '@/constant
 import { usePlanDraft } from '@/contexts/PlanDraftContext'; import { useDatabase } from '@/hooks/useDatabase';
 import { createPlan, getPlanById, updatePlan } from '@/repositories/workoutPlanRepository';
 import { getUserMessage } from '@/utils/errors'; import { planMetadataSchema, type PlanMetadataValues } from '@/utils/planValidation'; import { workoutPlanSchema } from '@/utils/planValidation';
-import { AppButton } from './AppButton'; import { AppInput } from './AppInput'; import { PlanColorPicker } from './PlanColorPicker'; import { PlanExerciseRow } from './PlanExerciseRow'; import { SectionHeader } from './SectionHeader';
+import { AppButton } from './AppButton'; import { AppInput } from './AppInput'; import { PlanColorPicker } from './PlanColorPicker'; import { PlanExerciseRow } from './PlanExerciseRow'; import { SectionHeader } from './SectionHeader'; import { WorkoutTypePicker } from './WorkoutTypePicker';
 
 export function WorkoutPlanForm({ mode, planId }: { mode: 'create' | 'edit'; planId?: string }) {
   const db = useDatabase(); const planDraft = usePlanDraft(); const { draft } = planDraft;
@@ -21,8 +21,8 @@ export function WorkoutPlanForm({ mode, planId }: { mode: 'create' | 'edit'; pla
   }, [db, draft.sourceId, mode, planDraft, planId, reset]);
 
   useFocusEffect(useCallback(() => { reset({ name: draft.name, description: draft.description }); }, [draft.description, draft.name, reset]));
-  const sync = () => { const metadata = getValues(); planDraft.setMetadata({ ...metadata, color: draft.color }); };
-  const save = async (metadata: PlanMetadataValues) => { try { const input = workoutPlanSchema.parse({ name: metadata.name, description: metadata.description || null, color: draft.color,
+  const sync = () => { const metadata = getValues(); planDraft.setMetadata({ ...metadata, color: draft.color, workoutType: draft.workoutType }); };
+  const save = async (metadata: PlanMetadataValues) => { try { const input = workoutPlanSchema.parse({ name: metadata.name, description: metadata.description || null, color: draft.color, workoutType: draft.workoutType,
       exercises: draft.exercises.map(({ exercise: _exercise, draftId: _draftId, ...item }) => item) });
     const plan = mode === 'edit' && planId ? await updatePlan(db, { id: planId, ...input }) : await createPlan(db, input);
     planDraft.reset(); router.replace({ pathname: '/plans/[id]', params: { id: plan.id } });
@@ -31,7 +31,8 @@ export function WorkoutPlanForm({ mode, planId }: { mode: 'create' | 'edit'; pla
   return <ScrollView style={styles.screen} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
     <Controller control={control} name="name" render={({ field }) => <AppInput label="Plan name" value={field.value} onChangeText={field.onChange} onBlur={field.onBlur} error={errors.name?.message} />} />
     <Controller control={control} name="description" render={({ field }) => <AppInput label="Description (optional)" multiline value={field.value} onChangeText={field.onChange} onBlur={field.onBlur} error={errors.description?.message} />} />
-    <PlanColorPicker value={draft.color} onChange={(color) => planDraft.setMetadata({ ...getValues(), color })} />
+    <PlanColorPicker value={draft.color} onChange={(color) => planDraft.setMetadata({ ...getValues(), color, workoutType: draft.workoutType })} />
+    <WorkoutTypePicker value={draft.workoutType} onChange={(workoutType) => planDraft.setMetadata({ ...getValues(), color: draft.color, workoutType })} />
     <View style={styles.sectionRow}><SectionHeader>{`Exercises (${draft.exercises.length})`}</SectionHeader><AppButton label="Add Exercises" variant="secondary" onPress={() => { sync(); router.push('/plans/select-exercises'); }} /></View>
     {draft.exercises.length === 0 ? <Text style={styles.empty}>Add at least one exercise to save this plan.</Text> : draft.exercises.map((item, index) =>
       <PlanExerciseRow key={item.draftId} item={item} index={index} total={draft.exercises.length}

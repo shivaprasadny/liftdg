@@ -1,9 +1,10 @@
 export const DATABASE_NAME = 'liftdg.db';
-export const DATABASE_VERSION = 10;
+export const DATABASE_VERSION = 14;
 export const EXERCISE_SEED_VERSION = 3;
-export const STARTER_PLAN_SEED_VERSION = 1;
+export const STARTER_PLAN_SEED_VERSION = 2;
 export const PERSONAL_RECORD_BACKFILL_VERSION = 1;
 export const EXERCISE_VIDEO_SEED_VERSION = 13;
+export const PROGRAM_SEED_VERSION = 1;
 
 export const migrationV1 = `
 CREATE TABLE IF NOT EXISTS exercises (
@@ -302,4 +303,82 @@ CREATE TABLE IF NOT EXISTS exercise_saved_videos (
 );
 CREATE INDEX IF NOT EXISTS idx_exercise_saved_videos_exercise_id ON exercise_saved_videos(exercise_id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_exercise_saved_videos_unique ON exercise_saved_videos(exercise_id, video_id);
+`;
+
+// First foundation step of the "Training" evolution (DECISIONS.md #43/#44): tags each plan with a
+// broad workout type. Every existing plan (all strength-only today) safely defaults to 'strength'
+// via the column default, so this never changes behavior for existing data. No new tables yet —
+// type-specific block/section editors for non-strength types are deferred to a later phase.
+export const migrationV11 = `
+ALTER TABLE workout_plans ADD COLUMN workout_type TEXT NOT NULL DEFAULT 'strength';
+CREATE INDEX IF NOT EXISTS idx_workout_plans_workout_type ON workout_plans(workout_type);
+`;
+
+// First real slice of Programs (DECISIONS.md #45): a multi-week structure that links to existing
+// workout_plans rows as its daily content, rather than a new parallel "workout template" table.
+// Read-only in this pass — no editor, no ActiveProgram/pause/resume, no variants yet.
+export const migrationV12 = `
+CREATE TABLE IF NOT EXISTS program_templates (
+  id TEXT PRIMARY KEY NOT NULL, name TEXT NOT NULL, description TEXT, category TEXT, goal TEXT,
+  difficulty TEXT NOT NULL DEFAULT 'intermediate', duration_weeks INTEGER NOT NULL,
+  days_per_week INTEGER NOT NULL, estimated_session_minutes INTEGER, equipment_level TEXT,
+  is_builtin INTEGER NOT NULL DEFAULT 0, is_featured INTEGER NOT NULL DEFAULT 0,
+  is_favorite INTEGER NOT NULL DEFAULT 0, is_archived INTEGER NOT NULL DEFAULT 0,
+  version INTEGER NOT NULL DEFAULT 1, notes TEXT,
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_program_templates_updated_at ON program_templates(updated_at);
+CREATE INDEX IF NOT EXISTS idx_program_templates_featured ON program_templates(is_featured);
+
+CREATE TABLE IF NOT EXISTS program_weeks (
+  id TEXT PRIMARY KEY NOT NULL, program_id TEXT NOT NULL, week_number INTEGER NOT NULL,
+  title TEXT, focus TEXT, notes TEXT, is_deload INTEGER NOT NULL DEFAULT 0,
+  is_assessment INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+  FOREIGN KEY (program_id) REFERENCES program_templates(id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_program_weeks_program_id ON program_weeks(program_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_program_weeks_unique_number ON program_weeks(program_id, week_number);
+
+CREATE TABLE IF NOT EXISTS program_days (
+  id TEXT PRIMARY KEY NOT NULL, program_week_id TEXT NOT NULL, day_number INTEGER NOT NULL,
+  day_label TEXT, plan_id TEXT, workout_type TEXT, is_rest_day INTEGER NOT NULL DEFAULT 0,
+  is_optional INTEGER NOT NULL DEFAULT 0, notes TEXT, display_order INTEGER NOT NULL DEFAULT 0,
+  estimated_duration_minutes INTEGER, created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+  FOREIGN KEY (program_week_id) REFERENCES program_weeks(id) ON DELETE CASCADE,
+  FOREIGN KEY (plan_id) REFERENCES workout_plans(id) ON DELETE SET NULL
+);
+CREATE INDEX IF NOT EXISTS idx_program_days_program_week_id ON program_days(program_week_id);
+CREATE INDEX IF NOT EXISTS idx_program_days_plan_id ON program_days(plan_id);
+`;
+
+// First real slice of the Training Calendar (DECISIONS.md #46): one-time scheduling of an existing
+// plan onto a local calendar date, viewed as a flat agenda. No Month/Week views, no program
+// population, no drag-and-drop, no notifications, no conflict detection yet — see the decision for
+// why. `scheduled_date` is a plain YYYY-MM-DD string (never a UTC instant) so it can never shift a
+// day because of timezone conversion. name/workout_type are snapshotted at schedule time so a later
+// plan edit never silently rewrites what was already scheduled.
+export const migrationV13 = `
+CREATE TABLE IF NOT EXISTS scheduled_workouts (
+  id TEXT PRIMARY KEY NOT NULL, plan_id TEXT, scheduled_date TEXT NOT NULL,
+  daypart TEXT, start_time TEXT, snapshot_name TEXT NOT NULL, snapshot_workout_type TEXT NOT NULL,
+  estimated_duration_minutes INTEGER, status TEXT NOT NULL DEFAULT 'scheduled', notes TEXT,
+  created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+  FOREIGN KEY (plan_id) REFERENCES workout_plans(id) ON DELETE SET NULL
+);
+CREATE INDEX IF NOT EXISTS idx_scheduled_workouts_date ON scheduled_workouts(scheduled_date);
+CREATE INDEX IF NOT EXISTS idx_scheduled_workouts_plan_id ON scheduled_workouts(plan_id);
+CREATE INDEX IF NOT EXISTS idx_scheduled_workouts_status ON scheduled_workouts(status);
+`;
+
+// Connects Programs to the Calendar (DECISIONS.md #47): "Start Program" bulk-creates one
+// scheduled_workouts row per non-rest program day. There is deliberately no `active_programs`
+// table/lifecycle (pause/resume/end) yet — `program_id` on the occurrence itself is the only anchor,
+// so "program-linked" simply means `program_id IS NOT NULL`. Only one edit scope exists in this
+// pass ("this occurrence only"), so there is no override table — editing/removing an occurrence is
+// a plain row update/delete, same as an independent scheduled workout.
+export const migrationV14 = `
+ALTER TABLE scheduled_workouts ADD COLUMN program_id TEXT;
+ALTER TABLE scheduled_workouts ADD COLUMN program_week_number INTEGER;
+ALTER TABLE scheduled_workouts ADD COLUMN program_day_id TEXT;
+CREATE INDEX IF NOT EXISTS idx_scheduled_workouts_program_id ON scheduled_workouts(program_id);
 `;

@@ -1,6 +1,43 @@
+import { format, isValid, parse, parseISO } from 'date-fns';
+
 import type { CardioSession, CardioSessionInput, CardioSessionSummary } from '@/types/cardio';
 import type { ActiveWorkout, WorkoutType } from '@/types/workout';
 import { AppError } from '../utils/errors';
+
+const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+/** Same auto-slash masking as the date-of-birth input (see bodyMeasurementService), reused here for a start date. */
+export function maskCardioDateInput(value: string, previous = ''): string {
+  let digits = value.replace(/\D/g, '').slice(0, 8);
+  if (value.length < previous.length && previous.endsWith('/') && !value.endsWith('/')) digits = digits.slice(0, -1);
+  if (digits.length < 2) return digits;
+  if (digits.length === 2) return `${digits}/`;
+  if (digits.length < 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  if (digits.length === 4) return `${digits.slice(0, 2)}/${digits.slice(2)}/`;
+  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+}
+/** Auto-inserts the ":" after the hour digits of a 24-hour HH:MM entry. */
+export function maskCardioTimeInput(value: string, previous = ''): string {
+  let digits = value.replace(/\D/g, '').slice(0, 4);
+  if (value.length < previous.length && previous.endsWith(':') && !value.endsWith(':')) digits = digits.slice(0, -1);
+  if (digits.length < 2) return digits;
+  return `${digits.slice(0, 2)}:${digits.slice(2)}`;
+}
+/** Splits a stored ISO instant into the two display fields shown in the form; blank if unparseable. */
+export function isoToCardioDateTimeDisplay(value: string): { date: string; time: string } {
+  const parsed = parseISO(value);
+  if (!isValid(parsed)) return { date: '', time: '' };
+  return { date: format(parsed, 'MM/dd/yyyy'), time: format(parsed, 'HH:mm') };
+}
+/** Combines the two masked display fields back into a canonical ISO instant for storage. */
+export function cardioDateTimeDisplayToIso(dateDisplay: string, timeDisplay: string): string {
+  if (!datePattern.test(dateDisplay)) throw new AppError('Enter the start date as MM/DD/YYYY.');
+  if (!timePattern.test(timeDisplay)) throw new AppError('Enter the start time as HH:MM (24-hour).');
+  const parsed = parse(`${dateDisplay} ${timeDisplay}`, 'MM/dd/yyyy HH:mm', new Date());
+  if (!isValid(parsed) || format(parsed, 'MM/dd/yyyy HH:mm') !== `${dateDisplay} ${timeDisplay}`) throw new AppError('Enter a valid start date and time.');
+  return parsed.toISOString();
+}
 
 export const milesToKilometers = (miles: number) => miles * 1.609344;
 export const kilometersToMiles = (kilometers: number) => kilometers / 1.609344;

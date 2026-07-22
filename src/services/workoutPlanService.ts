@@ -14,7 +14,7 @@ export function movePlanExercise(exercises: PlanExerciseInput[], from: number, t
 
 export function createDuplicateInput(plan: WorkoutPlanWithExercises): CreateWorkoutPlanInput {
   return {
-    name: `${plan.name} Copy`, description: plan.description, color: plan.color,
+    name: `${plan.name} Copy`, description: plan.description, color: plan.color, workoutType: plan.workoutType,
     exercises: plan.exercises.map((item, index) => ({
       exerciseId: item.exerciseId, exerciseOrder: index, targetSets: item.targetSets,
       targetRepsMin: item.targetRepsMin, targetRepsMax: item.targetRepsMax,

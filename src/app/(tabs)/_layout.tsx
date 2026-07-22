@@ -20,7 +20,7 @@ export default function TabsLayout() {
     },
   })}>
     <Tabs.Screen name="index" options={{ title: 'Home' }} />
-    <Tabs.Screen name="plans" options={{ title: 'Plans' }} />
+    <Tabs.Screen name="plans" options={{ title: 'Training' }} />
     <Tabs.Screen name="start" options={{ title: 'Start' }} />
     <Tabs.Screen name="history" options={{ title: 'History' }} />
     <Tabs.Screen name="progress" options={{ title: 'Progress' }} />

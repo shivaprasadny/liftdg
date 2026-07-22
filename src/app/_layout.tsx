@@ -15,7 +15,7 @@ import { typography } from '@/constants/typography';
 import { initializeDatabase } from '@/database/database';
 import { DATABASE_NAME } from '@/database/schema';
 
-/** Modal-presented screens get no back arrow from React Navigation by default — without this, the only way out is an easy-to-miss swipe-down (iOS) or nothing at all (Android). */
+/** Modal-presented screens get no back arrow from React Navigation by default, and even non-modal forms benefit from an explicit, unambiguous "Cancel" over a bare back arrow. */
 function ModalCancelButton() {
   return (
     <Pressable accessibilityRole="button" accessibilityLabel="Cancel" onPress={() => router.back()} hitSlop={12} style={modalHeaderStyles.button}>
@@ -51,13 +51,19 @@ export default function RootLayout() {
             <Stack.Screen name="plans/select-exercises" options={{ title: 'Add Exercises', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="plans/[id]" options={{ title: 'Plan Details' }} />
             <Stack.Screen name="plans/groups/[id]" options={{ title: 'Group Plan Exercises' }} />
+            <Stack.Screen name="programs/index" options={{ title: 'Programs' }} />
+            <Stack.Screen name="programs/[id]" options={{ title: 'Program Details' }} />
+            <Stack.Screen name="programs/start" options={{ title: 'Start Program', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
+            <Stack.Screen name="calendar/index" options={{ title: 'Calendar' }} />
+            <Stack.Screen name="calendar/schedule" options={{ title: 'Schedule Workout', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
+            <Stack.Screen name="calendar/[id]" options={{ title: 'Scheduled Workout' }} />
             <Stack.Screen name="workout/active" options={{ title: 'Active Workout', headerBackVisible: false }} />
             <Stack.Screen name="workout/add-exercises" options={{ title: 'Add Exercises', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="workout/summary" options={{ title: 'Workout Summary', headerBackVisible: false }} />
             <Stack.Screen name="workout/[id]" options={{ title: 'Workout Details' }} />
             <Stack.Screen name="workout/edit/[id]" options={{ title: 'Edit Workout' }} />
             <Stack.Screen name="workout/create-group" options={{ title: 'Create Group', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
-            <Stack.Screen name="cardio/create" options={{ title: 'Cardio Session' }} />
+            <Stack.Screen name="cardio/create" options={{ title: 'Cardio Session', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="settings/index" options={{ title: 'Settings' }} />
             <Stack.Screen name="settings/data" options={{ title: 'Data Management' }} />
             <Stack.Screen name="onboarding" options={{ headerShown: false, gestureEnabled: false }} />

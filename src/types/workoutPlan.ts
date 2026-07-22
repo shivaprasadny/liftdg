@@ -1,3 +1,5 @@
+import type { WorkoutPlanType } from '@/constants/workoutPlanTypes';
+
 import type { Exercise } from './exercise';
 
 export interface WorkoutPlan {
@@ -5,6 +7,7 @@ export interface WorkoutPlan {
   name: string;
   description: string | null;
   color: string | null;
+  workoutType: WorkoutPlanType;
   isBuiltin: boolean;
   isArchived: boolean;
   createdAt: string;
@@ -45,6 +48,7 @@ export interface CreateWorkoutPlanInput {
   name: string;
   description: string | null;
   color: string | null;
+  workoutType: WorkoutPlanType;
   exercises: PlanExerciseInput[];
 }
 

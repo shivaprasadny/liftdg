@@ -1,28 +1,29 @@
 import { createContext, useContext, useMemo, useState, type PropsWithChildren } from 'react';
 
+import type { WorkoutPlanType } from '@/constants/workoutPlanTypes';
 import { movePlanExercise } from '@/services/workoutPlanService';
 import type { Exercise } from '@/types/exercise';
 import type { PlanExerciseInput, WorkoutPlanWithExercises } from '@/types/workoutPlan';
 import { createId } from '@/utils/ids';
 
 export interface DraftPlanExercise extends PlanExerciseInput { draftId: string; exercise: Exercise; }
-export interface PlanDraft { sourceId: string | null; name: string; description: string; color: string | null; exercises: DraftPlanExercise[]; }
+export interface PlanDraft { sourceId: string | null; name: string; description: string; color: string | null; workoutType: WorkoutPlanType; exercises: DraftPlanExercise[]; }
 
 interface Value {
   draft: PlanDraft; reset: () => void; loadPlan: (plan: WorkoutPlanWithExercises) => void;
-  setMetadata: (metadata: Pick<PlanDraft, 'name' | 'description' | 'color'>) => void;
+  setMetadata: (metadata: Pick<PlanDraft, 'name' | 'description' | 'color' | 'workoutType'>) => void;
   addExercises: (exercises: Exercise[]) => void; updateExercise: (id: string, patch: Partial<PlanExerciseInput>) => void;
   removeExercise: (id: string) => void; moveExercise: (index: number, direction: -1 | 1) => void;
 }
 
-const emptyDraft: PlanDraft = { sourceId: null, name: '', description: '', color: '#35E07A', exercises: [] };
+const emptyDraft: PlanDraft = { sourceId: null, name: '', description: '', color: '#35E07A', workoutType: 'strength', exercises: [] };
 const Context = createContext<Value | null>(null);
 
 export function PlanDraftProvider({ children }: PropsWithChildren) {
   const [draft, setDraft] = useState<PlanDraft>(emptyDraft);
   const value = useMemo<Value>(() => ({
     draft, reset: () => setDraft(emptyDraft),
-    loadPlan: (plan) => setDraft({ sourceId: plan.id, name: plan.name, description: plan.description ?? '', color: plan.color,
+    loadPlan: (plan) => setDraft({ sourceId: plan.id, name: plan.name, description: plan.description ?? '', color: plan.color, workoutType: plan.workoutType,
       exercises: plan.exercises.map((item) => ({ ...item, draftId: createId('draft') })) }),
     setMetadata: (metadata) => setDraft((current) => ({ ...current, ...metadata })),
     addExercises: (items) => setDraft((current) => {

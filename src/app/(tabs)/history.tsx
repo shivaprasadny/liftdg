@@ -1,6 +1,7 @@
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FilterChip } from '@/components/FilterChip';
 import { AppInput } from '@/components/AppInput';
@@ -28,9 +29,9 @@ export default function HistoryScreen() {
   useFocusEffect(useCallback(() => { void load(false); }, [load]));
   const rows = useMemo<Row[]>(() => groupWorkoutHistory(items).flatMap((section) => [{ kind: 'header' as const, id: `header-${section.title}`, title: section.title }, ...section.data.map((workout) => ({ kind: 'workout' as const, id: workout.id, workout }))]), [items]);
   const filtered = filter.datePreset !== 'all' || filter.workoutType || filter.planId || filter.exerciseId || filter.minimumDurationSeconds || filter.hasNotes;
-  return <View style={styles.screen}><Header title="History" action={<Pressable onPress={() => setShowFilters((value) => !value)}><Text style={styles.action}>{showFilters ? 'Done' : 'Filters'}</Text></Pressable>} /><View style={styles.controls}><SearchBar value={search} onChangeText={setSearch} placeholder="Search workouts, exercises, plans…" /><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>{sorts.map((item) => <FilterChip key={item.value} label={item.label} selected={sort === item.value} onPress={() => setSort(item.value)} />)}</ScrollView>{showFilters ? <FilterPanel filter={filter} setFilter={setFilter} plans={plans} exercises={exercises} /> : null}</View>
+  return <SafeAreaView edges={['top']} style={styles.screen}><Header title="History" action={<Pressable onPress={() => setShowFilters((value) => !value)}><Text style={styles.action}>{showFilters ? 'Done' : 'Filters'}</Text></Pressable>} /><View style={styles.controls}><SearchBar value={search} onChangeText={setSearch} placeholder="Search workouts, exercises, plans…" /><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>{sorts.map((item) => <FilterChip key={item.value} label={item.label} selected={sort === item.value} onPress={() => setSort(item.value)} />)}</ScrollView>{showFilters ? <FilterPanel filter={filter} setFilter={setFilter} plans={plans} exercises={exercises} /> : null}</View>
     {error ? <View style={styles.message}><Text style={styles.error}>{error}</Text><Pressable onPress={() => void load(false)}><Text style={styles.action}>Try again</Text></Pressable></View> : loading ? <View style={styles.message}><ActivityIndicator size="large" color={colors.accent} /></View> : <FlatList data={rows} keyExtractor={(item) => item.id} contentContainerStyle={styles.list} renderItem={({ item }) => item.kind === 'header' ? <WorkoutHistorySectionHeader title={item.title} /> : <WorkoutHistoryCard workout={item.workout} onPress={() => router.push(`/workout/${item.workout.id}`)} />} ListEmptyComponent={<HistoryEmptyState mode={search.trim() ? 'search' : filtered ? 'filter' : 'none'} />} ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.footer} color={colors.accent} /> : null} onEndReached={() => { if (hasMore && !loadingMore) void load(true); }} onEndReachedThreshold={0.4} />}
-  </View>;
+  </SafeAreaView>;
 }
 
 function FilterPanel({ filter, setFilter, plans, exercises }: { filter: WorkoutHistoryFilter; setFilter: React.Dispatch<React.SetStateAction<WorkoutHistoryFilter>>; plans: WorkoutPlan[]; exercises: Exercise[] }) {
