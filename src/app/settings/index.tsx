@@ -1,14 +1,16 @@
 import Constants from 'expo-constants'; import { router } from 'expo-router'; import { useState } from 'react'; import { Alert } from 'react-native';
-import { AppScreen } from '@/components/AppScreen'; import { HydrationCustomGoalModal, HydrationCustomServingModal } from '@/components/HydrationCustomGoalModal'; import { SettingsRow } from '@/components/SettingsRow'; import { SettingsSection } from '@/components/SettingsSection'; import { SettingsToggle } from '@/components/SettingsToggle'; import { useSettings } from '@/contexts/SettingsContext'; import { DATABASE_VERSION } from '@/database/schema'; import { applyHydrationGoalChange } from '@/repositories/hydrationGoalHistoryRepository'; import { formatServingAmount, formatWaterVolume } from '@/services/hydrationService'; import { BACKUP_FORMAT_VERSION } from '@/services/backupValidation'; import { resetOnboarding } from '@/services/onboardingService'; import { getBiometricAvailability,setSecureAppLock } from '@/services/securityService'; import { useDatabase } from '@/hooks/useDatabase'; import type { HydrationGoalApplyMode } from '@/types/hydration';
+import { AppScreen } from '@/components/AppScreen'; import { CustomRestDurationModal } from '@/components/CustomRestDurationModal'; import { HydrationCustomGoalModal, HydrationCustomServingModal } from '@/components/HydrationCustomGoalModal'; import { SettingsRow } from '@/components/SettingsRow'; import { SettingsSection } from '@/components/SettingsSection'; import { SettingsToggle } from '@/components/SettingsToggle'; import { useSettings } from '@/contexts/SettingsContext'; import { DATABASE_VERSION } from '@/database/schema'; import { applyHydrationGoalChange } from '@/repositories/hydrationGoalHistoryRepository'; import { formatServingAmount, formatWaterVolume } from '@/services/hydrationService'; import { BACKUP_FORMAT_VERSION } from '@/services/backupValidation'; import { resetOnboarding } from '@/services/onboardingService'; import { getBiometricAvailability,setSecureAppLock } from '@/services/securityService'; import { useDatabase } from '@/hooks/useDatabase'; import type { HydrationGoalApplyMode } from '@/types/hydration';
 
 const goalPresetsMl = [1500, 2000, 2500, 3000, 3500, 4000];
 const servingPresetsMl = [100, 200, 250, 300, 350, 500, 750];
+const formatRestDuration = (totalSeconds: number) => { const minutes = Math.floor(totalSeconds / 60); const seconds = totalSeconds % 60; return minutes > 0 ? `${minutes}m${seconds ? ` ${seconds}s` : ''}` : `${seconds}s`; };
 
 export default function SettingsScreen() {
   const { settings, setSetting } = useSettings();
   const db = useDatabase();
   const [goalModalOpen, setGoalModalOpen] = useState(false);
   const [servingModalOpen, setServingModalOpen] = useState(false);
+  const [restModalOpen, setRestModalOpen] = useState(false);
 
   const choose = <T extends string>(title: string, values: T[], current: T, onChange: (v: T) => void) =>
     Alert.alert(title, undefined, values.map((v) => ({ text: `${v === current ? '✓ ' : ''}${v}`, onPress: () => onChange(v) })));
@@ -38,11 +40,16 @@ export default function SettingsScreen() {
     { text: 'Custom…', onPress: () => setServingModalOpen(true) },
     { text: 'Cancel', style: 'cancel' },
   ]);
+  const chooseRestDuration = () => Alert.alert('Default rest duration', 'Choose a preset or enter your own duration.', [
+    ...[30, 60, 90, 120, 180].map((seconds) => ({ text: `${seconds === settings.defaultRestDuration ? '✓ ' : ''}${formatRestDuration(seconds)}`, onPress: () => void setSetting('defaultRestDuration', seconds) })),
+    { text: 'Custom…', onPress: () => setRestModalOpen(true) },
+    { text: 'Cancel', style: 'cancel' },
+  ]);
 
   return (
     <AppScreen scroll>
       <SettingsSection title="Profile"><SettingsRow label="Edit profile" onPress={() => router.push('/settings/profile')} /><SettingsRow label="Body progress" onPress={() => router.push('/body')} /><SettingsRow label="Weight history" onPress={() => router.push('/body/weight')} /><SettingsRow label="Body measurements" onPress={() => router.push('/body/measurements')} /><SettingsRow label="Measurement preferences" onPress={() => router.push('/body/preferences')} /><SettingsToggle label="Show Body Progress on Home" value={settings.showBodyProgressHome} onChange={toggle('showBodyProgressHome')} /></SettingsSection>
-      <SettingsSection title="General"><SettingsRow label="Weight unit" value={settings.weightUnit} onPress={() => choose('Weight unit', ['kg', 'lb'], settings.weightUnit, (v) => void setSetting('weightUnit', v))} /><SettingsRow label="Distance unit" value={settings.distanceUnit} onPress={() => choose('Distance unit', ['km', 'mi'], settings.distanceUnit, (v) => void setSetting('distanceUnit', v))} /><SettingsRow label="First day of week" value={settings.firstDayOfWeek === 1 ? 'Monday' : 'Sunday'} onPress={() => void setSetting('firstDayOfWeek', settings.firstDayOfWeek === 1 ? 0 : 1)} /><SettingsRow label="Default workout name" value={settings.defaultWorkoutName} /><SettingsRow label="Default rest duration" value={`${settings.defaultRestDuration}s`} onPress={() => choose('Rest duration', ['30', '60', '90', '120', '180'], String(settings.defaultRestDuration), (v) => void setSetting('defaultRestDuration', Number(v)))} /><SettingsToggle label="Automatic rest timer" value={settings.automaticRestTimer} onChange={toggle('automaticRestTimer')} /><SettingsToggle label="Keep screen awake" value={settings.keepScreenAwake} onChange={toggle('keepScreenAwake')} /><SettingsToggle label="Confirm deleting sets" value={settings.confirmDeleteSets} onChange={toggle('confirmDeleteSets')} /><SettingsToggle label="Confirm finishing workouts" value={settings.confirmFinishWorkout} onChange={toggle('confirmFinishWorkout')} /></SettingsSection>
+      <SettingsSection title="General"><SettingsRow label="Weight unit" value={settings.weightUnit} onPress={() => choose('Weight unit', ['kg', 'lb'], settings.weightUnit, (v) => void setSetting('weightUnit', v))} /><SettingsRow label="Distance unit" value={settings.distanceUnit} onPress={() => choose('Distance unit', ['km', 'mi'], settings.distanceUnit, (v) => void setSetting('distanceUnit', v))} /><SettingsRow label="First day of week" value={settings.firstDayOfWeek === 1 ? 'Monday' : 'Sunday'} onPress={() => void setSetting('firstDayOfWeek', settings.firstDayOfWeek === 1 ? 0 : 1)} /><SettingsRow label="Default workout name" value={settings.defaultWorkoutName} /><SettingsRow label="Default rest duration" value={formatRestDuration(settings.defaultRestDuration)} onPress={chooseRestDuration} /><SettingsToggle label="Automatic rest timer" value={settings.automaticRestTimer} onChange={toggle('automaticRestTimer')} /><SettingsToggle label="Keep screen awake" value={settings.keepScreenAwake} onChange={toggle('keepScreenAwake')} /><SettingsToggle label="Confirm deleting sets" value={settings.confirmDeleteSets} onChange={toggle('confirmDeleteSets')} /><SettingsToggle label="Confirm finishing workouts" value={settings.confirmFinishWorkout} onChange={toggle('confirmFinishWorkout')} /></SettingsSection>
       <SettingsSection title="Body units"><SettingsRow label="Height unit" value={settings.heightUnit === 'cm' ? 'Centimeters' : 'Feet and inches'} onPress={() => void setSetting('heightUnit', settings.heightUnit === 'cm' ? 'ft_in' : 'cm')} /><SettingsRow label="Measurement unit" value={settings.bodyMeasurementUnit} onPress={() => void setSetting('bodyMeasurementUnit', settings.bodyMeasurementUnit === 'cm' ? 'in' : 'cm')} /></SettingsSection>
       <SettingsSection title="Hydration">
         <SettingsRow label="Daily goal" value={formatWaterVolume(settings.dailyWaterGoalMl, settings.waterUnit)} onPress={chooseGoal} />
@@ -62,6 +69,7 @@ export default function SettingsScreen() {
 
       <HydrationCustomGoalModal visible={goalModalOpen} waterUnit={settings.waterUnit} initialValueMl={settings.dailyWaterGoalMl} onClose={() => setGoalModalOpen(false)} onSave={applyGoalChange} />
       <HydrationCustomServingModal visible={servingModalOpen} waterUnit={settings.waterUnit} initialValueMl={settings.defaultServingSizeMl} dailyGoalMl={settings.dailyWaterGoalMl} onClose={() => setServingModalOpen(false)} onSave={(ml) => void setSetting('defaultServingSizeMl', ml)} />
+      <CustomRestDurationModal visible={restModalOpen} initialSeconds={settings.defaultRestDuration} onClose={() => setRestModalOpen(false)} onSave={(seconds) => void setSetting('defaultRestDuration', seconds)} />
     </AppScreen>
   );
 }

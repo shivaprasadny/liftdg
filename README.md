@@ -19,6 +19,7 @@ Primary data is stored in an on-device SQLite database. LiftDG has no backend, l
 - Unified active-workout exercise list with focused logging, jump picker, previous/next controls, grouped circuit order, and optional guarded auto-advance
 - Active-session exercise replacement with ranked alternatives, explanations, equipment awareness, optional reasons, and safe unfinished-set transfer
 - Paginated workout History with remembered list, calendar, and timeline views, PR/quality badges, planned-versus-performed review, repeat-as-new, and audited metadata corrections
+- Premium Training month planner with a full week grid, month/year picker, visible workout chips, selected-day agenda, and date-prefilled scheduling
 - Rest timer, workout completion, discard, and basic summary
 - Paginated workout history with local-date grouping, debounced search, filters, and sorting
 - Completed-workout details, editing, repeat, duplicate-as-plan, deletion, and previous performance

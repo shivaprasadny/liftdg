@@ -1,4 +1,5 @@
-import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -13,6 +14,7 @@ import { dayparts, daypartLabels, type Daypart } from '@/constants/scheduledWork
 import { radius, spacing } from '@/constants/spacing';
 import { typography } from '@/constants/typography';
 import { useDatabase } from '@/hooks/useDatabase';
+import { usePlanDraft } from '@/contexts/PlanDraftContext';
 import { getBuiltInPlans, getUserPlans } from '@/repositories/workoutPlanRepository';
 import { scheduleWorkout } from '@/repositories/scheduledWorkoutRepository';
 import { isoToScheduledDateDisplay, maskScheduledDateInput, scheduledDateDisplayToIso } from '@/services/scheduledWorkoutService';
@@ -21,11 +23,13 @@ import { getUserMessage } from '@/utils/errors';
 
 /** Step 1: pick a plan. Step 2 (date/daypart/notes) shows once a plan is selected. One-time scheduling only (DECISIONS.md #46). */
 export default function ScheduleWorkoutScreen() {
+  const { date } = useLocalSearchParams<{ date?: string }>();
   const db = useDatabase();
+  const { reset: resetPlanDraft } = usePlanDraft();
   const [search, setSearch] = useState('');
   const [plans, setPlans] = useState<WorkoutPlan[]>();
   const [selected, setSelected] = useState<WorkoutPlan | null>(null);
-  const [dateText, setDateText] = useState(() => isoToScheduledDateDisplay(new Date().toISOString()));
+  const [dateText, setDateText] = useState(() => isoToScheduledDateDisplay(date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : new Date().toISOString()));
   const [daypart, setDaypart] = useState<Daypart | null>(null);
   const [notes, setNotes] = useState('');
   const [error, setError] = useState<string>();
@@ -44,8 +48,16 @@ export default function ScheduleWorkoutScreen() {
     finally { setSaving(false); }
   };
 
+  const createWorkout = () => {
+    resetPlanDraft();
+    const scheduleDate = date && /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : new Date().toISOString().slice(0, 10);
+    router.push({ pathname: '/plans/create', params: { scheduleDate } });
+  };
+  const createAction = <Pressable accessibilityRole="button" accessibilityLabel="Create custom workout" onPress={createWorkout} style={styles.createButton}><Ionicons name="add" size={27} color={colors.accentText} /></Pressable>;
+
   if (!selected) {
     return <View style={styles.screen}>
+      <Stack.Screen options={{ headerRight: () => createAction }} />
       <View style={styles.searchWrap}><SearchBar value={search} onChangeText={setSearch} placeholder="Search your workouts…" /></View>
       {plans === undefined ? <ActivityIndicator style={styles.loader} size="large" color={colors.accent} />
         : <FlatList data={plans} keyExtractor={(item) => item.id} contentContainerStyle={styles.list}
@@ -59,6 +71,7 @@ export default function ScheduleWorkoutScreen() {
   }
 
   return <View style={styles.screen}>
+    <Stack.Screen options={{ headerRight: () => createAction }} />
     <View style={styles.content}>
       <Text style={styles.label}>Scheduling</Text>
       <Text style={styles.selectedName}>{selected.name}</Text>
@@ -87,4 +100,5 @@ const styles = StyleSheet.create({
   selectedName: { ...typography.title, color: colors.text },
   change: { ...typography.label, color: colors.accent },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
+  createButton: { width: 42, height: 42, borderRadius: 14, backgroundColor: colors.accent, alignItems: 'center', justifyContent: 'center', marginRight: spacing.sm },
 });

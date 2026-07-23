@@ -12,7 +12,7 @@ import { spacing } from '@/constants/spacing';
 import { typography } from '@/constants/typography';
 import { useDatabase } from '@/hooks/useDatabase';
 import { getProgramById } from '@/repositories/programRepository';
-import { deleteScheduledWorkout, getScheduledWorkoutById, updateScheduledWorkout } from '@/repositories/scheduledWorkoutRepository';
+import { cancelProgramSchedule, deleteScheduledWorkout, getScheduledWorkoutById, updateScheduledWorkout } from '@/repositories/scheduledWorkoutRepository';
 import { isoToScheduledDateDisplay, maskScheduledDateInput, scheduledDateDisplayToIso } from '@/services/scheduledWorkoutService';
 import type { ScheduledWorkout } from '@/types/scheduledWorkout';
 import { getUserMessage } from '@/utils/errors';
@@ -52,6 +52,37 @@ export default function ScheduledWorkoutDetailsScreen() {
     { text: 'Cancel', style: 'cancel' },
     { text: 'Remove', style: 'destructive', onPress: () => void (async () => { if (!item) return; setBusy(true); try { await deleteScheduledWorkout(db, item.id); router.back(); } catch (caught) { Alert.alert('Could not remove this item', getUserMessage(caught)); } finally { setBusy(false); } })() },
   ]);
+  const cancelProgram = () => {
+    const scheduledItem = item;
+    if (!scheduledItem?.programId) return;
+    const programId = scheduledItem.programId;
+    Alert.alert(
+      'Cancel remaining program workouts?',
+      `All remaining workouts from this scheduled run of ${programName ?? 'the program'} will be removed from your calendar. Completed workouts and a workout currently in progress will be kept.`,
+    [
+      { text: 'Keep Program', style: 'cancel' },
+      {
+        text: 'Cancel Remaining',
+        style: 'destructive',
+        onPress: () => void (async () => {
+          setBusy(true);
+          try {
+            const result = await cancelProgramSchedule(db, programId, scheduledItem.createdAt);
+            Alert.alert(
+              'Program cancelled',
+              `${result.cancelledCount} remaining workout${result.cancelledCount === 1 ? '' : 's'} removed from the calendar.`,
+              [{ text: 'View Calendar', onPress: () => router.replace('/calendar') }],
+            );
+          } catch (caught) {
+            Alert.alert('Could not cancel program', getUserMessage(caught));
+          } finally {
+            setBusy(false);
+          }
+        })(),
+      },
+      ],
+    );
+  };
 
   if (item === undefined) return <View style={styles.center}><ActivityIndicator size="large" color={colors.accent} /></View>;
   if (!item) return <View style={styles.center}><Text style={styles.muted}>Scheduled workout not found.</Text></View>;
@@ -74,6 +105,7 @@ export default function ScheduledWorkoutDetailsScreen() {
       {item.planId ? <AppButton label="View Workout" variant="secondary" onPress={() => router.push({ pathname: '/plans/[id]', params: { id: item.planId as string } })} /> : null}
       <AppButton label="Preview and Start" onPress={() => router.push({ pathname: '/start/preview', params: { scheduledId: item.id } })} />
       <AppButton label="Save Changes" loading={busy} onPress={() => void save()} />
+      {item.programId ? <AppButton label="Cancel Remaining Program Workouts" variant="danger" disabled={busy} onPress={cancelProgram} /> : null}
       <AppButton label="Remove from Calendar" variant="danger" onPress={remove} />
     </View>
   </View>;

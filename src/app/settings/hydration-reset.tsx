@@ -6,7 +6,6 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { AppButton } from '@/components/AppButton';
 import { AppInput } from '@/components/AppInput';
 import { AppScreen } from '@/components/AppScreen';
-import { Header } from '@/components/Header';
 import { SettingsRow } from '@/components/SettingsRow';
 import { SettingsSection } from '@/components/SettingsSection';
 import { SettingsToggle } from '@/components/SettingsToggle';
@@ -66,7 +65,7 @@ export default function HydrationResetConfirmationScreen() {
   };
 
   return (
-    <AppScreen scroll header={<Header title="Reset Hydration Data" />}>
+    <AppScreen scroll>
       <View style={styles.warningBlock}>
         <Text style={styles.warningTitle}>Reset Hydration Data?</Text>
         <Text style={styles.warningBody}>This will permanently delete:</Text>

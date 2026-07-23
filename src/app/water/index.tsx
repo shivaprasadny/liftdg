@@ -6,7 +6,6 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppScreen } from '@/components/AppScreen';
 import { EmptyState } from '@/components/EmptyState';
-import { Header } from '@/components/Header';
 import { HydrationCalendar } from '@/components/HydrationCalendar';
 import { HydrationDateNavigator } from '@/components/HydrationDateNavigator';
 import { HydrationDatePickerSheet } from '@/components/HydrationDatePickerSheet';
@@ -136,7 +135,7 @@ export default function WaterScreen() {
   const fmt = (ml: number) => formatWaterVolume(ml, settings.waterUnit);
 
   return (
-    <AppScreen scroll header={<Header title="Water" />}>
+    <AppScreen scroll>
       <Text style={[styles.tagline, { color: colors.textMuted }]}>{tagline}</Text>
 
       <View style={styles.section}>

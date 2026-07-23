@@ -1,89 +1,1946 @@
 [
-  {"id":"starter_beginner_full_body","name":"Beginner Full Body","description":"A balanced introduction to strength training.","color":"#35E07A","exercises":[
-    {"exerciseId":"quads_goblet_squat","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"chest_dumbbell_bench_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"back_lat_pulldown","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"hamstrings_romanian_deadlift","targetSets":3,"targetRepsMin":8,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"core_plank","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":60,"notes":"Hold each set for 30 seconds"}]},
-  {"id":"starter_push_day","name":"Push Day","description":"Chest, shoulders, and triceps.","color":"#4DA3FF","exercises":[
-    {"exerciseId":"chest_barbell_bench_press","targetSets":4,"targetRepsMin":6,"targetRepsMax":8,"targetWeight":null,"restSeconds":150,"notes":null},
-    {"exerciseId":"chest_incline_dumbbell_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"shoulders_dumbbell_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":10,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"shoulders_lateral_raise","targetSets":3,"targetRepsMin":12,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"triceps_rope_pushdown","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null}]},
-  {"id":"starter_pull_day","name":"Pull Day","description":"Back, rear delts, and biceps.","color":"#A879FF","exercises":[
-    {"exerciseId":"back_pull_up","targetSets":3,"targetRepsMin":5,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"back_barbell_row","targetSets":4,"targetRepsMin":6,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"back_seated_cable_row","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"back_face_pull","targetSets":3,"targetRepsMin":12,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"biceps_hammer_curl","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":60,"notes":null}]},
-  {"id":"starter_leg_day","name":"Leg Day","description":"Complete lower-body strength session.","color":"#FF9F43","exercises":[
-    {"exerciseId":"quads_back_squat","targetSets":4,"targetRepsMin":5,"targetRepsMax":8,"targetWeight":null,"restSeconds":180,"notes":null},
-    {"exerciseId":"hamstrings_romanian_deadlift","targetSets":3,"targetRepsMin":8,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"quads_leg_press","targetSets":3,"targetRepsMin":10,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"hamstrings_leg_curl","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"calves_standing_raise","targetSets":4,"targetRepsMin":12,"targetRepsMax":20,"targetWeight":null,"restSeconds":60,"notes":null}]},
-  {"id":"starter_upper_body","name":"Upper Body","description":"A balanced upper-body workout.","color":"#00C2D7","exercises":[
-    {"exerciseId":"chest_barbell_bench_press","targetSets":3,"targetRepsMin":6,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"back_seated_cable_row","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"shoulders_dumbbell_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"back_lat_pulldown","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"biceps_dumbbell_curl","targetSets":2,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"triceps_pushdown","targetSets":2,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null}]},
-  {"id":"starter_lower_body","name":"Lower Body","description":"Squat, hinge, and unilateral lower-body work.","color":"#FF6B6B","exercises":[
-    {"exerciseId":"quads_front_squat","targetSets":4,"targetRepsMin":5,"targetRepsMax":8,"targetWeight":null,"restSeconds":150,"notes":null},
-    {"exerciseId":"glutes_hip_thrust","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"quads_bulgarian_split_squat","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":"Reps per leg"},
-    {"exerciseId":"hamstrings_seated_leg_curl","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"calves_seated_raise","targetSets":4,"targetRepsMin":12,"targetRepsMax":20,"targetWeight":null,"restSeconds":60,"notes":null}]},
-  {"id":"starter_dumbbell_only","name":"Dumbbell Only","description":"A complete workout using only dumbbells.","color":"#FFD166","exercises":[
-    {"exerciseId":"quads_goblet_squat","targetSets":4,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"chest_dumbbell_bench_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"back_dumbbell_row","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":"Reps per side"},
-    {"exerciseId":"hamstrings_single_leg_rdl","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":"Reps per leg"},
-    {"exerciseId":"shoulders_lateral_raise","targetSets":3,"targetRepsMin":12,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null}]},
-  {"id":"starter_home_bodyweight","name":"Home Bodyweight","description":"No-equipment strength and conditioning.","color":"#6EE7B7","exercises":[
-    {"exerciseId":"chest_push_up","targetSets":4,"targetRepsMin":8,"targetRepsMax":20,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"quads_reverse_lunge","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":"Reps per leg"},
-    {"exerciseId":"glutes_glute_bridge","targetSets":3,"targetRepsMin":12,"targetRepsMax":20,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"core_plank","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":45,"notes":"Hold each set for 30–60 seconds"},
-    {"exerciseId":"full_burpee","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":60,"notes":null}]},
-  {"id":"program_shiva_athletic_push_core","name":"Shiva's Push and Core","description":"Day 1 of Shiva's Strength & Athletic: push strength plus a core and conditioning finish.","color":"#35E07A","exercises":[
-    {"exerciseId":"yoga_surya_namaskar","targetSets":1,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":30,"notes":"Warm-up flow, 3–5 rounds"},
-    {"exerciseId":"chest_barbell_bench_press","targetSets":4,"targetRepsMin":6,"targetRepsMax":8,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"shoulders_barbell_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":10,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"triceps_dip","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":"Use assistance if needed"},
-    {"exerciseId":"chest_push_up","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"chest_incline_dumbbell_press","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"core_plank","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":45,"notes":"Hold each set for 30–45 seconds"},
-    {"exerciseId":"core_side_plank","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":45,"notes":"Hold each side for 20–30 seconds"},
-    {"exerciseId":"cardio_treadmill_running","targetSets":1,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":0,"notes":"Optional incline treadmill finisher, 10–15 minutes"}]},
-  {"id":"program_shiva_athletic_pull_conditioning","name":"Shiva's Pull and Conditioning","description":"Day 2 of Shiva's Strength & Athletic: pulling strength plus a carry and conditioning finish.","color":"#4DA3FF","exercises":[
-    {"exerciseId":"back_pull_up","targetSets":4,"targetRepsMin":5,"targetRepsMax":8,"targetWeight":null,"restSeconds":120,"notes":"Use Assisted Pull-Up if needed"},
-    {"exerciseId":"hamstrings_deadlift","targetSets":4,"targetRepsMin":5,"targetRepsMax":6,"targetWeight":null,"restSeconds":150,"notes":null},
-    {"exerciseId":"back_barbell_row","targetSets":3,"targetRepsMin":8,"targetRepsMax":10,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"back_lat_pulldown","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"back_dumbbell_row","targetSets":3,"targetRepsMin":10,"targetRepsMax":12,"targetWeight":null,"restSeconds":75,"notes":null},
-    {"exerciseId":"full_farmer_carry","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":90,"notes":"Carry for 30–40 meters per set"},
-    {"exerciseId":"core_hanging_leg_raise","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"cardio_stair_climber","targetSets":1,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":0,"notes":"Conditioning finisher, 8–10 minutes"}]},
-  {"id":"program_shiva_athletic_legs","name":"Shiva's Legs and Athletic Strength","description":"Day 3 of Shiva's Strength & Athletic: squat and hinge strength plus an explosive finisher.","color":"#A879FF","exercises":[
-    {"exerciseId":"yoga_surya_namaskar","targetSets":1,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":30,"notes":"Warm-up flow, 3–5 rounds"},
-    {"exerciseId":"quads_back_squat","targetSets":4,"targetRepsMin":6,"targetRepsMax":8,"targetWeight":null,"restSeconds":150,"notes":null},
-    {"exerciseId":"hamstrings_romanian_deadlift","targetSets":3,"targetRepsMin":8,"targetRepsMax":10,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"quads_walking_lunge","targetSets":3,"targetRepsMin":10,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"quads_goblet_squat","targetSets":3,"targetRepsMin":10,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":null},
-    {"exerciseId":"calves_standing_raise","targetSets":3,"targetRepsMin":12,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"full_clean_press","targetSets":3,"targetRepsMin":5,"targetRepsMax":6,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"core_side_plank","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":45,"notes":"Plank variation, hold 20–30 seconds per side"}]},
-  {"id":"program_shiva_athletic_full_body","name":"Shiva's Full Body Athletic","description":"Day 4 of Shiva's Strength & Athletic: a full-body strength circuit with a conditioning finish.","color":"#FF9F43","exercises":[
-    {"exerciseId":"back_pull_up","targetSets":3,"targetRepsMin":6,"targetRepsMax":8,"targetWeight":null,"restSeconds":120,"notes":"Use Assisted Pull-Up if needed"},
-    {"exerciseId":"chest_push_up","targetSets":3,"targetRepsMin":10,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"triceps_dip","targetSets":3,"targetRepsMin":8,"targetRepsMax":12,"targetWeight":null,"restSeconds":90,"notes":"Use assistance if needed"},
-    {"exerciseId":"quads_front_squat","targetSets":3,"targetRepsMin":6,"targetRepsMax":8,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"full_clean_press","targetSets":3,"targetRepsMin":5,"targetRepsMax":6,"targetWeight":null,"restSeconds":120,"notes":null},
-    {"exerciseId":"hamstrings_kettlebell_swing","targetSets":3,"targetRepsMin":12,"targetRepsMax":15,"targetWeight":null,"restSeconds":60,"notes":null},
-    {"exerciseId":"full_farmer_carry","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":90,"notes":"Carry for 30–40 meters per set"},
-    {"exerciseId":"core_plank","targetSets":3,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":45,"notes":"Core circuit finisher, hold 30–45 seconds"},
-    {"exerciseId":"cardio_treadmill_running","targetSets":1,"targetRepsMin":1,"targetRepsMax":1,"targetWeight":null,"restSeconds":0,"notes":"Optional incline treadmill finisher, 10–15 minutes"}]}
+  {
+    "id": "starter_beginner_full_body",
+    "name": "Beginner Full Body",
+    "description": "A balanced introduction to strength training.",
+    "color": "#35E07A",
+    "exercises": [
+      {
+        "exerciseId": "quads_goblet_squat",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "chest_dumbbell_bench_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_lat_pulldown",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_romanian_deadlift",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "core_plank",
+        "targetSets": 3,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": "Hold each set for 30 seconds"
+      }
+    ]
+  },
+  {
+    "id": "starter_push_day",
+    "name": "Push Day",
+    "description": "Chest, shoulders, and triceps.",
+    "color": "#4DA3FF",
+    "exercises": [
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 4,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "chest_incline_dumbbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_dumbbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_lateral_raise",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_rope_pushdown",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "starter_pull_day",
+    "name": "Pull Day",
+    "description": "Back, rear delts, and biceps.",
+    "color": "#A879FF",
+    "exercises": [
+      {
+        "exerciseId": "back_pull_up",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_barbell_row",
+        "targetSets": 4,
+        "targetRepsMin": 6,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_seated_cable_row",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_face_pull",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "biceps_hammer_curl",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "starter_leg_day",
+    "name": "Leg Day",
+    "description": "Complete lower-body strength session.",
+    "color": "#FF9F43",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 4,
+        "targetRepsMin": 5,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_romanian_deadlift",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_leg_press",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_leg_curl",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "calves_standing_raise",
+        "targetSets": 4,
+        "targetRepsMin": 12,
+        "targetRepsMax": 20,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "starter_upper_body",
+    "name": "Upper Body",
+    "description": "A balanced upper-body workout.",
+    "color": "#00C2D7",
+    "exercises": [
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 3,
+        "targetRepsMin": 6,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_seated_cable_row",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_dumbbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_lat_pulldown",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "biceps_dumbbell_curl",
+        "targetSets": 2,
+        "targetRepsMin": 10,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_pushdown",
+        "targetSets": 2,
+        "targetRepsMin": 10,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "starter_lower_body",
+    "name": "Lower Body",
+    "description": "Squat, hinge, and unilateral lower-body work.",
+    "color": "#FF6B6B",
+    "exercises": [
+      {
+        "exerciseId": "quads_front_squat",
+        "targetSets": 4,
+        "targetRepsMin": 5,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "glutes_hip_thrust",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_bulgarian_split_squat",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "Reps per leg"
+      },
+      {
+        "exerciseId": "hamstrings_seated_leg_curl",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "calves_seated_raise",
+        "targetSets": 4,
+        "targetRepsMin": 12,
+        "targetRepsMax": 20,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "starter_dumbbell_only",
+    "name": "Dumbbell Only",
+    "description": "A complete workout using only dumbbells.",
+    "color": "#FFD166",
+    "exercises": [
+      {
+        "exerciseId": "quads_goblet_squat",
+        "targetSets": 4,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "chest_dumbbell_bench_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_dumbbell_row",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "Reps per side"
+      },
+      {
+        "exerciseId": "hamstrings_single_leg_rdl",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "Reps per leg"
+      },
+      {
+        "exerciseId": "shoulders_lateral_raise",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "starter_home_bodyweight",
+    "name": "Home Bodyweight",
+    "description": "No-equipment strength and conditioning.",
+    "color": "#6EE7B7",
+    "exercises": [
+      {
+        "exerciseId": "chest_push_up",
+        "targetSets": 4,
+        "targetRepsMin": 8,
+        "targetRepsMax": 20,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_reverse_lunge",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": "Reps per leg"
+      },
+      {
+        "exerciseId": "glutes_glute_bridge",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 20,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "core_plank",
+        "targetSets": 3,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": "Hold each set for 30–60 seconds"
+      },
+      {
+        "exerciseId": "full_burpee",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_shiva_athletic_push_core",
+    "name": "Shiva's Push and Core",
+    "description": "Day 1 of Shiva's Strength & Athletic: push strength plus a core and conditioning finish.",
+    "color": "#35E07A",
+    "exercises": [
+      {
+        "exerciseId": "yoga_surya_namaskar",
+        "targetSets": 1,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 30,
+        "notes": "Warm-up flow, 3–5 rounds"
+      },
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 4,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_barbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_dip",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "Use assistance if needed"
+      },
+      {
+        "exerciseId": "chest_push_up",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "chest_incline_dumbbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "core_plank",
+        "targetSets": 3,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": "Hold each set for 30–45 seconds"
+      },
+      {
+        "exerciseId": "core_side_plank",
+        "targetSets": 3,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": "Hold each side for 20–30 seconds"
+      },
+      {
+        "exerciseId": "cardio_treadmill_running",
+        "targetSets": 1,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 0,
+        "notes": "Optional incline treadmill finisher, 10–15 minutes"
+      }
+    ]
+  },
+  {
+    "id": "program_shiva_athletic_pull_conditioning",
+    "name": "Shiva's Pull and Conditioning",
+    "description": "Day 2 of Shiva's Strength & Athletic: pulling strength plus a carry and conditioning finish.",
+    "color": "#4DA3FF",
+    "exercises": [
+      {
+        "exerciseId": "back_pull_up",
+        "targetSets": 4,
+        "targetRepsMin": 5,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": "Use Assisted Pull-Up if needed"
+      },
+      {
+        "exerciseId": "hamstrings_deadlift",
+        "targetSets": 4,
+        "targetRepsMin": 5,
+        "targetRepsMax": 6,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_barbell_row",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_lat_pulldown",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_dumbbell_row",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "full_farmer_carry",
+        "targetSets": 3,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "Carry for 30–40 meters per set"
+      },
+      {
+        "exerciseId": "core_hanging_leg_raise",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "cardio_stair_climber",
+        "targetSets": 1,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 0,
+        "notes": "Conditioning finisher, 8–10 minutes"
+      }
+    ]
+  },
+  {
+    "id": "program_shiva_athletic_legs",
+    "name": "Shiva's Legs and Athletic Strength",
+    "description": "Day 3 of Shiva's Strength & Athletic: squat and hinge strength plus an explosive finisher.",
+    "color": "#A879FF",
+    "exercises": [
+      {
+        "exerciseId": "yoga_surya_namaskar",
+        "targetSets": 1,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 30,
+        "notes": "Warm-up flow, 3–5 rounds"
+      },
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 4,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_romanian_deadlift",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_walking_lunge",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_goblet_squat",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "calves_standing_raise",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "full_clean_press",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 6,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "core_side_plank",
+        "targetSets": 3,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": "Plank variation, hold 20–30 seconds per side"
+      }
+    ]
+  },
+  {
+    "id": "program_shiva_athletic_full_body",
+    "name": "Shiva's Full Body Athletic",
+    "description": "Day 4 of Shiva's Strength & Athletic: a full-body strength circuit with a conditioning finish.",
+    "color": "#FF9F43",
+    "exercises": [
+      {
+        "exerciseId": "back_pull_up",
+        "targetSets": 3,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": "Use Assisted Pull-Up if needed"
+      },
+      {
+        "exerciseId": "chest_push_up",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_dip",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "Use assistance if needed"
+      },
+      {
+        "exerciseId": "quads_front_squat",
+        "targetSets": 3,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "full_clean_press",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 6,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_kettlebell_swing",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "full_farmer_carry",
+        "targetSets": 3,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "Carry for 30–40 meters per set"
+      },
+      {
+        "exerciseId": "core_plank",
+        "targetSets": 3,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": "Core circuit finisher, hold 30–45 seconds"
+      },
+      {
+        "exerciseId": "cardio_treadmill_running",
+        "targetSets": 1,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 0,
+        "notes": "Optional incline treadmill finisher, 10–15 minutes"
+      }
+    ]
+  },
+  {
+    "id": "program_stronglifts_a",
+    "name": "StrongLifts 5x5 – Workout A",
+    "description": "Squat, bench, row — the first half of the StrongLifts 5x5 rotation.",
+    "color": "#35E07A",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 5,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": null
+      },
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 5,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_barbell_row",
+        "targetSets": 5,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": "Reset the bar to the floor between reps."
+      }
+    ]
+  },
+  {
+    "id": "program_stronglifts_b",
+    "name": "StrongLifts 5x5 – Workout B",
+    "description": "Squat, overhead press, and a single top set of deadlifts — the second half of the rotation.",
+    "color": "#4DA3FF",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 5,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_barbell_press",
+        "targetSets": 5,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_deadlift",
+        "targetSets": 1,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": "Just one working set of 5 — deadlifts are demanding and don't need the full 5x5."
+      }
+    ]
+  },
+  {
+    "id": "program_startingstrength_a",
+    "name": "Starting Strength – Workout A",
+    "description": "Squat, press, and deadlift — the first half of the Starting Strength rotation.",
+    "color": "#A879FF",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_barbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_deadlift",
+        "targetSets": 1,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": "One top set only."
+      }
+    ]
+  },
+  {
+    "id": "program_startingstrength_b",
+    "name": "Starting Strength – Workout B",
+    "description": "Squat, bench, and chin-ups — the second half of the rotation.",
+    "color": "#FF9F43",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": null
+      },
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_chin_up",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": "Common beginner substitute for the power clean — use an assisted machine if needed."
+      }
+    ]
+  },
+  {
+    "id": "program_531_press",
+    "name": "5/3/1 – Overhead Press Day",
+    "description": "Main press work plus pulling and ab accessories.",
+    "color": "#35E07A",
+    "exercises": [
+      {
+        "exerciseId": "shoulders_barbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": "5/3/1 wave — see this week's notes for the percentage and rep scheme."
+      },
+      {
+        "exerciseId": "back_lat_pulldown",
+        "targetSets": 5,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_pushdown",
+        "targetSets": 5,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "core_hanging_leg_raise",
+        "targetSets": 5,
+        "targetRepsMin": 10,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_531_deadlift",
+    "name": "5/3/1 – Deadlift Day",
+    "description": "Main deadlift work plus rowing and core accessories.",
+    "color": "#4DA3FF",
+    "exercises": [
+      {
+        "exerciseId": "hamstrings_deadlift",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": "5/3/1 wave — see this week's notes for the percentage and rep scheme."
+      },
+      {
+        "exerciseId": "back_barbell_row",
+        "targetSets": 5,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "core_ab_wheel",
+        "targetSets": 5,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "calves_standing_raise",
+        "targetSets": 5,
+        "targetRepsMin": 15,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_531_bench",
+    "name": "5/3/1 – Bench Press Day",
+    "description": "Main bench work plus rowing and arm accessories.",
+    "color": "#A879FF",
+    "exercises": [
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": "5/3/1 wave — see this week's notes for the percentage and rep scheme."
+      },
+      {
+        "exerciseId": "back_dumbbell_row",
+        "targetSets": 5,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_skull_crusher",
+        "targetSets": 5,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "biceps_dumbbell_curl",
+        "targetSets": 5,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_531_squat",
+    "name": "5/3/1 – Squat Day",
+    "description": "Main squat work plus hamstring and core accessories.",
+    "color": "#FF9F43",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": "5/3/1 wave — see this week's notes for the percentage and rep scheme."
+      },
+      {
+        "exerciseId": "hamstrings_leg_curl",
+        "targetSets": 5,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "core_plank",
+        "targetSets": 5,
+        "targetRepsMin": 1,
+        "targetRepsMax": 1,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": "Hold each set for 45 seconds."
+      },
+      {
+        "exerciseId": "calves_seated_raise",
+        "targetSets": 5,
+        "targetRepsMin": 15,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_gzclp_day1",
+    "name": "GZCLP – Day 1",
+    "description": "T1 squat, T2 bench, T3 lat pulldown.",
+    "color": "#00C2D7",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 5,
+        "targetRepsMin": 3,
+        "targetRepsMax": 3,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": "T1: 5 sets of 3, then a final AMRAP set. Add weight only after hitting 15+ total reps."
+      },
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "T2: 3 sets of 10."
+      },
+      {
+        "exerciseId": "back_lat_pulldown",
+        "targetSets": 3,
+        "targetRepsMin": 15,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": "T3: 3 sets, last set AMRAP."
+      }
+    ]
+  },
+  {
+    "id": "program_gzclp_day2",
+    "name": "GZCLP – Day 2",
+    "description": "T1 overhead press, T2 deadlift, T3 chin-ups.",
+    "color": "#FF6B6B",
+    "exercises": [
+      {
+        "exerciseId": "shoulders_barbell_press",
+        "targetSets": 5,
+        "targetRepsMin": 3,
+        "targetRepsMax": 3,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": "T1: 5 sets of 3, then a final AMRAP set."
+      },
+      {
+        "exerciseId": "hamstrings_deadlift",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": "T2: kept lower-rep than other T2 work — deadlifts fatigue fast."
+      },
+      {
+        "exerciseId": "back_chin_up",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": "T3: 3 sets, last set AMRAP."
+      }
+    ]
+  },
+  {
+    "id": "program_gzclp_day3",
+    "name": "GZCLP – Day 3",
+    "description": "T1 bench, T2 squat, T3 dumbbell row.",
+    "color": "#FFD166",
+    "exercises": [
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 5,
+        "targetRepsMin": 3,
+        "targetRepsMax": 3,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": "T1: 5 sets of 3, then a final AMRAP set."
+      },
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "T2: 3 sets of 10."
+      },
+      {
+        "exerciseId": "back_dumbbell_row",
+        "targetSets": 3,
+        "targetRepsMin": 15,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": "T3: 3 sets, last set AMRAP."
+      }
+    ]
+  },
+  {
+    "id": "program_gzclp_day4",
+    "name": "GZCLP – Day 4",
+    "description": "T1 deadlift, T2 overhead press, T3 curls.",
+    "color": "#6EE7B7",
+    "exercises": [
+      {
+        "exerciseId": "hamstrings_deadlift",
+        "targetSets": 5,
+        "targetRepsMin": 3,
+        "targetRepsMax": 3,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": "T1: 5 sets of 3, then a final AMRAP set."
+      },
+      {
+        "exerciseId": "shoulders_barbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": "T2: 3 sets of 10."
+      },
+      {
+        "exerciseId": "biceps_barbell_curl",
+        "targetSets": 3,
+        "targetRepsMin": 15,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": "T3: 3 sets, last set AMRAP."
+      }
+    ]
+  },
+  {
+    "id": "program_phul_upper_power",
+    "name": "PHUL – Upper Power",
+    "description": "Heavy pressing and pulling at low reps.",
+    "color": "#35E07A",
+    "exercises": [
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 4,
+        "targetRepsMin": 3,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_barbell_row",
+        "targetSets": 4,
+        "targetRepsMin": 3,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_barbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_lat_pulldown",
+        "targetSets": 3,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "biceps_barbell_curl",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_pushdown",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_phul_lower_power",
+    "name": "PHUL – Lower Power",
+    "description": "Heavy squat and deadlift work at low reps.",
+    "color": "#4DA3FF",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 4,
+        "targetRepsMin": 3,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_deadlift",
+        "targetSets": 3,
+        "targetRepsMin": 3,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_leg_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_leg_curl",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "calves_standing_raise",
+        "targetSets": 4,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_phul_upper_hypertrophy",
+    "name": "PHUL – Upper Hypertrophy",
+    "description": "Higher-rep pressing, pulling, and arm volume.",
+    "color": "#A879FF",
+    "exercises": [
+      {
+        "exerciseId": "chest_incline_dumbbell_press",
+        "targetSets": 4,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_seated_cable_row",
+        "targetSets": 4,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_dumbbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_lateral_raise",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      },
+      {
+        "exerciseId": "biceps_dumbbell_curl",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_rope_pushdown",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_phul_lower_hypertrophy",
+    "name": "PHUL – Lower Hypertrophy",
+    "description": "Higher-rep leg and calf volume.",
+    "color": "#FF9F43",
+    "exercises": [
+      {
+        "exerciseId": "hamstrings_romanian_deadlift",
+        "targetSets": 4,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_leg_extension",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_walking_lunge",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_seated_leg_curl",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "calves_seated_raise",
+        "targetSets": 4,
+        "targetRepsMin": 15,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_phat_upper_power",
+    "name": "PHAT – Upper Power",
+    "description": "Low-rep power work for chest, back, shoulders, and triceps.",
+    "color": "#35E07A",
+    "exercises": [
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 3,
+        "targetRepsMin": 3,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_barbell_row",
+        "targetSets": 3,
+        "targetRepsMin": 3,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_barbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 5,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_chin_up",
+        "targetSets": 3,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_close_grip_bench",
+        "targetSets": 3,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_phat_lower_power",
+    "name": "PHAT – Lower Power",
+    "description": "Low-rep power work for squats and deadlifts.",
+    "color": "#4DA3FF",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 3,
+        "targetRepsMin": 3,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_deadlift",
+        "targetSets": 2,
+        "targetRepsMin": 3,
+        "targetRepsMax": 5,
+        "targetWeight": null,
+        "restSeconds": 180,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_leg_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_leg_curl",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "calves_standing_raise",
+        "targetSets": 4,
+        "targetRepsMin": 10,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_phat_back_shoulders",
+    "name": "PHAT – Back & Shoulders Hypertrophy",
+    "description": "High-volume pulling and shoulder work.",
+    "color": "#A879FF",
+    "exercises": [
+      {
+        "exerciseId": "back_lat_pulldown",
+        "targetSets": 4,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_seated_cable_row",
+        "targetSets": 4,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_dumbbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_lateral_raise",
+        "targetSets": 4,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_rear_delt_fly",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_face_pull",
+        "targetSets": 3,
+        "targetRepsMin": 15,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_phat_legs_hypertrophy",
+    "name": "PHAT – Legs Hypertrophy",
+    "description": "High-volume quad, hamstring, and calf work.",
+    "color": "#FF9F43",
+    "exercises": [
+      {
+        "exerciseId": "quads_front_squat",
+        "targetSets": 4,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_romanian_deadlift",
+        "targetSets": 4,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_leg_extension",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_seated_leg_curl",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_walking_lunge",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "calves_seated_raise",
+        "targetSets": 4,
+        "targetRepsMin": 15,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_phat_chest_arms",
+    "name": "PHAT – Chest & Arms Hypertrophy",
+    "description": "High-volume chest, biceps, and triceps work.",
+    "color": "#00C2D7",
+    "exercises": [
+      {
+        "exerciseId": "chest_incline_dumbbell_press",
+        "targetSets": 4,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "chest_cable_fly",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "biceps_barbell_curl",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "biceps_hammer_curl",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_skull_crusher",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_pushdown",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_arnold_chest_back",
+    "name": "Arnold Split – Chest & Back",
+    "description": "Classic bodybuilding chest and back volume.",
+    "color": "#35E07A",
+    "exercises": [
+      {
+        "exerciseId": "chest_barbell_bench_press",
+        "targetSets": 4,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "chest_incline_dumbbell_press",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "chest_dumbbell_fly",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_pull_up",
+        "targetSets": 4,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_barbell_row",
+        "targetSets": 4,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "back_seated_cable_row",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_arnold_shoulders_arms",
+    "name": "Arnold Split – Shoulders & Arms",
+    "description": "Classic bodybuilding shoulder and arm volume.",
+    "color": "#4DA3FF",
+    "exercises": [
+      {
+        "exerciseId": "shoulders_barbell_press",
+        "targetSets": 4,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_lateral_raise",
+        "targetSets": 4,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "shoulders_rear_delt_fly",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "biceps_barbell_curl",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "biceps_hammer_curl",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 60,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_close_grip_bench",
+        "targetSets": 3,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "triceps_pushdown",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  },
+  {
+    "id": "program_arnold_legs",
+    "name": "Arnold Split – Legs",
+    "description": "Classic bodybuilding leg volume.",
+    "color": "#A879FF",
+    "exercises": [
+      {
+        "exerciseId": "quads_back_squat",
+        "targetSets": 4,
+        "targetRepsMin": 6,
+        "targetRepsMax": 8,
+        "targetWeight": null,
+        "restSeconds": 150,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_romanian_deadlift",
+        "targetSets": 4,
+        "targetRepsMin": 8,
+        "targetRepsMax": 10,
+        "targetWeight": null,
+        "restSeconds": 120,
+        "notes": null
+      },
+      {
+        "exerciseId": "quads_leg_press",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 90,
+        "notes": null
+      },
+      {
+        "exerciseId": "hamstrings_leg_curl",
+        "targetSets": 3,
+        "targetRepsMin": 10,
+        "targetRepsMax": 12,
+        "targetWeight": null,
+        "restSeconds": 75,
+        "notes": null
+      },
+      {
+        "exerciseId": "calves_standing_raise",
+        "targetSets": 4,
+        "targetRepsMin": 15,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      },
+      {
+        "exerciseId": "core_hanging_leg_raise",
+        "targetSets": 3,
+        "targetRepsMin": 12,
+        "targetRepsMax": 15,
+        "targetWeight": null,
+        "restSeconds": 45,
+        "notes": null
+      }
+    ]
+  }
 ]

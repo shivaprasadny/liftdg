@@ -45,3 +45,22 @@ export interface UpdateScheduledWorkoutInput {
   daypart: Daypart | null;
   notes: string | null;
 }
+
+/** One set of occurrences created by a single Start Program operation. */
+export interface ProgramScheduleBatch {
+  programId: string;
+  batchCreatedAt: string;
+  startDate: string;
+  endDate: string;
+  totalCount: number;
+  eligibleCount: number;
+  completedCount: number;
+  inProgressCount: number;
+  cancelledCount: number;
+}
+
+export interface CancelProgramScheduleResult {
+  cancelledCount: number;
+  preservedCompletedCount: number;
+  preservedInProgressCount: number;
+}

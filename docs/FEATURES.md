@@ -1,5 +1,7 @@
 # Feature status
 
+- ✅ Complete — Training Calendar month planner with local-date grid queries, Monday/Sunday preference, previous/next/Today navigation, direct month/year selection, selected-day workout details, and date-prefilled Add Workout
+
 - 🚧 In progress — Training History has paginated list, calendar, and timeline views; expanded completed details; planned-versus-performed structure; repeat/duplicate actions; immutable performed values; audited metadata corrections; and audited deletion. Dedicated exercise/PR/program-history navigation and soft-delete restore remain planned.
 
 - 🚧 In progress — Exercise replacement supports deterministic active-session recommendations, equipment filtering, restrictions, reasons, safe set transfer, group preservation, and audit rows. Scheduled/program/template scope UI, preference editors, and revert UI remain planned.
@@ -30,8 +32,9 @@
 - ✅ Complete — User-plan editing and ordering
 - ✅ Complete — Plan detail screen shows usage history (times used, last performed, and a card per past completed workout, tapping through to its full details)
 - ✅ Complete — Every plan can be tagged with a workout type (Strength/Running/Cycling/Swimming/Walking/Yoga/Mobility/HIIT/Hybrid/Other), shown as a badge; only Strength has a dedicated exercise editor today
-- ⚠️ Needs improvement — Programs: a read-only multi-week layer over existing plans, with one built-in program ("Shiva's Strength & Athletic"). No create/edit/duplicate/favorite/start/pause/resume yet
-- ⚠️ Needs improvement — Calendar: one-time Agenda scheduling of an existing plan onto a date/daypart, plus "Start Program" to bulk-populate a program's workouts. No Month/Week views, drag-and-drop, conflict detection, recurring-edit scopes, or notifications yet
+- ✅ Complete — Programs: 11 built-in programs plus a custom-program builder with configurable weeks, weekly training days, and linked workouts; calendar-based start-date selection and safe cancellation of each scheduled run. Pause/resume lifecycle remains planned.
+- ⚠️ Needs improvement — Calendar: premium month-grid scheduling of plans plus "Start Program" bulk scheduling. It supports direct month/year selection and selected-day details; Week view, drag-and-drop, conflict resolution, recurring-edit scopes, and notifications remain planned.
+- ⚠️ Needs improvement — Apply Changes: on a completed workout, review and apply an exercise replacement back to the source workout template. Only one change type and two scopes exist; see DECISIONS.md #48
 - ✅ Complete — Active workout logging and immediate persistence
 - ✅ Complete — Unified active-workout list, focused exercise mode, jump picker, previous/next navigation, and persisted focus recovery
 - ✅ Complete — Superset/giant-set ordering and round-aware circuit navigation

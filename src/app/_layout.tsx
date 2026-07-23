@@ -23,8 +23,16 @@ function ModalCancelButton() {
     </Pressable>
   );
 }
+function ExplicitBackButton() {
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel="Go back" onPress={() => router.back()} hitSlop={12} style={modalHeaderStyles.backButton}>
+      <Text style={modalHeaderStyles.text}>‹ Back</Text>
+    </Pressable>
+  );
+}
 const modalHeaderStyles = StyleSheet.create({
   button: { minHeight: 44, minWidth: 44, justifyContent: 'center', alignItems: 'center', paddingRight: spacing.md },
+  backButton: { minHeight: 44, minWidth: 64, justifyContent: 'center', alignItems: 'flex-start', paddingRight: spacing.md },
   text: { ...typography.body, color: colors.accent },
 });
 
@@ -46,13 +54,15 @@ export default function RootLayout() {
             <Stack.Screen name="exercises/create" options={{ title: 'New Exercise', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="exercises/edit/[id]" options={{ title: 'Edit Exercise', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="exercises/[id]" options={{ title: 'Exercise Details' }} />
-            <Stack.Screen name="plans/create" options={{ title: 'Create Plan' }} />
+            <Stack.Screen name="plans/create" options={{ title: 'Create Plan', headerLeft: () => <ExplicitBackButton /> }} />
             <Stack.Screen name="plans/edit/[id]" options={{ title: 'Edit Plan' }} />
             <Stack.Screen name="plans/select-exercises" options={{ title: 'Add Exercises', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="plans/[id]" options={{ title: 'Plan Details' }} />
             <Stack.Screen name="plans/groups/[id]" options={{ title: 'Group Plan Exercises' }} />
             <Stack.Screen name="programs/index" options={{ title: 'Programs' }} />
             <Stack.Screen name="programs/[id]" options={{ title: 'Program Details' }} />
+            <Stack.Screen name="programs/create" options={{ title: 'Create Program', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
+            <Stack.Screen name="programs/edit/[id]" options={{ title: 'Edit Program', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="programs/start" options={{ title: 'Start Program', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="calendar/index" options={{ title: 'Calendar' }} />
             <Stack.Screen name="calendar/schedule" options={{ title: 'Schedule Workout', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
@@ -66,10 +76,21 @@ export default function RootLayout() {
             <Stack.Screen name="workout/correct/[id]" options={{ title: 'Correct History' }} />
             <Stack.Screen name="workout/create-group" options={{ title: 'Create Group', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="workout/replace-exercise" options={{ title: 'Replace Exercise', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
+            <Stack.Screen name="workout/apply-changes" options={{ title: 'Apply Changes', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="cardio/create" options={{ title: 'Cardio Session', headerLeft: () => <ModalCancelButton /> }} />
-            <Stack.Screen name="tools/plate-calculator" options={{ title: 'Plate Calculator' }} />
             <Stack.Screen name="settings/index" options={{ title: 'Settings' }} />
             <Stack.Screen name="settings/data" options={{ title: 'Data Management' }} />
+            <Stack.Screen name="settings/profile" options={{ title: 'Profile' }} />
+            <Stack.Screen name="settings/hydration-reset" options={{ title: 'Reset Hydration Data' }} />
+            <Stack.Screen name="body/index" options={{ title: 'Body Progress' }} />
+            <Stack.Screen name="body/weight" options={{ title: 'Weight History' }} />
+            <Stack.Screen name="body/preferences" options={{ title: 'Measurement Preferences' }} />
+            <Stack.Screen name="body/measurements/index" options={{ title: 'Measurement History' }} />
+            <Stack.Screen name="body/measurements/create" options={{ title: 'New Measurements' }} />
+            <Stack.Screen name="body/measurements/compare" options={{ title: 'Compare Measurements' }} />
+            <Stack.Screen name="water/index" options={{ title: 'Water' }} />
+            <Stack.Screen name="start/preview" options={{ title: 'Preview' }} />
+            <Stack.Screen name="start/quick" options={{ title: 'Quick Start', presentation: 'modal', headerLeft: () => <ModalCancelButton /> }} />
             <Stack.Screen name="onboarding" options={{ headerShown: false, gestureEnabled: false }} />
           </Stack>
                 </OnboardingGate>

@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, FlatList, Keyboard, PanResponder, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, Alert, FlatList, Keyboard, KeyboardAvoidingView, PanResponder, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { ActiveExerciseSummaryCard } from '@/components/ActiveExerciseSummaryCard';
 import { AppButton } from '@/components/AppButton';
@@ -126,7 +126,6 @@ export default function ActiveWorkoutScreen() {
       <AppButton label="Finish Workout" onPress={requestFinish} />
     </View>
     <View style={styles.stats}><Stat value={String(items.length)} label="Exercises" /><Stat value={String(summary.completedSets)} label="Sets done" /><Stat value={summary.totalVolume.toFixed(0)} label="Volume kg" /></View>
-    {timer.remaining > 0 ? <View><Text style={styles.timerIndicator}>Rest timer active · {clock(timer.remaining)}</Text><RestTimer timer={timer} /></View> : null}
   </>;
 
   if (navigation.displayMode === 'list') return <FlatList style={styles.screen} contentContainerStyle={styles.content} data={items} keyExtractor={(item) => item.id} initialNumToRender={10} windowSize={7}
@@ -143,10 +142,19 @@ export default function ActiveWorkoutScreen() {
   const exercise = current.workoutExercise;
   const currentGroupId = current.group?.id;
   const nextForPrompt = navigation.nextExercise ?? (current.group?.type === 'circuit' ? items.find((item) => item.group?.id === currentGroupId && item.group?.position === 0) : null);
-  return <View style={styles.screen} {...panResponder.panHandlers}>
+  return <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} {...panResponder.panHandlers}>
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
       {header}
-      <Pressable accessibilityRole="button" accessibilityLabel="Return to workout list" onPress={() => void changeExercise(navigation.returnToList)} style={styles.back}><Text style={styles.link}>← All Exercises</Text></Pressable>
+      <View style={styles.focusActions}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Return to workout list" onPress={() => void changeExercise(navigation.returnToList)} style={styles.back}><Text style={styles.link}>← All Exercises</Text></Pressable>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Add exercises to this workout"
+          onPress={() => void changeExercise(() => router.push({ pathname: '/workout/add-exercises', params: { id: workout.id } }))}
+          style={styles.addExerciseButton}>
+          <Text style={styles.addExerciseText}>＋ Add Exercise</Text>
+        </Pressable>
+      </View>
       <View style={styles.focusHeader}>
         {current.group ? <Text style={styles.group}>{current.group.label}{current.group.type === 'circuit' && navigation.circuitRound ? ` · Round ${navigation.circuitRound} of ${current.group.targetRounds}` : ''}</Text> : null}
         <Pressable accessibilityRole="button" accessibilityLabel={`View exercise details for ${current.name}`} onPress={() => router.push({ pathname: '/exercises/[id]', params: { id: exercise.exerciseId } })}>
@@ -162,7 +170,10 @@ export default function ActiveWorkoutScreen() {
         {exercise.targetWeight != null ? <Text style={styles.muted}>Target weight {exercise.targetWeight} kg</Text> : null}
         {exercise.notes ? <Text style={styles.notes}>{exercise.notes}</Text> : null}
         {previous[exercise.exerciseId] ? <Text style={styles.placeholder}>Previous {previous[exercise.exerciseId]?.weight ?? 0} kg × {previous[exercise.exerciseId]?.reps ?? 0} · {previous[exercise.exerciseId]?.setCount} sets · {format(new Date(previous[exercise.exerciseId]!.workoutDate), 'MMM d')}</Text> : <Text style={styles.placeholder}>No previous completed performance</Text>}
-        {exercise.sets.map((set, setIndex) => <WorkoutSetRow key={set.id} set={set} previous={exercise.sets[setIndex - 1]} registerFlush={registerFlush} onSave={async (value) => { await updateWorkoutSet(db, set.id, value); await load(); }} onDelete={() => void deleteWorkoutSet(db, set.id).then(load)} onComplete={(completed) => { if (completed && exercise.restSeconds && settings.autoStartRestTimer) timer.start(exercise.restSeconds); }} />)}
+        {exercise.sets.map((set, setIndex) => <Fragment key={set.id}>
+          <WorkoutSetRow set={set} previous={exercise.sets[setIndex - 1]} registerFlush={registerFlush} onSave={async (value) => { await updateWorkoutSet(db, set.id, value); await load(); }} onDelete={() => void deleteWorkoutSet(db, set.id).then(load)} onComplete={(completed) => { if (completed && exercise.restSeconds && settings.autoStartRestTimer) timer.start(exercise.restSeconds, set.id); }} />
+          {timer.remaining > 0 && timer.anchorSetId === set.id ? <View style={styles.inlineTimer}><Text accessibilityRole="header" style={styles.timerIndicator}>Rest before your next set</Text><RestTimer timer={timer} /></View> : null}
+        </Fragment>)}
         <View style={styles.row}><Pressable accessibilityRole="button" accessibilityLabel={`Replace ${exercise.exercise.name}`} onPress={() => router.push({pathname:'/workout/replace-exercise',params:{id:workout.id,workoutExerciseId:exercise.id}})}><Text style={styles.link}>Replace</Text></Pressable><Pressable accessibilityRole="button" onPress={() => Alert.alert('Add set','Choose a set type',[{text:'Working',onPress:()=>void addWorkoutSet(db,exercise.id,undefined,'working').then(load)},{text:'Warm-up',onPress:()=>void addWorkoutSet(db,exercise.id,undefined,'warmup').then(load)},{text:'Drop',onPress:()=>void addWorkoutSet(db,exercise.id,exercise.sets.at(-1),'drop').then(load)},{text:'AMRAP',onPress:()=>void addWorkoutSet(db,exercise.id,exercise.sets.at(-1),'amrap').then(load)},{text:'Cancel',style:'cancel'}])}><Text style={styles.link}>+ Add Set</Text></Pressable><Pressable accessibilityRole="button" onPress={()=>Alert.alert('Skip exercise?',exercise.exercise.name,[{text:'Cancel',style:'cancel'},{text:'Skip',onPress:()=>void skipWorkoutExercise(db,exercise.id,null).then(load)}])}><Text style={styles.remove}>Skip</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`Remove ${exercise.exercise.name}`} onPress={() => void remove(exercise)}><Text style={styles.remove}>Remove</Text></Pressable></View>
       </View>
     </ScrollView>
@@ -172,7 +183,7 @@ export default function ActiveWorkoutScreen() {
       <AppButton label="Next Exercise" disabled={!navigation.canGoNext} accessibilityState={{ disabled: !navigation.canGoNext }} onPress={() => void changeExercise(navigation.goNext)} style={styles.footerButton}/>
     </View>
     <ExerciseNavigationPicker visible={pickerVisible} items={items} selectedId={current.id} onClose={() => setPickerVisible(false)} onSelect={(exerciseId) => { setPickerVisible(false); void changeExercise(() => navigation.goToExercise(exerciseId)); }} />
-  </View>;
+  </KeyboardAvoidingView>;
 }
 
 function Stat({ value, label }: { value: string; label: string }) { return <View style={styles.stat}><Text style={styles.statValue}>{value}</Text><Text style={styles.statLabel}>{label}</Text></View>; }
@@ -181,8 +192,8 @@ const styles = StyleSheet.create({
   hero: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md }, heroText: { flex: 1 }, title: { ...typography.title, color: colors.text }, muted: { ...typography.caption, color: colors.textMuted },
   cancelLink: { alignSelf: 'flex-start', minHeight: 44, justifyContent: 'center' },
   stats: { flexDirection: 'row', gap: spacing.sm }, stat: { flex: 1, padding: spacing.md, borderRadius: radius.md, backgroundColor: colors.surface, alignItems: 'center' }, statValue: { ...typography.heading, color: colors.text }, statLabel: { ...typography.caption, color: colors.textMuted },
-  timerIndicator: { ...typography.label, color: colors.warning, marginBottom: spacing.sm }, row: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md }, link: { ...typography.label, color: colors.accent }, remove: { ...typography.label, color: colors.danger }, sectionTitle: { ...typography.heading, color: colors.text, marginTop: spacing.sm }, empty: { padding: spacing.xl, alignItems: 'center', gap: spacing.sm },
-  back: { minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start' }, focusHeader: { alignItems: 'center', gap: spacing.xs }, focusName: { ...typography.title, color: colors.text, textAlign: 'center' }, group: { ...typography.label, color: colors.accent, textTransform: 'uppercase' }, position: { minHeight: 44, justifyContent: 'center', paddingHorizontal: spacing.md }, positionText: { ...typography.label, color: colors.text },
+  inlineTimer: { gap: spacing.sm, marginTop: spacing.xs }, timerIndicator: { ...typography.label, color: colors.warning }, row: { flexDirection: 'row', justifyContent: 'space-between', gap: spacing.md }, link: { ...typography.label, color: colors.accent }, remove: { ...typography.label, color: colors.danger }, sectionTitle: { ...typography.heading, color: colors.text, marginTop: spacing.sm }, empty: { padding: spacing.xl, alignItems: 'center', gap: spacing.sm },
+  focusActions: { minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md }, back: { minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start' }, addExerciseButton: { minHeight: 44, justifyContent: 'center', paddingHorizontal: spacing.md, borderRadius: radius.pill, backgroundColor: '#10291B', borderWidth: 1, borderColor: colors.accent }, addExerciseText: { ...typography.label, color: colors.accent }, focusHeader: { alignItems: 'center', gap: spacing.xs }, focusName: { ...typography.title, color: colors.text, textAlign: 'center' }, group: { ...typography.label, color: colors.accent, textTransform: 'uppercase' }, position: { minHeight: 44, justifyContent: 'center', paddingHorizontal: spacing.md }, positionText: { ...typography.label, color: colors.text },
   exercise: { padding: spacing.lg, borderRadius: radius.lg, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, gap: spacing.md }, exerciseName: { ...typography.heading, color: colors.text }, notes: { ...typography.caption, color: colors.text, fontStyle: 'italic' }, placeholder: { ...typography.caption, color: colors.textMuted, marginTop: spacing.sm },
   footer: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, padding: spacing.md, paddingBottom: spacing.lg, borderTopWidth: 1, borderTopColor: colors.border, backgroundColor: colors.surface }, footerButton: { flex: 1, paddingHorizontal: spacing.sm }, footerPosition: { minWidth: 58, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
 });

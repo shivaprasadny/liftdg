@@ -4,6 +4,26 @@
 
 ### Added
 
+- A clear calendar-based program start-date picker with direct month/year navigation, selected start and planned finish summaries, and per-run program schedule cancellation that preserves completed and in-progress workouts.
+- Cancelled program occurrences are now hidden from the month planner, and program-linked calendar workout details include a direct “Cancel Remaining Program Workouts” action.
+- Program cancellation is now strictly forward-looking: it cancels only today/future eligible occurrences and never changes past calendar entries, completed workouts, history, or statistics.
+- Training now opens on Calendar by default and uses dedicated Calendar, My Workouts, Starter Plans, and Programs navigation. The Calendar’s green add button offers scheduling an existing workout or creating a new one.
+- Programs now has a green create button and a custom-program builder for program details, 1–52 weeks, 1–7 weekly training days, and a linked workout for each day. New workouts and their exercises continue to use the existing workout builder.
+- The custom-program builder now edits each week independently instead of repeating one schedule across every week: a week selector lets you assign a different workout to each day of each week, with a "Copy Previous Week" action to reuse the prior week as a starting point (confirms before overwriting a week that already has choices) — see DECISIONS.md #51.
+- Each week in the custom-program builder can now have its own number of training days (not just different workouts) — Step 2's day-count picker only sets the default for new weeks, and a +/− stepper next to the week selector in Step 3 adds or removes training days for the week currently being edited (confirms before removing a day that already has a workout chosen) — see DECISIONS.md #54.
+- User-created programs can now be edited and deleted: Program Details shows "Edit Program" and "Delete Program" for any non-built-in program, reusing the same per-week builder (pre-filled with the program's current weeks/days/workouts) to save changes. Built-in programs (Shiva's Favorites, the ten Popular Programs) remain fully protected — see DECISIONS.md #55.
+- A day in the custom-program builder can now hold more than one workout — a "+ Add Another Workout to This Day" action lets you add, say, a Morning and an Evening session to the same day, each with its own free-text label and its own workout.
+- The workout picker inside the program builder now lets you preview a workout's exercises (tap the chevron/"What's inside this workout?" to expand a live list of exercises and set/rep targets) before or after choosing it, and has a "+ Create New Workout" action tied to the specific day/slot you're filling — creating a workout and returning to the builder now auto-fills it into that same slot instead of leaving you to search for it — see DECISIONS.md #56.
+- A previewed workout can now be duplicated straight into a program day via "Duplicate & Customize This Workout" — makes a personal copy, opens the full exercise/sets/reps editor on that copy, and auto-fills the copy into the day/slot you were filling when you return, so you can change exercises, sets, and reps for one specific program day without touching the original workout anywhere else it's used — see DECISIONS.md #57.
+- Fixed the custom-program builder defaulting "Number of weeks" to 4 while only showing a "Week 1" chip until the field was manually touched — the week list now initializes to match the displayed default.
+- Fixed the custom-program builder (both Create and Edit) hiding its bottom input/submit button behind the keyboard on iOS — wrapped in `KeyboardAvoidingView`, matching the Active Workout screen fix above.
+
+- Ten popular built-in programs (StrongLifts 5x5, Starting Strength, Full Body Beginner, Upper/Lower Split, Push Pull Legs, Wendler 5/3/1, GZCLP, PHUL, PHAT, Arnold Split), spanning beginner to advanced and 3-12 week/day structures, shown in a new "Popular Programs" section on the Programs screen alongside Shiva's Favorites — see DECISIONS.md #50.
+
+- Modern Training Calendar month planner with direct month/year navigation, compact workout events, day selection, premium agenda cards, theme-aware styling, and selected-date scheduling.
+
+- Phase 12 Apply Changes foundation: on a completed workout's details screen, an "Apply Changes" action appears when an exercise was fully replaced during the session and its original still has a slot in the (non-built-in) linked workout template. Review each swap individually and choose "Update Workout Template" or "No Future Changes" — see DECISIONS.md #48 for what's deferred (weight/rep/RPE proposals, program-week scopes, conflict resolution, audit trail, revert).
+
 - Phase 11 History foundation: remembered list/calendar/timeline views, completion-quality and PR badges, planned-versus-performed review, correction overlays/audits, and deletion snapshots.
 
 - Phase 10 replacement foundation: deterministic equipment-aware recommendations, curated relations, restrictions/preferences schema, audit trail, and transactional active-workout replacement UI.
@@ -59,6 +79,10 @@
 
 ### Changed
 
+- Cardio uses a touch-friendly combined date/time picker: monthly calendar, 12-hour clock, five-minute choices, AM/PM selection, and a readable session-date summary instead of raw date and 24-hour text fields.
+- Cardio duration now uses separate Hours and Minutes fields with example placeholders; timer results are split automatically and still persist as exact seconds.
+- Quick Run and Quick Ride now open the cardio-specific timer and metrics form (duration, distance, pace inputs, heart rate, calories, elevation, and cadence). Removed the ambiguous Blank quick action.
+- Removed the global Plate Calculator button from Start Workout and the per-set calculator button from Active Workout. Bar and plate assumptions vary by exercise and equipment, so these shortcuts were misleading.
 - Workout exercises now snapshot plan targets when a session starts.
 - Active workout details mount only for the focused exercise; the full list uses lightweight summary cards for large sessions.
 - Shared application errors prevent raw SQLite failures from reaching UI messages.
@@ -72,6 +96,11 @@
 
 ### Fixed
 
+- New/Edit Measurements now uses a calendar date picker that prevents future dates. Editing or duplicating an asynchronously loaded entry now correctly restores its saved date, body weight, and notes as well as its measurement values.
+- Active workout set inputs now autosave while typing, accept both decimal dots and commas, display save status, and use an explicit “Complete Set” control so entered values are not confused with completed work during Finish Workout validation.
+- Fixed the Active Workout screen's focused-exercise view having no `KeyboardAvoidingView`: tapping into a set's weight/reps field brought up the keyboard, which simply overlaid the fixed "Previous Exercise / Next Exercise" footer and the input itself instead of pushing the layout up, on iOS in particular. Wrapped the screen in `KeyboardAvoidingView` (`behavior="padding"` on iOS, `"height"` on Android), matching the pattern already used by the app's other keyboard-heavy modals.
+- Fixed "Start Something Else" on the Start Workout tab appearing to do nothing when tapped from the "No workout planned for today" empty state: it correctly opened the workout library, but the list rendered several sections further down the page with no scroll, so the tap produced no visible feedback near the button. It now scrolls to the library section as it opens.
+- Phase 13 header-consistency fix: nine screens (`body/index`, `body/weight`, `body/preferences`, `body/measurements/index`, `body/measurements/create`, `body/measurements/compare`, `settings/profile`, `settings/hydration-reset`, `water/index`) were missing from `_layout.tsx`'s route registrations, so each showed a double header — React Navigation's default header with an auto-generated title (e.g. "Index," "Weight") stacked above the screen's own correctly-titled `Header` component. All nine now have explicit `Stack.Screen` entries with proper titles, and their redundant internal headers were removed; see DECISIONS.md #49.
 - Fixed a stuck-workout bug: with zero completed sets, "Finish Workout" refused to save (correctly) but its "Discard" option only ever appeared alongside a successful finish, so there was no way to leave the workout at all. Added a standalone "Cancel Workout" action, always reachable, plus a "Discard Workout" option on the "Cannot finish yet" error itself.
 - Added an explicit "Cancel" button to every modal-presented screen's header (New/Edit Exercise, Add Exercises to a plan or workout, Create Group), plus the Cardio Session screen — previously the only way to leave was an easy-to-miss swipe-down gesture on iOS, and nothing at all on Android.
 - The plan detail screen now shows a History section (reusing the existing plan→workout link and history query, no schema change): times used, last-performed date, and a card per past completed workout from that plan, tapping through to its full details.

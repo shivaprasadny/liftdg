@@ -3,10 +3,10 @@ export const DATABASE_VERSION = 20;
 export const EXERCISE_REPLACEMENT_SEED_VERSION = 1;
 export const PLATE_CALCULATOR_SEED_VERSION = 1;
 export const EXERCISE_SEED_VERSION = 3;
-export const STARTER_PLAN_SEED_VERSION = 2;
+export const STARTER_PLAN_SEED_VERSION = 3;
 export const PERSONAL_RECORD_BACKFILL_VERSION = 1;
 export const EXERCISE_VIDEO_SEED_VERSION = 13;
-export const PROGRAM_SEED_VERSION = 1;
+export const PROGRAM_SEED_VERSION = 2;
 
 export const migrationV1 = `
 CREATE TABLE IF NOT EXISTS exercises (

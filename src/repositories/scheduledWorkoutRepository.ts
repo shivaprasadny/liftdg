@@ -1,9 +1,10 @@
+import { format } from 'date-fns';
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import type { Daypart, ScheduledWorkoutStatus } from '@/constants/scheduledWorkout';
 import type { WorkoutPlanType } from '@/constants/workoutPlanTypes';
 import { calculateProgramOccurrenceDate } from '@/services/scheduledWorkoutService';
-import type { ScheduledWorkout, ScheduleWorkoutInput, UpdateScheduledWorkoutInput } from '@/types/scheduledWorkout';
+import type { CancelProgramScheduleResult, ProgramScheduleBatch, ScheduledWorkout, ScheduleWorkoutInput, UpdateScheduledWorkoutInput } from '@/types/scheduledWorkout';
 import { AppError, toAppError } from '@/utils/errors';
 import { createId } from '@/utils/ids';
 
@@ -81,7 +82,9 @@ export async function startProgram(db: SQLiteDatabase, programId: string, startD
 /** Inclusive date range, ordered by date only — same-day ordering (time/daypart) is a display concern, see scheduledWorkoutService. */
 export async function getScheduledWorkoutsInRange(db: SQLiteDatabase, fromDate: string, toDate: string): Promise<ScheduledWorkout[]> {
   const rows = await db.getAllAsync<Row>(
-    'SELECT * FROM scheduled_workouts WHERE scheduled_date >= ? AND scheduled_date <= ? ORDER BY scheduled_date',
+    `SELECT * FROM scheduled_workouts
+      WHERE scheduled_date >= ? AND scheduled_date <= ? AND status != 'cancelled'
+      ORDER BY scheduled_date`,
     [fromDate, toDate],
   );
   return rows.map(mapRow);
@@ -93,7 +96,12 @@ export async function getScheduledWorkoutById(db: SQLiteDatabase, id: string): P
 }
 
 export async function getScheduledWorkoutsForDate(db: SQLiteDatabase, localDate: string): Promise<ScheduledWorkout[]> {
-  const rows = await db.getAllAsync<Row>('SELECT * FROM scheduled_workouts WHERE scheduled_date = ? ORDER BY created_at', [localDate]);
+  const rows = await db.getAllAsync<Row>(
+    `SELECT * FROM scheduled_workouts
+      WHERE scheduled_date = ? AND status != 'cancelled'
+      ORDER BY created_at`,
+    [localDate],
+  );
   return rows.map(mapRow);
 }
 
@@ -118,4 +126,71 @@ export async function updateScheduledWorkout(db: SQLiteDatabase, id: string, inp
 export async function deleteScheduledWorkout(db: SQLiteDatabase, id: string): Promise<void> {
   const result = await db.runAsync('DELETE FROM scheduled_workouts WHERE id = ?', [id]);
   if (result.changes !== 1) throw new AppError('Scheduled workout not found.');
+}
+
+/** One `startProgram` transaction uses one created_at value, which is the stable batch identity in the current no-ActiveProgram architecture. */
+export async function getProgramScheduleBatches(db: SQLiteDatabase, programId: string): Promise<ProgramScheduleBatch[]> {
+  const localToday = format(new Date(), 'yyyy-MM-dd');
+  const rows = await db.getAllAsync<{
+    batch_created_at: string; start_date: string; end_date: string; total_count: number;
+    eligible_count: number; completed_count: number; in_progress_count: number; cancelled_count: number;
+  }>(`SELECT created_at AS batch_created_at,
+      MIN(scheduled_date) AS start_date,
+      MAX(scheduled_date) AS end_date,
+      COUNT(*) AS total_count,
+      SUM(CASE WHEN scheduled_date >= ? AND status IN ('scheduled','missed','skipped') THEN 1 ELSE 0 END) AS eligible_count,
+      SUM(CASE WHEN status='completed' THEN 1 ELSE 0 END) AS completed_count,
+      SUM(CASE WHEN status='in_progress' THEN 1 ELSE 0 END) AS in_progress_count,
+      SUM(CASE WHEN status='cancelled' THEN 1 ELSE 0 END) AS cancelled_count
+    FROM scheduled_workouts
+    WHERE program_id=?
+    GROUP BY created_at
+    ORDER BY created_at DESC`, [localToday, programId]);
+  return rows.map((row) => ({
+    programId,
+    batchCreatedAt: row.batch_created_at,
+    startDate: row.start_date,
+    endDate: row.end_date,
+    totalCount: row.total_count,
+    eligibleCount: row.eligible_count,
+    completedCount: row.completed_count,
+    inProgressCount: row.in_progress_count,
+    cancelledCount: row.cancelled_count,
+  }));
+}
+
+/** Cancels only today/future uncompleted occurrences; past calendar state and workout history are never changed. */
+export async function cancelProgramSchedule(
+  db: SQLiteDatabase,
+  programId: string,
+  batchCreatedAt: string,
+): Promise<CancelProgramScheduleResult> {
+  try {
+    const localToday = format(new Date(), 'yyyy-MM-dd');
+    let cancellationResult: CancelProgramScheduleResult | null = null;
+    await db.withExclusiveTransactionAsync(async (transaction) => {
+      const counts = await transaction.getFirstAsync<{ completed_count: number; in_progress_count: number }>(
+        `SELECT SUM(CASE WHEN status='completed' THEN 1 ELSE 0 END) AS completed_count,
+          SUM(CASE WHEN status='in_progress' THEN 1 ELSE 0 END) AS in_progress_count
+        FROM scheduled_workouts WHERE program_id=? AND created_at=?`,
+        [programId, batchCreatedAt],
+      );
+      const result = await transaction.runAsync(
+        `UPDATE scheduled_workouts
+        SET status='cancelled', active_session_id=NULL, updated_at=?
+        WHERE program_id=? AND created_at=? AND scheduled_date>=?
+          AND status IN ('scheduled','missed','skipped')`,
+        [new Date().toISOString(), programId, batchCreatedAt, localToday],
+      );
+      cancellationResult = {
+        cancelledCount: result.changes,
+        preservedCompletedCount: counts?.completed_count ?? 0,
+        preservedInProgressCount: counts?.in_progress_count ?? 0,
+      };
+    });
+    if (!cancellationResult) throw new AppError('Could not confirm the program cancellation.');
+    return cancellationResult;
+  } catch (error) {
+    throw toAppError(error, 'Could not cancel this program schedule.');
+  }
 }

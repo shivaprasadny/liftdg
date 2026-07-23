@@ -1,10 +1,12 @@
-import { addDays, format, isValid, parse, parseISO } from 'date-fns';
+import { addDays, endOfMonth, endOfWeek, format, isValid, parse, parseISO, startOfMonth, startOfWeek } from 'date-fns';
 
 import { daypartDefaultTimes, type Daypart } from '@/constants/scheduledWorkout';
 import type { ScheduledWorkout } from '@/types/scheduledWorkout';
+import type { FirstDayOfWeek } from '@/types/settings';
 import { AppError } from '@/utils/errors';
 
 const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+export function plannerGridRange(month:Date,firstDay:FirstDayOfWeek){const weekStartsOn=firstDay as 0|1;return{from:startOfWeek(startOfMonth(month),{weekStartsOn}),to:endOfWeek(endOfMonth(month),{weekStartsOn})};}
 
 /** Auto-inserts slashes for a MM/DD/YYYY date field — same pattern as bodyMeasurementService's date-of-birth input, kept separate for a calendar-appropriate error message. */
 export function maskScheduledDateInput(value: string, previous = ''): string {

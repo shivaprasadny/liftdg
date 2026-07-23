@@ -59,6 +59,29 @@ export interface ProgramWeek {
 
 export interface ProgramTemplateWithWeeks extends ProgramTemplate { weeks: ProgramWeek[]; }
 
+export interface CreateProgramDayInput {
+  dayNumber: number;
+  dayLabel: string | null;
+  planId: string;
+  workoutType: WorkoutPlanType;
+  estimatedDurationMinutes: number | null;
+  notes: string | null;
+}
+
+export interface CreateProgramWeekInput {
+  weekNumber: number;
+  days: CreateProgramDayInput[];
+}
+
+export interface CreateProgramInput {
+  name: string;
+  description: string | null;
+  difficulty: ProgramDifficulty;
+  durationWeeks: number;
+  /** One entry per week, each with its own day/workout assignments — weeks are not forced identical. */
+  weeks: CreateProgramWeekInput[];
+}
+
 /**
  * Seed-file shape for src/data/programs.json; mirrors the exercise/starter-plan seed pattern.
  * `days` is the repeating day pattern applied to every entry in `weeks` — Shiva's Favorites reuses

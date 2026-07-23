@@ -13,20 +13,1400 @@
     "isFeatured": true,
     "notes": "General 8-week structure: Week 1 technique and baseline, Week 2 add reps, Week 3 add a small amount of weight or reduce assistance, Week 4 deload, Week 5 increase volume, Week 6 increase weight or difficulty, Week 7 hardest training week, Week 8 progress assessment. Progress at your own pace using your own entered weights — this program provides targets and guidance, not automatic load changes.",
     "weeks": [
-      {"weekNumber": 1, "title": "Week 1", "focus": "Technique and baseline", "notes": "Learn each movement with strict form before adding load or reps.", "isDeload": false, "isAssessment": false},
-      {"weekNumber": 2, "title": "Week 2", "focus": "Add reps", "notes": "Same weights as Week 1; add 1-2 reps per set where you can.", "isDeload": false, "isAssessment": false},
-      {"weekNumber": 3, "title": "Week 3", "focus": "Add weight or reduce assistance", "notes": "Small load increase on compounds, or one step down in pull-up/dip assistance.", "isDeload": false, "isAssessment": false},
-      {"weekNumber": 4, "title": "Week 4", "focus": "Deload", "notes": "Reduce sets and intensity to recover before the second half of the program.", "isDeload": true, "isAssessment": false},
-      {"weekNumber": 5, "title": "Week 5", "focus": "Increase volume", "notes": "Add a set to your main compound lifts.", "isDeload": false, "isAssessment": false},
-      {"weekNumber": 6, "title": "Week 6", "focus": "Increase weight or difficulty", "notes": "Push loads again; advanced trainees can add weighted pull-ups/dips.", "isDeload": false, "isAssessment": false},
-      {"weekNumber": 7, "title": "Week 7", "focus": "Hardest training week", "notes": "Highest planned effort of the program — keep form strict.", "isDeload": false, "isAssessment": false},
-      {"weekNumber": 8, "title": "Week 8", "focus": "Progress assessment", "notes": "Retest a few key lifts/reps and compare against Week 1.", "isDeload": false, "isAssessment": true}
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Technique and baseline",
+        "notes": "Learn each movement with strict form before adding load or reps.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Add reps",
+        "notes": "Same weights as Week 1; add 1-2 reps per set where you can.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Add weight or reduce assistance",
+        "notes": "Small load increase on compounds, or one step down in pull-up/dip assistance.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Deload",
+        "notes": "Reduce sets and intensity to recover before the second half of the program.",
+        "isDeload": true,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Increase volume",
+        "notes": "Add a set to your main compound lifts.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Increase weight or difficulty",
+        "notes": "Push loads again; advanced trainees can add weighted pull-ups/dips.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 7,
+        "title": "Week 7",
+        "focus": "Hardest training week",
+        "notes": "Highest planned effort of the program — keep form strict.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 8,
+        "title": "Week 8",
+        "focus": "Progress assessment",
+        "notes": "Retest a few key lifts/reps and compare against Week 1.",
+        "isDeload": false,
+        "isAssessment": true
+      }
     ],
     "days": [
-      {"dayNumber": 1, "dayLabel": "Push and Core", "planId": "program_shiva_athletic_push_core", "workoutType": "strength", "isRestDay": false, "isOptional": false, "notes": null, "estimatedDurationMinutes": 55},
-      {"dayNumber": 2, "dayLabel": "Pull and Conditioning", "planId": "program_shiva_athletic_pull_conditioning", "workoutType": "strength", "isRestDay": false, "isOptional": false, "notes": null, "estimatedDurationMinutes": 55},
-      {"dayNumber": 3, "dayLabel": "Legs and Athletic Strength", "planId": "program_shiva_athletic_legs", "workoutType": "strength", "isRestDay": false, "isOptional": false, "notes": null, "estimatedDurationMinutes": 55},
-      {"dayNumber": 4, "dayLabel": "Full Body", "planId": "program_shiva_athletic_full_body", "workoutType": "strength", "isRestDay": false, "isOptional": false, "notes": null, "estimatedDurationMinutes": 55}
+      {
+        "dayNumber": 1,
+        "dayLabel": "Push and Core",
+        "planId": "program_shiva_athletic_push_core",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 55
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Pull and Conditioning",
+        "planId": "program_shiva_athletic_pull_conditioning",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 55
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Legs and Athletic Strength",
+        "planId": "program_shiva_athletic_legs",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 55
+      },
+      {
+        "dayNumber": 4,
+        "dayLabel": "Full Body",
+        "planId": "program_shiva_athletic_full_body",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 55
+      }
+    ]
+  },
+  {
+    "id": "program_stronglifts_5x5",
+    "name": "StrongLifts 5x5",
+    "category": "Popular Programs",
+    "description": "A classic beginner barbell program: two alternating full-body workouts (Squat/Bench/Row and Squat/Press/Deadlift), 3 days a week, adding weight every session.",
+    "goal": "Beginner strength",
+    "difficulty": "beginner",
+    "durationWeeks": 12,
+    "daysPerWeek": 3,
+    "estimatedSessionMinutes": 45,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "Alternate Workout A and Workout B every session (not every week) — a typical block looks like A, B, A, then B, A, B. Add 5 lb (2.5 kg) to each lift every time you complete all reps; if you fail a lift three sessions in a row, cut the weight on that lift by 10% and build back up.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 7,
+        "title": "Week 7",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 8,
+        "title": "Week 8",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 9,
+        "title": "Week 9",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 10,
+        "title": "Week 10",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 11,
+        "title": "Week 11",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 12,
+        "title": "Week 12",
+        "focus": "Assessment",
+        "notes": "Test your new working weights with strict form and compare against where you started.",
+        "isDeload": false,
+        "isAssessment": true
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Workout A",
+        "planId": "program_stronglifts_a",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Workout B",
+        "planId": "program_stronglifts_b",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Workout A",
+        "planId": "program_stronglifts_a",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
+    ]
+  },
+  {
+    "id": "program_starting_strength",
+    "name": "Starting Strength",
+    "category": "Popular Programs",
+    "description": "Mark Rippetoe's classic novice barbell program: two alternating workouts built around the squat, press, bench, deadlift, and chin-ups, 3 days a week.",
+    "goal": "Beginner strength",
+    "difficulty": "beginner",
+    "durationWeeks": 12,
+    "daysPerWeek": 3,
+    "estimatedSessionMinutes": 45,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "Alternate Workout A and Workout B every session — a typical block looks like A, B, A, then B, A, B. Add weight to the squat almost every session; add weight to the press and bench a little more slowly once they get harder.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 7,
+        "title": "Week 7",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 8,
+        "title": "Week 8",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 9,
+        "title": "Week 9",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 10,
+        "title": "Week 10",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 11,
+        "title": "Week 11",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 12,
+        "title": "Week 12",
+        "focus": "Assessment",
+        "notes": "Test your new working weights with strict form and compare against where you started.",
+        "isDeload": false,
+        "isAssessment": true
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Workout A",
+        "planId": "program_startingstrength_a",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Workout B",
+        "planId": "program_startingstrength_b",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Workout A",
+        "planId": "program_startingstrength_a",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
+    ]
+  },
+  {
+    "id": "program_full_body_beginner",
+    "name": "Full Body Beginner",
+    "category": "Popular Programs",
+    "description": "A simple full-body session repeated 3 times a week — a gentler introduction to structured training than a barbell-only program.",
+    "goal": "General beginner strength",
+    "difficulty": "beginner",
+    "durationWeeks": 8,
+    "daysPerWeek": 3,
+    "estimatedSessionMinutes": 40,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "Leave 1-2 reps in reserve on every set while you're learning the movements. Once every set feels easy at the top of its rep range, add weight next session.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Deload",
+        "notes": "Cut the weight on your main lifts by about 10% and keep the same reps — recover before pushing again.",
+        "isDeload": true,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 7,
+        "title": "Week 7",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 8,
+        "title": "Week 8",
+        "focus": "Assessment",
+        "notes": "Test your new working weights with strict form and compare against where you started.",
+        "isDeload": false,
+        "isAssessment": true
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Full Body",
+        "planId": "starter_beginner_full_body",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Full Body",
+        "planId": "starter_beginner_full_body",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Full Body",
+        "planId": "starter_beginner_full_body",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
+    ]
+  },
+  {
+    "id": "program_upper_lower_split",
+    "name": "Upper/Lower Split",
+    "category": "Popular Programs",
+    "description": "A 4-day split alternating upper-body and lower-body sessions — a common next step after a full-body beginner routine.",
+    "goal": "General strength and size",
+    "difficulty": "intermediate",
+    "durationWeeks": 8,
+    "daysPerWeek": 4,
+    "estimatedSessionMinutes": 55,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "Train Upper/Lower on two days, rest a day, then repeat — a common pattern is Mon/Tue train, Wed off, Thu/Fri train, weekend off. Progress each lift independently: add weight when you hit the top of the rep range on every set.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Deload",
+        "notes": "Cut the weight on your main lifts by about 10% and keep the same reps — recover before pushing again.",
+        "isDeload": true,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 7,
+        "title": "Week 7",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 8,
+        "title": "Week 8",
+        "focus": "Assessment",
+        "notes": "Test your new working weights with strict form and compare against where you started.",
+        "isDeload": false,
+        "isAssessment": true
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Upper Body",
+        "planId": "starter_upper_body",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Lower Body",
+        "planId": "starter_lower_body",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Upper Body",
+        "planId": "starter_upper_body",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 4,
+        "dayLabel": "Lower Body",
+        "planId": "starter_lower_body",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
+    ]
+  },
+  {
+    "id": "program_push_pull_legs",
+    "name": "Push Pull Legs (6-Day)",
+    "category": "Popular Programs",
+    "description": "The classic 6-day bodybuilding split — push, pull, and legs, run twice through the week — for lifters who can recover from higher training frequency.",
+    "goal": "Hypertrophy and strength",
+    "difficulty": "intermediate",
+    "durationWeeks": 6,
+    "daysPerWeek": 6,
+    "estimatedSessionMinutes": 55,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "Push = chest/shoulders/triceps, Pull = back/biceps, Legs = quads/hamstrings/glutes/calves. Take a rest day wherever it fits your week — most lifters run 6 on, 1 off.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Assessment",
+        "notes": "Test your new working weights with strict form and compare against where you started.",
+        "isDeload": false,
+        "isAssessment": true
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Push",
+        "planId": "starter_push_day",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Pull",
+        "planId": "starter_pull_day",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Legs",
+        "planId": "starter_leg_day",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 4,
+        "dayLabel": "Push",
+        "planId": "starter_push_day",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 5,
+        "dayLabel": "Pull",
+        "planId": "starter_pull_day",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 6,
+        "dayLabel": "Legs",
+        "planId": "starter_leg_day",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
+    ]
+  },
+  {
+    "id": "program_wendler_531",
+    "name": "Wendler 5/3/1 (4-Day)",
+    "category": "Popular Programs",
+    "description": "Jim Wendler's percentage-based strength cycle: one main lift a day (press, deadlift, bench, squat) building over a 3-week wave, then a deload, plus light assistance work each day.",
+    "goal": "Long-term strength",
+    "difficulty": "intermediate",
+    "durationWeeks": 4,
+    "daysPerWeek": 4,
+    "estimatedSessionMinutes": 50,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "Percentages are of your training max (about 90% of a true 1-rep max), not your actual max — this is what keeps the program sustainable over many cycles. Repeat this 4-week cycle, raising your training max by about 5 lb (upper body) or 10 lb (lower body) after each deload.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "5s week",
+        "notes": "Work up to sets of 5/5/5+ at roughly 65/75/85% of your training max on the main lift; the last set is AMRAP (as many reps as possible).",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "3s week",
+        "notes": "Work up to sets of 3/3/3+ at roughly 70/80/90% of your training max; the last set is AMRAP.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "5/3/1 week",
+        "notes": "The heaviest week: sets of 5/3/1+ at roughly 75/85/95% of your training max; the last set is AMRAP.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Deload",
+        "notes": "Light sets of 5/5/5 at roughly 40/50/60% of your training max, no AMRAP — recover, then raise your training max slightly and start the next cycle.",
+        "isDeload": true,
+        "isAssessment": false
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Overhead Press",
+        "planId": "program_531_press",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Deadlift",
+        "planId": "program_531_deadlift",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Bench Press",
+        "planId": "program_531_bench",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 4,
+        "dayLabel": "Squat",
+        "planId": "program_531_squat",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
+    ]
+  },
+  {
+    "id": "program_gzclp",
+    "name": "GZCLP",
+    "category": "Popular Programs",
+    "description": "Cody Lefever's beginner-to-intermediate linear progression built on three tiers per day: a heavy T1 lift (5x3+), a moderate T2 lift (3x10), and a light T3 accessory (3x15+).",
+    "goal": "Strength with built-in accessory volume",
+    "difficulty": "intermediate",
+    "durationWeeks": 12,
+    "daysPerWeek": 4,
+    "estimatedSessionMinutes": 55,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "T1 (5 sets of 3 + AMRAP): add weight if the AMRAP set hit 3+ reps, otherwise repeat the weight; after 3 failures, drop to a lighter 3x5 stage before returning to 5x3. T2 (3 sets of 10): add weight when all 3 sets hit 10. T3 (3 sets, last set AMRAP): add weight when the AMRAP set passes 25 reps.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 7,
+        "title": "Week 7",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 8,
+        "title": "Week 8",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 9,
+        "title": "Week 9",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 10,
+        "title": "Week 10",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 11,
+        "title": "Week 11",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 12,
+        "title": "Week 12",
+        "focus": "Assessment",
+        "notes": "Test your new working weights with strict form and compare against where you started.",
+        "isDeload": false,
+        "isAssessment": true
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Day 1",
+        "planId": "program_gzclp_day1",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Day 2",
+        "planId": "program_gzclp_day2",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Day 3",
+        "planId": "program_gzclp_day3",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 4,
+        "dayLabel": "Day 4",
+        "planId": "program_gzclp_day4",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
+    ]
+  },
+  {
+    "id": "program_phul",
+    "name": "PHUL (Power Hypertrophy Upper Lower)",
+    "category": "Popular Programs",
+    "description": "A 4-day split pairing two heavy, low-rep power days with two higher-rep hypertrophy days — strength and muscle size in the same week.",
+    "goal": "Strength and hypertrophy",
+    "difficulty": "intermediate",
+    "durationWeeks": 8,
+    "daysPerWeek": 4,
+    "estimatedSessionMinutes": 60,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "Power days chase weight on the bar within the given rep range; hypertrophy days chase quality reps and a pump, adding weight only once every set at the top of the rep range feels controlled.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Deload",
+        "notes": "Cut the weight on your main lifts by about 10% and keep the same reps — recover before pushing again.",
+        "isDeload": true,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 7,
+        "title": "Week 7",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 8,
+        "title": "Week 8",
+        "focus": "Assessment",
+        "notes": "Test your new working weights with strict form and compare against where you started.",
+        "isDeload": false,
+        "isAssessment": true
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Upper Power",
+        "planId": "program_phul_upper_power",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Lower Power",
+        "planId": "program_phul_lower_power",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Upper Hypertrophy",
+        "planId": "program_phul_upper_hypertrophy",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 4,
+        "dayLabel": "Lower Hypertrophy",
+        "planId": "program_phul_lower_hypertrophy",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
+    ]
+  },
+  {
+    "id": "program_phat",
+    "name": "PHAT (Power Hypertrophy Adaptive Training)",
+    "category": "Popular Programs",
+    "description": "Layne Norton's 5-day advanced split: two heavy power days followed by three higher-volume hypertrophy days targeting back/shoulders, legs, and chest/arms.",
+    "goal": "Advanced strength and size",
+    "difficulty": "advanced",
+    "durationWeeks": 8,
+    "daysPerWeek": 5,
+    "estimatedSessionMinutes": 65,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "This is a demanding, high-frequency split — it assumes solid technique on the main barbell lifts already. Power days prioritize adding weight; hypertrophy days prioritize volume and a controlled pump.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Deload",
+        "notes": "Cut the weight on your main lifts by about 10% and keep the same reps — recover before pushing again.",
+        "isDeload": true,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 7,
+        "title": "Week 7",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 8,
+        "title": "Week 8",
+        "focus": "Assessment",
+        "notes": "Test your new working weights with strict form and compare against where you started.",
+        "isDeload": false,
+        "isAssessment": true
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Upper Power",
+        "planId": "program_phat_upper_power",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Lower Power",
+        "planId": "program_phat_lower_power",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Back & Shoulders",
+        "planId": "program_phat_back_shoulders",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 4,
+        "dayLabel": "Legs Hypertrophy",
+        "planId": "program_phat_legs_hypertrophy",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 5,
+        "dayLabel": "Chest & Arms",
+        "planId": "program_phat_chest_arms",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
+    ]
+  },
+  {
+    "id": "program_arnold_split",
+    "name": "Arnold Split (6-Day)",
+    "category": "Popular Programs",
+    "description": "The classic 'golden era' bodybuilding split popularized by Arnold Schwarzenegger: Chest & Back, Shoulders & Arms, and Legs, each trained twice a week.",
+    "goal": "Advanced hypertrophy",
+    "difficulty": "advanced",
+    "durationWeeks": 8,
+    "daysPerWeek": 6,
+    "estimatedSessionMinutes": 70,
+    "equipmentLevel": "Full gym",
+    "isFeatured": false,
+    "notes": "A high-volume, high-frequency split built for lifters with a training history and the recovery capacity for 6 sessions a week. Take your rest day wherever it fits your schedule.",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "title": "Week 1",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 2,
+        "title": "Week 2",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 3,
+        "title": "Week 3",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 4,
+        "title": "Week 4",
+        "focus": "Deload",
+        "notes": "Cut the weight on your main lifts by about 10% and keep the same reps — recover before pushing again.",
+        "isDeload": true,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 5,
+        "title": "Week 5",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 6,
+        "title": "Week 6",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 7,
+        "title": "Week 7",
+        "focus": "Linear progression",
+        "notes": "Add a small amount of weight to each lift every session you complete all reps; if a lift fails three sessions in a row, deload it 10% and build back up.",
+        "isDeload": false,
+        "isAssessment": false
+      },
+      {
+        "weekNumber": 8,
+        "title": "Week 8",
+        "focus": "Assessment",
+        "notes": "Test your new working weights with strict form and compare against where you started.",
+        "isDeload": false,
+        "isAssessment": true
+      }
+    ],
+    "days": [
+      {
+        "dayNumber": 1,
+        "dayLabel": "Chest & Back",
+        "planId": "program_arnold_chest_back",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 2,
+        "dayLabel": "Shoulders & Arms",
+        "planId": "program_arnold_shoulders_arms",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 3,
+        "dayLabel": "Legs",
+        "planId": "program_arnold_legs",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 4,
+        "dayLabel": "Chest & Back",
+        "planId": "program_arnold_chest_back",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 5,
+        "dayLabel": "Shoulders & Arms",
+        "planId": "program_arnold_shoulders_arms",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      },
+      {
+        "dayNumber": 6,
+        "dayLabel": "Legs",
+        "planId": "program_arnold_legs",
+        "workoutType": "strength",
+        "isRestDay": false,
+        "isOptional": false,
+        "notes": null,
+        "estimatedDurationMinutes": 50
+      }
     ]
   }
 ]

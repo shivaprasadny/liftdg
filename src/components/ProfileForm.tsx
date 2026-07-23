@@ -19,9 +19,9 @@ const formSchema = z.object({
 });
 type Form = z.infer<typeof formSchema>;
 
-interface Props { initial?: UserProfileInput; heightUnit: HeightUnit; weightUnit: WeightUnit; onUnitChange?: (height: HeightUnit, weight: WeightUnit) => void; onSubmit: (input: UserProfileInput) => Promise<void>; submitLabel?: string }
+interface Props { initial?: UserProfileInput; heightUnit: HeightUnit; weightUnit: WeightUnit; onUnitChange?: (height: HeightUnit, weight: WeightUnit) => void; onSubmit: (input: UserProfileInput) => Promise<void>; submitLabel?: string; showNotes?: boolean }
 
-export function ProfileForm({ initial, heightUnit, weightUnit, onUnitChange, onSubmit, submitLabel = 'Save profile' }: Props) {
+export function ProfileForm({ initial, heightUnit, weightUnit, onUnitChange, onSubmit, submitLabel = 'Save profile', showNotes = true }: Props) {
   const height = initial?.heightCm != null ? centimetersToFeetInches(initial.heightCm) : null;
   const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<Form>({ resolver: zodResolver(formSchema), defaultValues: {
     name: initial?.name ?? '', dateOfBirth: isoDateToDisplay(initial?.dateOfBirth ?? null),
@@ -38,10 +38,11 @@ export function ProfileForm({ initial, heightUnit, weightUnit, onUnitChange, onS
   return <View style={styles.wrap}>
     {input('name', 'Name')}
     <Controller control={control} name="dateOfBirth" render={({ field }) => <AppInput accessibilityLabel="Date of birth, month day year" label="Date of birth" placeholder="MM/DD/YYYY" keyboardType="number-pad" maxLength={10} value={field.value} onBlur={field.onBlur} onChangeText={(value) => field.onChange(maskDateOfBirthInput(value,field.value))} error={errors.dateOfBirth?.message} />} />
+    <View style={styles.units}><FilterChip label="kg" selected={weightUnit === 'kg'} onPress={() => onUnitChange?.(heightUnit, 'kg')} /><FilterChip label="lb" selected={weightUnit === 'lb'} onPress={() => onUnitChange?.(heightUnit, 'lb')} /></View>
+    {input('weight', `Current weight in ${weightUnit}`, { keyboardType: 'decimal-pad' })}
     <View style={styles.units}><FilterChip label="Centimeters" selected={heightUnit === 'cm'} onPress={() => onUnitChange?.('cm', weightUnit)} /><FilterChip label="Feet and inches" selected={heightUnit === 'ft_in'} onPress={() => onUnitChange?.('ft_in', weightUnit)} /></View>
     {heightUnit === 'cm' ? input('height', 'Height in centimeters', { keyboardType: 'decimal-pad' }) : <View style={styles.row}>{input('feet', 'Height feet', { keyboardType: 'number-pad', containerStyle: styles.flex })}{input('inches', 'Height inches', { keyboardType: 'decimal-pad', containerStyle: styles.flex })}</View>}
-    <View style={styles.units}><FilterChip label="kg" selected={weightUnit === 'kg'} onPress={() => onUnitChange?.(heightUnit, 'kg')} /><FilterChip label="lb" selected={weightUnit === 'lb'} onPress={() => onUnitChange?.(heightUnit, 'lb')} /></View>
-    {input('weight', `Current weight in ${weightUnit}`, { keyboardType: 'decimal-pad' })}{input('notes', 'Profile notes', { multiline: true })}
+    {showNotes ? input('notes', 'Profile notes', { multiline: true }) : null}
     <AppButton label={submitLabel} loading={isSubmitting} onPress={() => void save()} />
   </View>;
 }
